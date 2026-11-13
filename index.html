@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f8f5">
+  <meta name="description" content="跟着好天气，去旅行。按日期和天气偏好探索中国目的地，收藏属于你的旅行足迹。">
+  <title>晴游 · 跟着好天气，去旅行</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <script src="assets/china.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <svg class="svg-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M6 18a4 4 0 0 1-.6-7.95 6.5 6.5 0 0 1 12.8-1.24A4.6 4.6 0 1 1 18 18H6Z"/></symbol>
+    <symbol id="i-partly" viewBox="0 0 24 24"><path d="M9 2v2M2 9h2m.05-4.95 1.4 1.4M14 4l-1 1M9 14a5 5 0 1 1 5-5"/><path d="M10 20a3.5 3.5 0 0 1 0-7 4.5 4.5 0 0 1 8.5-1.5A4.3 4.3 0 0 1 18 20Z"/></symbol>
+    <symbol id="i-rain" viewBox="0 0 24 24"><path d="M6 15a4 4 0 0 1-.6-7.95 6.5 6.5 0 0 1 12.8-1.24A4.6 4.6 0 0 1 18 15M8 18l-1 3m6-3-1 3m6-3-1 3"/></symbol>
+    <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2v20M3.34 7l17.32 10M3.34 17 20.66 7M9 4l3 3 3-3M9 20l3-3 3 3M3.57 10.6l4.1-1.1-1.1-4.1m10.86 13.2-1.1-4.1 4.1-1.1M6.57 18.6l1.1-4.1-4.1-1.1m16.86-2.8-4.1-1.1 1.1-4.1"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 3c-9-1-16 2-16 9a7 7 0 0 0 7 7c7 0 8-8 9-16ZM4 21l11-11"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M16 3v4M8 3v4M3 11h18m-13 5h2m4 0h2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z"/><path d="m8 12 3 3 5-5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h6m4 0h6M4 12h12m4 0h0M4 18h2m4 0h10"/><circle cx="12" cy="6" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></symbol>
+    <symbol id="i-thermometer" viewBox="0 0 24 24"><path d="M9 14.5V5a3 3 0 0 1 6 0v9.5a5 5 0 1 1-6 0ZM12 8v10"/></symbol>
+    <symbol id="i-wind" viewBox="0 0 24 24"><path d="M3 8h12a3 3 0 1 0-3-3M2 12h17a3 3 0 1 1-3 3M4 16h5a3 3 0 1 1-3 3"/></symbol>
+    <symbol id="i-footprints" viewBox="0 0 24 24"><path d="M7 13c-2.5 0-3-3-2-6s3-5 5-4 2 4 1 7-2 3-4 3Zm-1 3 3 1-.5 3a2 2 0 0 1-3.8-1Zm11-1c2.5 0 3-3 2-6s-3-5-5-4-2 4-1 7 2 3 4 3Zm1 3-3 1 .5 2a2 2 0 0 0 3.8-1Z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M5.5 7A8 8 0 0 1 19 7l1 5M4 12l1 5a8 8 0 0 0 13.5 0"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6 6-2Z"/></symbol>
+  </svg>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#" aria-label="晴游首页"><span class="brand-mark"><svg class="icon"><use href="#i-sun"/></svg><i></i></span><span>晴游<span class="brand-en">SUNSEEK</span></span></a>
+      <nav class="main-nav" aria-label="主导航">
+        <a href="#explore" class="nav-link active"><svg class="icon"><use href="#i-compass"/></svg>发现目的地</a>
+        <a href="#footprints" class="nav-link" id="footprints-nav"><svg class="icon"><use href="#i-footprints"/></svg>我的足迹<span class="nav-count" id="nav-count">0</span></a>
+        <button class="nav-link" id="about-btn">关于晴游</button>
+      </nav>
+      <button class="header-search" id="search-btn" aria-label="搜索目的地"><svg class="icon"><use href="#i-search"/></svg><span>寻找一座城</span><kbd>⌘ K</kbd></button>
+    </div>
+  </header>
+
+  <main class="page-shell" id="explore">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy"><div class="eyebrow"><span class="tiny-sun">✳</span> 下一站，就去好天气里</div><h1 id="hero-title">跟着好天气，<span>去旅行。</span></h1><p>想晒太阳，想看雪，或只是听一场雨。<br class="mobile-only">找到属于你的天时地利。</p></div>
+      <div class="hero-art" aria-hidden="true"><div class="hero-photo"></div><div class="hero-art-shade"></div><div class="postcard-note"><svg class="icon"><use href="#i-sun"/></svg><span>生活晴朗，万物可爱</span></div><div class="photo-coordinates">LET THE WEATHER TAKE YOU SOMEWHERE.</div><div class="hero-orbit"></div></div>
+    </section>
+
+    <section class="filter-panel" aria-label="旅行天气偏好">
+      <div class="filter-main">
+        <div class="date-filter"><div class="field-label"><svg class="icon"><use href="#i-calendar"/></svg>什么时候出发</div><div class="date-inputs"><label><span class="sr-only">出发日期</span><input type="date" id="start-date" required></label><span class="date-dash">→</span><label><span class="sr-only">返程日期</span><input type="date" id="end-date" required></label></div><div class="date-shortcuts"><button data-quick-date="weekend">本周末</button><button data-quick-date="week">未来 7 天</button><span id="trip-length">共 3 天</span></div></div>
+        <div class="filter-divider"></div>
+        <div class="weather-filter"><div class="field-label">想遇见什么天气<span class="label-hint">选一种喜欢的心情</span></div><div class="preference-options" role="group" aria-label="天气偏好">
+          <button class="preference active" data-preference="sun" aria-pressed="true"><span class="pref-icon sun"><svg class="icon"><use href="#i-sun"/></svg></span><span><strong>追着阳光</strong><small>晴天多一点</small></span><span class="preference-check"><svg class="icon"><use href="#i-check"/></svg></span></button>
+          <button class="preference" data-preference="snow" aria-pressed="false"><span class="pref-icon snow"><svg class="icon"><use href="#i-snow"/></svg></span><span><strong>赴一场雪</strong><small>遇见白色浪漫</small></span><span class="preference-check"><svg class="icon"><use href="#i-check"/></svg></span></button>
+          <button class="preference" data-preference="rain" aria-pressed="false"><span class="pref-icon rain"><svg class="icon"><use href="#i-rain"/></svg></span><span><strong>听听下雨</strong><small>喜欢细雨慢生活</small></span><span class="preference-check"><svg class="icon"><use href="#i-check"/></svg></span></button>
+          <button class="preference" data-preference="cool" aria-pressed="false"><span class="pref-icon cool"><svg class="icon"><use href="#i-leaf"/></svg></span><span><strong>寻一处清凉</strong><small>不冷不热刚刚好</small></span><span class="preference-check"><svg class="icon"><use href="#i-check"/></svg></span></button>
+        </div></div>
+      </div>
+      <div class="filter-bottom"><div class="filter-extras"><span class="safe-filter" title="根据预报过滤雷暴、强降水、强风等天气；不替代官方预警"><svg class="icon"><use href="#i-shield"/></svg>避开恶劣天气</span><span class="small-divider"></span><label class="switch-label"><input type="checkbox" id="hide-visited" checked><span class="switch"></span>优先探索没去过的地方</label><button class="text-button more-filters" id="more-filters" aria-expanded="false"><svg class="icon"><use href="#i-sliders"/></svg>更多偏好</button></div><button class="primary-button find-button" id="find-btn"><svg class="icon"><use href="#i-search"/></svg>寻找好天气<svg class="icon button-arrow"><use href="#i-arrow"/></svg></button></div>
+      <div class="advanced-filters" id="advanced-filters" hidden><label>日间最高温 <input id="min-temp" type="number" min="-40" max="50" placeholder="不限" aria-label="最低可接受日间温度"> 至 <input id="max-temp" type="number" min="-40" max="50" placeholder="不限" aria-label="最高可接受日间温度"> °C</label><label><input type="checkbox" id="strict-match"> 每一天都符合天气偏好</label><button class="text-button" id="reset-filters">重置偏好</button><span>仅保留所选日期内每天都满足温度范围的城市</span></div>
+      <p id="filter-error" class="filter-error" role="alert" hidden></p>
+    </section>
+
+    <div class="results-topline"><p><span class="status-dot"></span><span id="results-summary">正在为你寻找好天气</span></p><button id="data-status" class="data-status" title="查看天气数据说明"><span class="status-dot amber"></span>正在连接天气数据</button></div>
+
+    <section class="discovery-grid" aria-label="天气地图与推荐">
+      <div class="map-panel panel"><div class="panel-heading"><div><h2>把好天气，放在地图上<span class="section-dot">.</span></h2><p id="map-subtitle">在广阔的地图里，找到想出发的理由</p></div><label class="region-select"><svg class="icon"><use href="#i-pin"/></svg><select id="region-filter" aria-label="地区筛选"><option value="all">全国</option><option value="西南">西南</option><option value="华南">华南</option><option value="华东">华东</option><option value="华中">华中</option><option value="华北">华北</option><option value="西北">西北</option><option value="东北">东北</option></select></label></div>
+        <div class="map-container" id="map-container"><div class="map-watermark">CHINA WEATHER MAP</div><div class="map-date-chip"><svg class="icon"><use href="#i-calendar"/></svg><span id="map-date-label"></span><span class="chip-divider"></span><span id="map-mode-label">晴天分布</span></div><svg id="weather-map" viewBox="0 0 900 550" role="group" aria-label="中国天气地图，可选择城市查看天气"><defs><clipPath id="main-map-clip"><rect x="32" y="14" width="835" height="518"/></clipPath><clipPath id="inset-clip"><rect x="771" y="372" width="96" height="132" rx="4"/></clipPath><filter id="marker-shadow" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity=".10"/></filter></defs><g id="map-viewport"><g id="province-paths" clip-path="url(#main-map-clip)"></g><g id="province-labels"></g><g id="city-markers"></g></g><g id="island-inset"></g></svg><div class="map-controls"><button id="map-zoom-in" aria-label="放大地图">+</button><button id="map-zoom-out" aria-label="缩小地图">−</button><button id="map-reset" aria-label="重置地图"><svg class="icon"><use href="#i-compass"/></svg></button></div><div class="map-tooltip" id="map-tooltip" hidden></div></div>
+        <div class="map-footer"><div class="map-legend" id="map-legend"><span>晴天占比</span><i style="background:#e8eeeb"></i><span>少</span><div class="legend-gradient"></div><span>多</span></div><span class="map-hint"><svg class="icon"><use href="#i-info"/></svg>点击城市，查看详细天气</span></div>
+      </div>
+
+      <aside class="recommendations panel"><div class="recommend-heading"><div class="recommend-title"><span class="sparkle">✧</span><h2>你的好天气目的地</h2></div><div class="recommend-subtitle"><span id="recommend-count">为你挑选的旅行灵感</span><select id="sort-order" aria-label="推荐排序"><option value="score">匹配度优先</option><option value="days">匹配天数优先</option><option value="temp">温度从低到高</option></select></div></div><div id="recommendation-list" class="recommendation-list" aria-live="polite"></div><button class="all-results" id="show-all-btn">查看全部推荐 <span id="all-count"></span><svg class="icon"><use href="#i-arrow"/></svg></button><div class="recommend-note"><svg class="icon"><use href="#i-leaf"/></svg><span>不赶路，去感受天气里的小美好。</span></div></aside>
+    </section>
+
+    <section class="all-destinations panel" id="all-destinations" hidden><div class="panel-heading"><div><h2>所有适合出发的地方</h2><p>让下一次出发，多一种可能</p></div><button class="icon-button" id="collapse-results" aria-label="收起全部推荐"><svg class="icon"><use href="#i-close"/></svg></button></div><div id="all-cards" class="all-cards"></div></section>
+
+    <details class="footprints-section" id="footprints"><summary><span class="footprints-icon"><svg class="icon"><use href="#i-footprints"/></svg></span><span class="footprints-summary"><strong>走过的地方，也是好风景<span class="count-pill" id="visited-count">0</span></strong><small>已去过的目的地收在这里，把下一次心动留给新的地方。</small></span><span class="footprints-right">我的旅行足迹<svg class="icon"><use href="#i-chevron"/></svg></span></summary><div class="visited-content" id="visited-content"></div><p class="local-note"><svg class="icon"><use href="#i-info"/></svg>足迹仅保存在当前浏览器，清除浏览器数据后会丢失。</p></details>
+
+    <div class="travel-note"><span class="note-symbol">✳</span><p><strong>天气是出发的理由，也是旅途的一部分。</strong><span>预报会变化，出发前记得再看一眼天气和当地预警。</span></p><span class="note-line"></span><svg class="icon"><use href="#i-sun"/></svg></div>
+  </main>
+
+  <footer class="site-footer"><div><a href="#" class="footer-brand">晴游 <span>SUNSEEK</span></a><span>愿每一次出发，都有好天气相伴。</span></div><div><button id="source-btn">数据与说明<svg class="icon"><use href="#i-arrow"/></svg></button><span class="footer-separator">·</span><span>为喜欢出发的人而做</span><svg class="icon footer-sun"><use href="#i-sun"/></svg></div></footer>
+
+  <dialog id="city-dialog" class="city-dialog"><div id="city-dialog-content"></div></dialog>
+  <dialog id="about-dialog" class="about-dialog"><button class="dialog-close icon-button" data-close-dialog aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button><div class="about-brand"><svg class="icon"><use href="#i-sun"/></svg></div><div class="eyebrow">A LITTLE WEATHER, A LITTLE WANDER</div><h2>好天气，是一个出发的理由。</h2><p>晴游帮你从天气开始，发现下一站。选择日期与心情，看看哪里有连续晴天、轻柔的雨，或者一场期待已久的雪。</p><div class="about-details"><h3>天气数据</h3><p id="about-data-status"></p><p>实时预报来自 <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>，按目的地当地日期显示，最长查询未来 16 天。较远日期的不确定性更高。连接失败时展示明确标注的示例数据，示例仅用于体验界面，不能作为出行依据。</p><h3>如何推荐</h3><p>综合匹配天数（70%）、日间温度舒适度（20%）和风速（10%）。晴天按 WMO 天气代码 0、1、2 统计；看雪是降雪预报，并不代表现有积雪或雪场开放。细雨偏好排除强降水与雷暴。地图着色是各省已覆盖城市的平均匹配天数比例，不代表全省天气。</p><h3>安全与足迹</h3><p>排除所选日期内出现冻雾、冻雨、雷暴、强雨雪、10 米日最大风速 ≥ 50 km/h、日降水 ≥ 50 mm 或日降雪 ≥ 15 cm 的城市。风速筛选不含阵风。此筛选不能替代官方灾害预警、道路与景区开放信息。足迹仅存储在本机浏览器。</p><h3>地图与图片</h3><p>地图边界数据：<a href="https://datav.aliyun.com/portal/school/atlas/area_selector" target="_blank" rel="noopener noreferrer">阿里云 DataV</a>；风景图片：<a href="https://unsplash.com/" target="_blank" rel="noopener noreferrer">Unsplash</a>。图片为旅行意境示意，不表示对应城市实景。</p></div><button class="primary-button about-done" data-close-dialog>带上好心情，出发<svg class="icon"><use href="#i-arrow"/></svg></button></dialog>
+  <dialog id="search-dialog" class="search-dialog"><div class="search-dialog-input"><svg class="icon"><use href="#i-search"/></svg><input type="search" id="city-search" placeholder="想去哪里？搜索城市或省份…" aria-label="搜索城市或省份" autocomplete="off"><button class="icon-button" data-close-dialog aria-label="关闭搜索"><svg class="icon"><use href="#i-close"/></svg></button></div><div id="search-results" class="search-results"></div><div class="search-footer">搜索已覆盖的目的地 · 所有天气均以数据状态标识为准<span>ESC 关闭</span></div></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
