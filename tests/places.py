@@ -33,6 +33,36 @@ with sync_playwright() as p:
  page.locator('#sort-order').select_option('score')
  print('PASS featured geographic diversity, same-province alternatives, explicit weather-only sort')
 
+ national_path=page.locator('[data-province="330000"]').get_attribute('d')
+ for region in ['华东','华南','华中','华北','西南','西北','东北']:
+  page.locator('#region-filter').select_option(region)
+  expect(page.locator('#map-scope-name')).to_have_text(region)
+  assert page.locator('[data-province="330000"]').get_attribute('d')!=national_path
+  assert page.locator('#island-inset').evaluate('(node)=>getComputedStyle(node).display')=='none'
+  if region=='华南':page.locator('.map-panel').screenshot(path='/tmp/sunseek-south-map.png')
+ page.locator('#map-national').click()
+ assert page.locator('[data-province="330000"]').get_attribute('d')==national_path
+ province=page.locator('[data-province="630000"]')
+ point=page.locator('#map-viewport').evaluate('(node)=>{const p=new DOMPoint(61+(96-73)*12.15,32+(54-35)*12.65).matrixTransform(node.getScreenCTM());return {x:p.x,y:p.y}}')
+ page.mouse.move(point['x'],point['y'])
+ assert page.locator('#province-hover path').get_attribute('d')==province.get_attribute('d')
+ page.locator('#map-national').hover()
+ expect(page.locator('#province-hover path')).to_have_count(0)
+ province.focus()
+ assert page.locator('#province-hover path').get_attribute('d')==province.get_attribute('d')
+ assert page.locator('#province-hover').evaluate('(node)=>getComputedStyle(node).pointerEvents')=='none'
+ assert page.locator('#province-hover').evaluate("node=>!!(document.querySelector('#province-paths').compareDocumentPosition(node)&Node.DOCUMENT_POSITION_FOLLOWING)")
+ page.locator('.map-panel').screenshot(path='/tmp/sunseek-hover-map.png')
+ page.locator('#map-national').focus()
+ expect(page.locator('#province-hover path')).to_have_count(0)
+ for code in ['810000','820000']:
+  page.locator('#region-filter').select_option(code)
+  assert page.evaluate("code=>{const a=LOCAL_BOUNDARIES.features.find(f=>f.properties.adcode===Number(code));const b=CHINA_GEO.features.find(f=>f.properties.adcode===Number(code));return JSON.stringify(a.geometry).length>JSON.stringify(b.geometry).length*3}",code)
+  page.wait_for_function("!document.querySelector('#data-status').textContent.includes('更新中')")
+  page.locator('.map-panel').screenshot(path=f'/tmp/sunseek-map-{code}.png')
+ page.locator('#map-national').click()
+ print('PASS seven regional map extents, national reset, unobstructed focus outline, detailed Hong Kong/Macao outlines')
+
  page.locator('#search-btn').click();page.locator('#city-search').fill('云南')
  expect(page.locator('#search-results [data-open-province="530000"]')).to_be_visible()
  page.locator('#search-results [data-open-province="530000"]').click()
@@ -64,7 +94,12 @@ with sync_playwright() as p:
  page.locator('#origin-city').select_option('')
  print('PASS ordinary-city lookup, weather-on-demand, neutral illustration, using an ordinary city as origin')
 
- page.locator('#search-btn').click();page.locator('#city-search').fill('宏村');page.locator('#search-online').click()
+ page.locator('#add-place-btn').click();page.locator('#place-search-btn').click();page.locator('#city-search').fill('宏村')
+ expect(page.locator('[data-online-place="0"]')).to_contain_text('宏村')
+ page.locator('#city-search').fill('宏')
+ page.wait_for_timeout(600)
+ expect(page.locator('[data-online-place]')).to_have_count(0)
+ page.locator('#city-search').fill('宏村')
  expect(page.locator('[data-online-place="0"]')).to_contain_text('宏村')
  page.locator('[data-online-place="0"]').click()
  expect(page.locator('#place-name')).to_have_value('宏村')
