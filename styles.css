@@ -192,7 +192,8 @@ dialog{overscroll-behavior:contain}
 .github-star{display:inline-flex;align-items:center;gap:5px;color:var(--green);min-height:32px;white-space:nowrap}
 .github-star .icon{width:14px;height:14px}.github-star:hover{text-decoration:underline;text-underline-offset:3px}
 .data-status{white-space:nowrap;flex-shrink:0}
-@media(min-width:1061px){.destination-image,.all-cards .destination-image{width:98px;min-width:98px;flex-shrink:0}}
+/* Photos in “你的好天气目的地”: cover every sidebar breakpoint without changing the map or full results. */
+@media(min-width:761px){#recommendation-list .destination-image{width:112px;min-width:112px;flex-shrink:0}}
 @media(max-width:760px){
  .map-toolbar{grid-template-columns:minmax(0,1fr);row-gap:8px}.map-toolbar>.map-actions:last-child{justify-content:flex-start}.map-breadcrumb{line-height:1.8}
  .search-dialog{max-width:calc(100vw - 24px)}.search-dialog-input{padding:14px 12px}.search-scroll{max-height:none}
@@ -201,5 +202,6 @@ dialog{overscroll-behavior:contain}
  .about-desktop-label{display:none}.about-mobile-label{display:inline}
 }
 @media(max-width:600px){.results-data{width:100%;justify-content:flex-start}#discovery-progress{flex:1 1 180px}}
-@media(max-width:480px){.destination-image,.all-cards .destination-image{width:96px;min-width:96px;flex-shrink:0}.site-footer>div:last-child{gap:6px 10px}}
+@media(max-width:480px){#recommendation-list .destination-image{width:112px;min-width:112px;flex-shrink:0}.site-footer>div:last-child{gap:6px 10px}}
+@media(max-width:360px){#recommendation-list .destination-image{width:100px;min-width:100px}}
 @media(max-width:360px){.header-inner{padding:0 12px;gap:8px}.main-nav{gap:8px}.brand{gap:5px}.brand-mark{width:26px}}
