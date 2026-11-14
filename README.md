@@ -2,7 +2,9 @@
 
 按出发地、出行日期与日间天气偏好，寻找中国境内的旅行目的地。保留初版的清爽界面，以天气选择为主，旅行灵感在天气详情后折叠展示；自选地点可以先查天气，再决定是否保存。
 
-当前仅做本地打磨，尚未配置远程仓库、账号服务或线上部署。使用原生 HTML、CSS、JavaScript，无需前端构建工具或 API 密钥。
+当前继续本地打磨，代码与历史版本备份在私有 GitHub 仓库 [ChlorophyllC/sunseek](https://github.com/ChlorophyllC/sunseek)，尚未配置账号服务或线上部署。使用原生 HTML、CSS、JavaScript，无需前端构建工具或 API 密钥。
+
+继续开发或开启新对话时，先阅读 [项目交接文档](docs/HANDOFF.md)，其中包含当前状态、下一步城市配图计划、测试方式和需要保留的产品约定。
 
 ## 本地运行
 
@@ -147,7 +149,7 @@ python3 -m http.server 4173
 - `v0.4.2`：天气请求超时隔离、缺失原因与省份重试。
 - `v0.5.0`：地图逐日预览、连续出发日期比较与采用。
 
-仅创建本地仓库和版本记录，没有远程推送。忽略系统文件、Python 缓存、环境文件、日志与测试产物。
+远程 `origin` 为私有仓库 `https://github.com/ChlorophyllC/sunseek.git`，上传 `main` 与上述历史版本标签。GitHub 备份不等于网站上线，尚未开启 Pages 或其他生产部署。忽略系统文件、Python 缓存、环境文件、日志与测试产物。
 
 ## 测试
 
@@ -185,6 +187,7 @@ python3 tests/planning.py
 - `assets/travel-highlights.js`：12 城市的编辑精选与近似天气采样点。
 - `docs/travel-data.md`：旅行数据接口选型与待接入事项。
 - `docs/weather-data.md`：天气缺失排查、备用接口选型与接入限制。
+- `docs/HANDOFF.md`：新对话交接、产品约定、下一步城市配图计划与操作说明。
 - `assets/`：地图、意境图片与站点图标。
 - `tests/`：计算边界与浏览器验收。
 
