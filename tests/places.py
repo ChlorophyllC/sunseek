@@ -138,11 +138,11 @@ with sync_playwright() as p:
  page.locator('#city-search').fill('宏村')
  expect(page.locator('[data-online-place="0"]')).to_contain_text('宏村')
  page.locator('[data-online-place="0"]').click()
- expect(page.locator('#place-name')).to_have_value('宏村')
- expect(page.locator('#place-province')).to_have_value('340000')
- page.locator('#place-form button[type=submit]').click()
  expect(page.locator('.city-dialog-title h2')).to_have_text('宏村')
  expect(page.locator('.detail-metrics')).not_to_contain_text('—',timeout=8000)
+ expect(page.locator('.preview-badge')).to_contain_text('尚未保存')
+ assert not json.loads(page.evaluate("localStorage.getItem('sunseek-places-v3')||'[]'"))
+ page.locator('[data-save-preview]').click()
  custom=json.loads(page.evaluate("localStorage.getItem('sunseek-places-v3')"));custom_id=custom[0]['id']
  assert len(custom)==1
  page.locator('#city-dialog [data-compare]').click()
@@ -161,7 +161,7 @@ with sync_playwright() as p:
  expect(page.locator('.city-dialog-title h2 img')).to_have_count(0)
  page.keyboard.press('Escape')
  page.locator(f'[data-edit-place="{custom_id}"]').click();page.locator('#place-name').fill('宏村');page.locator('#place-form button[type=submit]').click();page.keyboard.press('Escape')
- print('PASS online search, confirm/save, custom weather/compare/footprints persistence, edit, XSS escaping')
+ print('PASS online search, weather preview before explicit save, custom persistence/compare/footprints, edit, XSS escaping')
 
  page.locator('#add-place-btn').click()
  page.locator('#place-name').fill('测试地点');page.locator('#place-lat').fill('35.6');page.locator('#place-lon').fill('139.7')
@@ -187,7 +187,7 @@ with sync_playwright() as p:
  print('PASS coordinate validation, province mismatch, province map point picking')
 
  page.locator('#map-national').click()
- page.locator('#search-btn').click();page.locator('#city-search').fill('宏村');page.locator('#search-online').click();page.locator('[data-online-place="0"]').click();page.locator('#place-form button[type=submit]').click()
+ page.locator('#search-btn').click();page.locator('#city-search').fill('宏村');page.locator('#search-online').click();page.locator('[data-online-place="0"]').click()
  expect(page.locator('.city-dialog-title h2')).to_have_text('宏村')
  assert len(json.loads(page.evaluate("localStorage.getItem('sunseek-places-v3')")))==1
  page.keyboard.press('Escape')
