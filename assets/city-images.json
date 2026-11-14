@@ -1,0 +1,2213 @@
+{
+  "version": 1,
+  "images": [
+    {
+      "id": "dali",
+      "city": "大理",
+      "kind": "real",
+      "subject": "崇圣寺三塔",
+      "alt": "大理崇圣寺三塔实景照片",
+      "card": "assets/cities/dali-card.webp",
+      "detail": "assets/cities/dali-detail.webp",
+      "position": "50% 30%",
+      "author": "Andrew and Annemarie",
+      "source": "https://commons.wikimedia.org/wiki/File:Chongsheng_Temple_(11050634113).jpg",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Chongsheng_Temple_(11050634113).jpg",
+        "description": "Chongsheng Temple (Dali)",
+        "credit": "DSC05311",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2013-11-25 17:12",
+        "version": "2022-07-12T00:12:31Z",
+        "sha1": "3e7c8327cc228b39eb61c3f4395b6c821fe0d27a",
+        "width": 4912,
+        "height": 3264,
+        "bytes": 5701632
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Chongsheng_Temple_%2811050634113%29.jpg/1920px-Chongsheng_Temple_%2811050634113%29.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Chongsheng_Temple_%2811050634113%29.jpg",
+      "downloadSha256": "031a38bf6f7ac2ed8ae4a3802f52db08400d24ab9a2396ef1328ef65a90dfb04",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 32654,
+          "sha256": "c877e66710753356139566dd9bff8f70f8968982fe957d6b44f9f1eae7c215e0"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 122318,
+          "sha256": "fd2b95b4e1272e7fcd62751c8c3d5079b90ea835b2dc98fa04a3b0bbbb907faa"
+        }
+      }
+    },
+    {
+      "id": "lijiang",
+      "city": "丽江",
+      "kind": "real",
+      "subject": "黑龙潭与玉龙雪山",
+      "alt": "丽江黑龙潭与玉龙雪山实景照片",
+      "card": "assets/cities/lijiang-card.webp",
+      "detail": "assets/cities/lijiang-detail.webp",
+      "position": "50% 40%",
+      "author": "Miltos Gikas from Lutsa, Attiki, Greece",
+      "source": "https://commons.wikimedia.org/wiki/File:Black_Dragon_%E9%BB%91%E9%BE%99%E6%BD%AD_(5496141333).jpg",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Black_Dragon_黑龙潭_(5496141333).jpg",
+        "description": "The Black Dragon pool (黑龙潭 Heilong Tan Gongyuan) with Jade Dragon Snow Mountain (玉龙雪山Yulong Xueshan) in the background, fronted by the Moon Embracing Pavillion (Deyue Lou) and the Five Arch bridge (Wukong Qiao), in Li Jiang, Yunnan Province, S. China. <a href=\" http://en.wikipedia.org/wiki/Black_Dragon_Pool \" rel=\"noreferrer nofollow\">en.wikipedia.org/wiki/Black_Dragon_Pool</a>",
+        "credit": "Black Dragon 黑龙潭",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2011-02-06 05:17",
+        "version": "2024-02-26T15:57:07Z",
+        "sha1": "9372a9aa7ea78f07c6ec5462d0ea0d5fda0c72cb",
+        "width": 5184,
+        "height": 3456,
+        "bytes": 2362314
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Black_Dragon_%E9%BB%91%E9%BE%99%E6%BD%AD_%285496141333%29.jpg/1920px-Black_Dragon_%E9%BB%91%E9%BE%99%E6%BD%AD_%285496141333%29.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/1/12/Black_Dragon_%E9%BB%91%E9%BE%99%E6%BD%AD_%285496141333%29.jpg",
+      "downloadSha256": "73962f4826d95dd89275ab87474aa193c1afe582273a12f6b6d677fc0b160dfe",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 45136,
+          "sha256": "73c3f035697dd1405c5b048a392c132f71655dbb74a4fec6e0cd5522b8ad2448"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 143912,
+          "sha256": "9f693516364618d33fd3ecc7e1eca884ece792c81682a25c18c568208528b585"
+        }
+      }
+    },
+    {
+      "id": "sanya",
+      "city": "三亚",
+      "kind": "real",
+      "subject": "亚龙湾全景",
+      "alt": "三亚亚龙湾全景实景照片",
+      "card": "assets/cities/sanya-card.webp",
+      "detail": "assets/cities/sanya-detail.webp",
+      "position": "50% 50%",
+      "author": "Anna Frodesiak",
+      "source": "https://commons.wikimedia.org/wiki/File:Yalong_Bay_01.jpg",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Yalong_Bay_01.jpg",
+        "description": "Yalong Bay, Hainan, China",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2010-04-23",
+        "version": "2010-04-23T10:32:52Z",
+        "sha1": "1433777d51bc03699cd8408553459731c9cce093",
+        "width": 1035,
+        "height": 671,
+        "bytes": 502774
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/4/44/Yalong_Bay_01.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/4/44/Yalong_Bay_01.jpg",
+      "downloadSha256": "f7e8e852332cbaaa05a751103fa7d845d1cf46f947e9ceff4964db590dde2dda",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 20952,
+          "sha256": "807ec9f5b9222fd24580468b14feb60c61420526cbae32b752906367c92dd3c2"
+        },
+        "detail": {
+          "width": 1035,
+          "height": 582,
+          "bytes": 45862,
+          "sha256": "2cecd710c7662de0756974aa1fe3bfd3dad2058220b8544ecbd9284c2b65366c"
+        }
+      }
+    },
+    {
+      "id": "kunming",
+      "city": "昆明",
+      "kind": "real",
+      "subject": "五华区城市景观",
+      "alt": "昆明五华区城市景观实景照片",
+      "card": "assets/cities/kunming-card.webp",
+      "detail": "assets/cities/kunming-detail.webp",
+      "position": "50% 50%",
+      "author": "瑞丽江的河水",
+      "source": "https://commons.wikimedia.org/wiki/File:%E4%BA%94%E5%8D%8E%E5%8C%BA%E5%A4%A9%E9%99%85%E7%BA%BF_-_%E8%88%AA%E6%8B%8D_-_2025-05-16_04.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "五华区天际线_-_航拍_-_2025-05-16_04.jpg",
+        "description": "五华区天际线航拍",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2025-05-16 14:27:08",
+        "version": "2025-12-28T17:12:44Z",
+        "sha1": "fa3a041063b1c65f87907e0b2532517f92f18e1b",
+        "width": 4032,
+        "height": 2268,
+        "bytes": 6877906
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/%E4%BA%94%E5%8D%8E%E5%8C%BA%E5%A4%A9%E9%99%85%E7%BA%BF_-_%E8%88%AA%E6%8B%8D_-_2025-05-16_04.jpg/1920px-%E4%BA%94%E5%8D%8E%E5%8C%BA%E5%A4%A9%E9%99%85%E7%BA%BF_-_%E8%88%AA%E6%8B%8D_-_2025-05-16_04.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/a/a9/%E4%BA%94%E5%8D%8E%E5%8C%BA%E5%A4%A9%E9%99%85%E7%BA%BF_-_%E8%88%AA%E6%8B%8D_-_2025-05-16_04.jpg",
+      "downloadSha256": "75fa82eae9de88814a458ea55ba47c270abf76b484e929e866377899a3fa73e1",
+      "outputs": {
+        "card": {
+          "width": 576,
+          "height": 360,
+          "bytes": 44496,
+          "sha256": "84c83444c655679670949c0b1a30b9fa276ceff97b20ccadecb39b2365fb582c"
+        },
+        "detail": {
+          "width": 1037,
+          "height": 583,
+          "bytes": 123382,
+          "sha256": "f641cba55cd06e71415a157845456a4e6a6c9121046c5f2b479dacf8c167fb31"
+        }
+      }
+    },
+    {
+      "id": "xiamen",
+      "city": "厦门",
+      "kind": "real",
+      "subject": "城市滨水天际线",
+      "alt": "厦门城市滨水天际线实景照片",
+      "card": "assets/cities/xiamen-card.webp",
+      "detail": "assets/cities/xiamen-detail.webp",
+      "position": "50% 50%",
+      "author": "Jay Huang from Pleasanton, USA",
+      "source": "https://commons.wikimedia.org/wiki/File:Xiamen_night_cityscape_2018_-_Flickr_-_Jaykhuang.jpg",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Xiamen_night_cityscape_2018_-_Flickr_-_Jaykhuang.jpg",
+        "description": "Misty Morning in Xiamen, China",
+        "credit": "Dagger",
+        "attribution": "",
+        "restrictions": "",
+        "date": "Taken on 3 April 2018, 13:58",
+        "version": "2020-08-19T03:06:10Z",
+        "sha1": "5b98c416e38fce380d22ac42ae729f1e1cfe77d2",
+        "width": 2000,
+        "height": 1334,
+        "bytes": 2627044
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Xiamen_night_cityscape_2018_-_Flickr_-_Jaykhuang.jpg/1920px-Xiamen_night_cityscape_2018_-_Flickr_-_Jaykhuang.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/5/51/Xiamen_night_cityscape_2018_-_Flickr_-_Jaykhuang.jpg",
+      "downloadSha256": "7b02977ff5b6e5759a83c74856df550bef3265c5c56510377eb326563f8f691b",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 45290,
+          "sha256": "d1eadc3ac0718821b9f3e73273bab1faf17e116c336b272c4ff15d5bf99d1f72"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 142598,
+          "sha256": "2dc37aa3f01ae5e044c5857c42f013a3f7cbff82b65fb0a5e0d59ac893ed8595"
+        }
+      }
+    },
+    {
+      "id": "chengdu",
+      "city": "成都",
+      "kind": "real",
+      "subject": "远山与城市天际线",
+      "alt": "成都远山与城市天际线实景照片",
+      "card": "assets/cities/chengdu-card.webp",
+      "detail": "assets/cities/chengdu-detail.webp",
+      "position": "50% 35%",
+      "author": "FISU",
+      "source": "https://commons.wikimedia.org/wiki/File:%E9%9B%AA%E5%B1%B1%E4%B8%8B%E7%9A%84%E6%88%90%E9%83%BD%E5%B8%82%E5%A4%A9%E9%99%85%E7%BA%BF_Chengdu_skyline_with_snow_capped_mountains.jpg",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "雪山下的成都市天际线_Chengdu_skyline_with_snow_capped_mountains.jpg",
+        "description": "Chengdu skyline with mountains, the highest peak in the picture is the main peak of Mount Siguniang at 6,250 meters above sea level, Yaomei Peak. Taken from Longquan Mountain in Chengdu",
+        "credit": "YouTube : https://www.youtube.com/watch?v=WMJMPDzTFEQ – View/save archived versions on archive.org",
+        "attribution": "FISU",
+        "restrictions": "",
+        "date": "2021-07-07",
+        "version": "2022-06-23T15:05:18Z",
+        "sha1": "9c150e83011ca2681e55c1b09203e366a4603e32",
+        "width": 3840,
+        "height": 2160,
+        "bytes": 871102
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/%E9%9B%AA%E5%B1%B1%E4%B8%8B%E7%9A%84%E6%88%90%E9%83%BD%E5%B8%82%E5%A4%A9%E9%99%85%E7%BA%BF_Chengdu_skyline_with_snow_capped_mountains.jpg/1920px-%E9%9B%AA%E5%B1%B1%E4%B8%8B%E7%9A%84%E6%88%90%E9%83%BD%E5%B8%82%E5%A4%A9%E9%99%85%E7%BA%BF_Chengdu_skyline_with_snow_capped_mountains.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/7/74/%E9%9B%AA%E5%B1%B1%E4%B8%8B%E7%9A%84%E6%88%90%E9%83%BD%E5%B8%82%E5%A4%A9%E9%99%85%E7%BA%BF_Chengdu_skyline_with_snow_capped_mountains.jpg",
+      "downloadSha256": "a8415c633f9e0a390df2d57369bcd2b7e9803c8faf7e88e0b8aa5cbf1942e585",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 23042,
+          "sha256": "26c7b78e2f4fbb196ea2e1b40e34de9c5905a6adc1596338e8ea7ae2085f8163"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 68446,
+          "sha256": "c201abb5acc23c702350b26041fcfc8c7dd39618fb4738c2670a04e3fe747efa"
+        }
+      }
+    },
+    {
+      "id": "hangzhou",
+      "city": "杭州",
+      "kind": "real",
+      "subject": "西湖三潭印月与雷峰塔",
+      "alt": "杭州西湖三潭印月与雷峰塔实景照片",
+      "card": "assets/cities/hangzhou-card.webp",
+      "detail": "assets/cities/hangzhou-detail.webp",
+      "position": "50% 50%",
+      "author": "Takashishin",
+      "source": "https://commons.wikimedia.org/wiki/File:West_Lake,_Hangzhou_2025.jpg",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "West_Lake,_Hangzhou_2025.jpg",
+        "description": "西湖三潭印月与雷峰塔",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2025-07-06 18:07:38",
+        "version": "2026-02-22T16:26:36Z",
+        "sha1": "d8e32572d3b10d9989338eb59fb6a4a539b2f03a",
+        "width": 4570,
+        "height": 3428,
+        "bytes": 2924064
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/West_Lake%2C_Hangzhou_2025.jpg/1920px-West_Lake%2C_Hangzhou_2025.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/1/17/West_Lake%2C_Hangzhou_2025.jpg",
+      "downloadSha256": "a53627a76124c3454f63b7a082a2630b11aa88ef32f1189e86fd909311867ca7",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 39818,
+          "sha256": "473ca372d088f534534c10da4c13c6649d956f124cfc02377cf98abab3e40909"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 126438,
+          "sha256": "6fa1f8889294b33c2d6d3138a84924769507d48e0376b431c316568c470d8e63"
+        }
+      }
+    },
+    {
+      "id": "beijing",
+      "city": "北京",
+      "kind": "real",
+      "subject": "天坛祈年殿",
+      "alt": "北京天坛祈年殿实景照片",
+      "card": "assets/cities/beijing-card.webp",
+      "detail": "assets/cities/beijing-detail.webp",
+      "position": "50% 35%",
+      "author": "Shujianyang",
+      "source": "https://commons.wikimedia.org/wiki/File:Temple_of_Heaven_20160323_01.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Temple_of_Heaven_20160323_01.jpg",
+        "description": "Temple of Heaven - Hall of Prayer for Good Harvests",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2016-03-23 02:10:09",
+        "version": "2025-04-05T16:01:33Z",
+        "sha1": "e461b4867445b8f11a16cee586bcfe6342c9f275",
+        "width": 2400,
+        "height": 1597,
+        "bytes": 1653180
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Temple_of_Heaven_20160323_01.jpg/1920px-Temple_of_Heaven_20160323_01.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Temple_of_Heaven_20160323_01.jpg",
+      "downloadSha256": "02c3d6f1afac80c20974717352121f7d84565bb9f0f081433428aa320dc0cccc",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 36944,
+          "sha256": "cca06b77d24715b9eeda11c7dd28a78a718756e95538a8812a4c6fed4d549025"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 120762,
+          "sha256": "16075c22cfa7ffe63183af937157e56af0ab29fe471b8189550e373056445fdd"
+        }
+      }
+    },
+    {
+      "id": "shanghai",
+      "city": "上海",
+      "kind": "real",
+      "subject": "黄浦江畔城市景观",
+      "alt": "上海黄浦江畔城市景观实景照片",
+      "card": "assets/cities/shanghai-card.webp",
+      "detail": "assets/cities/shanghai-detail.webp",
+      "position": "50% 40%",
+      "author": "xiquinhosilva",
+      "source": "https://commons.wikimedia.org/wiki/File:Huangpu_Park_20124-Shanghai_(32208802494).jpg",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Huangpu_Park_20124-Shanghai_(32208802494).jpg",
+        "description": "Huangpu Park is the name of the triangular stretch of green at the northern end of the Bund in Shanghai, the oldest and smallest park of the city.",
+        "credit": "20124-Shanghai",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2016-10-11 13:34",
+        "version": "2023-10-21T13:00:14Z",
+        "sha1": "b144483b5058e745c0ef9dd280ea1e067f263adc",
+        "width": 3000,
+        "height": 2003,
+        "bytes": 1747353
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Huangpu_Park_20124-Shanghai_%2832208802494%29.jpg/1920px-Huangpu_Park_20124-Shanghai_%2832208802494%29.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Huangpu_Park_20124-Shanghai_%2832208802494%29.jpg",
+      "downloadSha256": "6d61d762229aa0a1e058a9d50e35915960e6a46ef1b390ad09155b1e774805dc",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 43714,
+          "sha256": "f8700152bd84892fb9fd33006a64e17d7b0e91c3260b152106a0aa8fb74b23e5"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 136930,
+          "sha256": "26aae6cf55864a7b36bdb3d47392ac935518cb279456cb37d29c9d45dd39f8e3"
+        }
+      }
+    },
+    {
+      "id": "guangzhou",
+      "city": "广州",
+      "kind": "real",
+      "subject": "广州塔",
+      "alt": "广州广州塔实景照片",
+      "card": "assets/cities/guangzhou-card.webp",
+      "detail": "assets/cities/guangzhou-detail.webp",
+      "position": "50% 50%",
+      "author": "Tim Wu",
+      "source": "https://commons.wikimedia.org/wiki/File:Canton_Tower_20241027.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Canton_Tower_20241027.jpg",
+        "description": "航拍广州塔",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2024-10-27 14:23:27",
+        "version": "2024-10-27T15:20:36Z",
+        "sha1": "666e8d7c87ed8082453ebd0574f415f26ffe5915",
+        "width": 7205,
+        "height": 4803,
+        "bytes": 25536738
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/Canton_Tower_20241027.jpg/1920px-Canton_Tower_20241027.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/2/24/Canton_Tower_20241027.jpg",
+      "downloadSha256": "24656d17efe1f9b521e040c0338a5f565fec1bce4d9bee441c623755b348e293",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 45594,
+          "sha256": "64dc18d1261006c8e08b7529af07134e0228c0c6b7692f463184c74118169ebb"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 136776,
+          "sha256": "d85b11e2c35defcb3ced103ef227023e5d3d39623a873965b70b03e81ecc3bd8"
+        }
+      }
+    },
+    {
+      "id": "shenzhen",
+      "city": "深圳",
+      "kind": "real",
+      "subject": "福田城市天际线",
+      "alt": "深圳福田城市天际线实景照片",
+      "card": "assets/cities/shenzhen-card.webp",
+      "detail": "assets/cities/shenzhen-detail.webp",
+      "position": "50% 50%",
+      "author": "Charlie fong",
+      "source": "https://commons.wikimedia.org/wiki/File:Commercial_area_of_futian_to_east2020.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Commercial_area_of_futian_to_east2020.jpg",
+        "description": "The Futian CBD's skyline looking east from the west. The Ping'an Finance Center which is the tallest building at the background, the SEZ Dev Grp Golf Course at the foreground which is next to the Xiangmi Lake.",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2021-01-01 15:21:42",
+        "version": "2021-01-01T16:12:03Z",
+        "sha1": "4535e5c5d4020fbc0416d91e500a74d4d0673a2d",
+        "width": 4644,
+        "height": 3096,
+        "bytes": 5246249
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Commercial_area_of_futian_to_east2020.jpg/1920px-Commercial_area_of_futian_to_east2020.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Commercial_area_of_futian_to_east2020.jpg",
+      "downloadSha256": "ba27a938bc5f4af9de4216588bf22b72135b57d1c964ab35d5b1013ece3037ec",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 47866,
+          "sha256": "7e2fab234500f411bd0e216247a19b7ba778283b56e3dbbe12150c613c53fb0c"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 147246,
+          "sha256": "300e5210dae24d259d5ec8ce9d3f4c3047e5381168308c4ce5841b5c1d963cae"
+        }
+      }
+    },
+    {
+      "id": "zhuhai",
+      "city": "珠海",
+      "kind": "real",
+      "subject": "凤凰山所见城市景观",
+      "alt": "珠海凤凰山所见城市景观实景照片",
+      "card": "assets/cities/zhuhai-card.webp",
+      "detail": "assets/cities/zhuhai-detail.webp",
+      "position": "50% 50%",
+      "author": "Chinyen Lu",
+      "source": "https://commons.wikimedia.org/wiki/File:%E4%BB%8E%E5%87%A4%E5%87%B0%E5%B1%B1%E8%BF%9C%E7%9C%BA%E7%8F%A0%E6%B5%B7%E4%B8%BB%E5%9F%8E%E5%8C%BA.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "从凤凰山远眺珠海主城区.jpg",
+        "description": "Downtown of Zhuhai",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2020-05-17 04:57:11",
+        "version": "2021-02-07T08:00:46Z",
+        "sha1": "6731fc0a981dc1592a0d990a82e12518f6050c48",
+        "width": 5184,
+        "height": 3456,
+        "bytes": 5249146
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/%E4%BB%8E%E5%87%A4%E5%87%B0%E5%B1%B1%E8%BF%9C%E7%9C%BA%E7%8F%A0%E6%B5%B7%E4%B8%BB%E5%9F%8E%E5%8C%BA.jpg/1920px-%E4%BB%8E%E5%87%A4%E5%87%B0%E5%B1%B1%E8%BF%9C%E7%9C%BA%E7%8F%A0%E6%B5%B7%E4%B8%BB%E5%9F%8E%E5%8C%BA.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/5/56/%E4%BB%8E%E5%87%A4%E5%87%B0%E5%B1%B1%E8%BF%9C%E7%9C%BA%E7%8F%A0%E6%B5%B7%E4%B8%BB%E5%9F%8E%E5%8C%BA.jpg",
+      "downloadSha256": "c25e5fb899f781ad70f19b130d3070bbb7ce1928afe760e527bf9a9dd11a2f0a",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 34340,
+          "sha256": "9f87638d3348fc0652bda4060991bac218a36f01e4ab7cb8c8285588e841bcc8"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 118086,
+          "sha256": "cb3f447289ebdd874c84493520cfe566f5533fba03adac173ebd30616b5e3851"
+        }
+      }
+    },
+    {
+      "id": "haikou",
+      "city": "海口",
+      "kind": "real",
+      "subject": "骑楼老街",
+      "alt": "海口骑楼老街实景照片",
+      "card": "assets/cities/haikou-card.webp",
+      "detail": "assets/cities/haikou-detail.webp",
+      "position": "50% 50%",
+      "author": "Yolanda Yao",
+      "source": "https://commons.wikimedia.org/wiki/File:Altstadt_von_Haikou_(Hainan).jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Altstadt_von_Haikou_(Hainan).jpg",
+        "description": "Haikou's old town, Hainan, China",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2022-04-14",
+        "version": "2022-04-14T20:45:29Z",
+        "sha1": "8976c205f7903396b2c2a6bf78a7d6d29a80c3da",
+        "width": 4032,
+        "height": 3024,
+        "bytes": 3960193
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Altstadt_von_Haikou_%28Hainan%29.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Altstadt_von_Haikou_%28Hainan%29.jpg",
+      "downloadSha256": "cf92a394b062fd5c1c6ababa8a2767e6fabe25b527aca33bc6818a1daaca2f65",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 43648,
+          "sha256": "4d7769754b549a203bbbc050bccb7659da5c5a3272ffd21c7ff98fe7bbb9ac80"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 148576,
+          "sha256": "1b38db7e64c82523648a99a30da55dfb8b91a7f21797ede897750ca9b3ef5585"
+        }
+      }
+    },
+    {
+      "id": "guilin",
+      "city": "桂林",
+      "kind": "real",
+      "subject": "象鼻山",
+      "alt": "桂林象鼻山实景照片",
+      "card": "assets/cities/guilin-card.webp",
+      "detail": "assets/cities/guilin-detail.webp",
+      "position": "50% 50%",
+      "author": "xiquinhosilva",
+      "source": "https://commons.wikimedia.org/wiki/File:Xiangshan_Scenic_Area_89468-Guilin_(31130832628).jpg",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Xiangshan_Scenic_Area_89468-Guilin_(31130832628).jpg",
+        "description": "The Elephant Trunk Hill is a hill, landmark and tourist attraction in Guilin, Guangxi, China. Elephant Trunk Hill is the symbol of the city of Guilin. It got its name because it looks like an elephant drinking water.",
+        "credit": "89468-Guilin",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2018-06-14 14:23",
+        "version": "2023-10-21T11:32:31Z",
+        "sha1": "bc258439aa5b93af43dbd4e4cfe122d703f584c8",
+        "width": 3000,
+        "height": 1895,
+        "bytes": 2175907
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Xiangshan_Scenic_Area_89468-Guilin_%2831130832628%29.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Xiangshan_Scenic_Area_89468-Guilin_%2831130832628%29.jpg",
+      "downloadSha256": "6f4fadd937308e83950696767694cdb54ce28ac5720cdec20faf4c3789214b5e",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 43888,
+          "sha256": "d3f44d9ba01d98051214f851db482a4ed605d7435b513b19ebae3bdcc44b9ba5"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 142650,
+          "sha256": "062aa27dd8cd01b043c8582b71508118589ce083b7450659ff836cc9b90ba939"
+        }
+      }
+    },
+    {
+      "id": "nanning",
+      "city": "南宁",
+      "kind": "real",
+      "subject": "青秀区民歌湖与城市建筑",
+      "alt": "南宁青秀区民歌湖与城市建筑实景照片",
+      "card": "assets/cities/nanning-card.webp",
+      "detail": "assets/cities/nanning-detail.webp",
+      "position": "50% 50%",
+      "author": "EditQ",
+      "source": "https://commons.wikimedia.org/wiki/File:Skyline_of_China-ASEAN_Business_Center_in_Qingxiu_District.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Skyline_of_China-ASEAN_Business_Center_in_Qingxiu_District.jpg",
+        "description": "Skyline of China-ASEAN Business Center in Qingxiu District, taken from Mingehu (Folk Song Lake)",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2022-10-04 12:02:32",
+        "version": "2023-05-18T18:33:08Z",
+        "sha1": "ff14c8f7c8e1ba661ff68946e2d19542f6e4ad95",
+        "width": 1940,
+        "height": 1292,
+        "bytes": 1457981
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/7/72/Skyline_of_China-ASEAN_Business_Center_in_Qingxiu_District.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/7/72/Skyline_of_China-ASEAN_Business_Center_in_Qingxiu_District.jpg",
+      "downloadSha256": "9c9deb0c4e75aa4fb3df7919732f077f1f36b2f31696ae877e5a0052f63caae7",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 43210,
+          "sha256": "6cf1f4bbd73c1dc4cb443d1bdd09d9b15d161ebb04a70b47698f69fb5ead6720"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 94198,
+          "sha256": "601ea3381ce21295f71e61f352ef99ba608124d947cd439c8d9f70bee9fabbe1"
+        }
+      }
+    },
+    {
+      "id": "chongqing",
+      "city": "重庆",
+      "kind": "real",
+      "subject": "山城滨江景观",
+      "alt": "重庆山城滨江景观实景照片",
+      "card": "assets/cities/chongqing-card.webp",
+      "detail": "assets/cities/chongqing-detail.webp",
+      "position": "50% 50%",
+      "author": "Renek78",
+      "source": "https://commons.wikimedia.org/wiki/File:September_2025_in_Chongqing_05.jpg",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "September_2025_in_Chongqing_05.jpg",
+        "description": "Chongqing in September 2025",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2025-09-04 21:17:33",
+        "version": "2025-09-23T08:23:35Z",
+        "sha1": "fa402d5a7fd87c890c5fa0e2f2a99fc5ccc5d0bf",
+        "width": 4000,
+        "height": 2252,
+        "bytes": 3094558
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/5/5a/September_2025_in_Chongqing_05.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/5/5a/September_2025_in_Chongqing_05.jpg",
+      "downloadSha256": "685744ef37cd7afdad70bdb033b555d4a4eafcbe754383a6e38f1832bc9d4235",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 35630,
+          "sha256": "ee11a1638b6e2d799c5e6b15fbfc472645bc880715ffbf07ba87a0dcbca90236"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 111916,
+          "sha256": "405ba62665d9a02cd07a99ed315a0446fd132c1aaa06cc50b91e250cdcb14fe0"
+        }
+      }
+    },
+    {
+      "id": "guiyang",
+      "city": "贵阳",
+      "kind": "real",
+      "subject": "金融城建筑群",
+      "alt": "贵阳金融城建筑群实景照片",
+      "card": "assets/cities/guiyang-card.webp",
+      "detail": "assets/cities/guiyang-detail.webp",
+      "position": "50% 50%",
+      "author": "Ryedamien",
+      "source": "https://commons.wikimedia.org/wiki/File:Guizhou_Financial_City_District.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Guizhou_Financial_City_District.jpg",
+        "description": "Guizhou Financial City District",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2019-09-10 08:01:31",
+        "version": "2019-09-09T16:06:30Z",
+        "sha1": "bc711f85d8994b56ba54717b0b4477434d0cbe03",
+        "width": 1529,
+        "height": 916,
+        "bytes": 412812
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/f/fc/Guizhou_Financial_City_District.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/f/fc/Guizhou_Financial_City_District.jpg",
+      "downloadSha256": "82408e33ce90926f21a36ba59e5a5959b63b187d31b46b4edd7e32f1ea378ffc",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 29906,
+          "sha256": "95b95f5d6652b7a762fe51fa7606f72d2f7a5b384f7385f94a4a63e389ef5700"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 104320,
+          "sha256": "af6cd8ecb6e5688d7832daad0748ce720a8d878999a420a4dac1ce53c3731e01"
+        }
+      }
+    },
+    {
+      "id": "lhasa",
+      "city": "拉萨",
+      "kind": "real",
+      "subject": "布达拉宫",
+      "alt": "拉萨布达拉宫实景照片",
+      "card": "assets/cities/lhasa-card.webp",
+      "detail": "assets/cities/lhasa-detail.webp",
+      "position": "50% 35%",
+      "author": "Pavel Špindler",
+      "source": "https://commons.wikimedia.org/wiki/File:Lhasa_-_Pot%C3%A1la_-_panoramio.jpg",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Lhasa_-_Potála_-_panoramio.jpg",
+        "description": "Lhasa - Potála",
+        "credit": "https://web.archive.org/web/20161023185908/http://www.panoramio.com/photo/53043576",
+        "attribution": "Pavel Špindler",
+        "restrictions": "",
+        "date": "Taken on 15 May 2011",
+        "version": "2016-11-24T02:09:53Z",
+        "sha1": "80a83e7c0b51ad4050bf8c2fba0738bc38a7f0c5",
+        "width": 4894,
+        "height": 3247,
+        "bytes": 5380863
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/5/50/Lhasa_-_Pot%C3%A1la_-_panoramio.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/5/50/Lhasa_-_Pot%C3%A1la_-_panoramio.jpg",
+      "downloadSha256": "005f625d3d77499af6d8edf092f1d439280a9a246e24aaecf03eb251e6957595",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 47908,
+          "sha256": "8da7d3270096c27c438a1b65a1aa47225498efb89c4adeaf443ff7e85cb53636"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 141860,
+          "sha256": "54b276b40f6a49a4a262119753b36069e5b782eaf33d65356f44645b2c3f0815"
+        }
+      }
+    },
+    {
+      "id": "nanjing",
+      "city": "南京",
+      "kind": "real",
+      "subject": "玄武湖与城市天际线",
+      "alt": "南京玄武湖与城市天际线实景照片",
+      "card": "assets/cities/nanjing-card.webp",
+      "detail": "assets/cities/nanjing-detail.webp",
+      "position": "50% 50%",
+      "author": "Jackeylove333",
+      "source": "https://commons.wikimedia.org/wiki/File:Xuanwu_Lake_and_Nanjing_Skyline.jpg",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Xuanwu_Lake_and_Nanjing_Skyline.jpg",
+        "description": "A panoramic view of Xuanwu Lake in Nanjing, China, featuring green islands, surrounding urban buildings, and the city skyline.",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2026-06-09",
+        "version": "2026-11-12T08:11:36Z",
+        "sha1": "0aee89f0698ee72cfb7c6a45992525c7be8a75a2",
+        "width": 4498,
+        "height": 3000,
+        "bytes": 2065311
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Xuanwu_Lake_and_Nanjing_Skyline.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Xuanwu_Lake_and_Nanjing_Skyline.jpg",
+      "downloadSha256": "70b4ffc31a2257d4539493ccc805d0fc6e5c4ea7a8267cfa543a6a143566064e",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 22590,
+          "sha256": "b8e0c9032e3cdb3c76924f5aaa88dcce100000c74407b7501b8a14032ede371e"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 61716,
+          "sha256": "9c810da9b3720a200d130b5ac1e06945085b9be177032becd7293eb2ec490324"
+        }
+      }
+    },
+    {
+      "id": "suzhou",
+      "city": "苏州",
+      "kind": "real",
+      "subject": "东方之门",
+      "alt": "苏州东方之门实景照片",
+      "card": "assets/cities/suzhou-card.webp",
+      "detail": "assets/cities/suzhou-detail.webp",
+      "position": "50% 50%",
+      "author": "铁头娃蛤蛤",
+      "source": "https://commons.wikimedia.org/wiki/File:%E4%B8%9C%E6%96%B9%E4%B9%8B%E9%97%A81.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "东方之门1.jpg",
+        "description": "The world's highest gate.",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2017-08-23 16:58:44",
+        "version": "2023-07-07T20:11:48Z",
+        "sha1": "15de72f62e46d362e93074bea0cfe32490a7383b",
+        "width": 1610,
+        "height": 1150,
+        "bytes": 1038986
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/8/8f/%E4%B8%9C%E6%96%B9%E4%B9%8B%E9%97%A81.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/8/8f/%E4%B8%9C%E6%96%B9%E4%B9%8B%E9%97%A81.jpg",
+      "downloadSha256": "6ad084027035bf5c615d1c71d4a3cb93a06f05292d8469328803f661993da96c",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 49868,
+          "sha256": "6077d3f7a7cf98cfb39f71d5d4c58b62b1551d670461e808799140dc7b0fe59e"
+        },
+        "detail": {
+          "width": 1152,
+          "height": 648,
+          "bytes": 131178,
+          "sha256": "96c20c83b3767e1c1153dec9c3335ed59e3a72059887d827ad07ca85b8df952e"
+        }
+      }
+    },
+    {
+      "id": "fuzhou",
+      "city": "福州",
+      "kind": "real",
+      "subject": "台西中央商务区",
+      "alt": "福州台西中央商务区实景照片",
+      "card": "assets/cities/fuzhou-card.webp",
+      "detail": "assets/cities/fuzhou-detail.webp",
+      "position": "50% 50%",
+      "author": "Listwiseafford",
+      "source": "https://commons.wikimedia.org/wiki/File:Fuzhou_Taixi_CBD.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Fuzhou_Taixi_CBD.jpg",
+        "description": "Fuzhou Taixi CBD",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2017-05-19",
+        "version": "2017-05-19T23:17:34Z",
+        "sha1": "49810bec421367ccacdd08ff0837a62c77c87d81",
+        "width": 1024,
+        "height": 533,
+        "bytes": 421366
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Fuzhou_Taixi_CBD.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Fuzhou_Taixi_CBD.jpg",
+      "downloadSha256": "531214dbf13ac6f17e987aca4852d06d4b1c45331a15524cb289cc132575bd63",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 40192,
+          "sha256": "1e4aa6f7bf2cbaa6fac6c68e4f8ea683d2619c069c770d85235cded0638f845e"
+        },
+        "detail": {
+          "width": 948,
+          "height": 533,
+          "bytes": 80908,
+          "sha256": "e7ff28c0166a36420c1a9cfda602d5739c940629479e28153dba9bce05b234a4"
+        }
+      }
+    },
+    {
+      "id": "qingdao",
+      "city": "青岛",
+      "kind": "real",
+      "subject": "海港与沿岸建筑",
+      "alt": "青岛海港与沿岸建筑实景照片",
+      "card": "assets/cities/qingdao-card.webp",
+      "detail": "assets/cities/qingdao-detail.webp",
+      "position": "50% 50%",
+      "author": "xiquinhosilva",
+      "source": "https://commons.wikimedia.org/wiki/File:Qingdao_Harbour_51341-Qingdao_(49055637186).jpg",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Qingdao_Harbour_51341-Qingdao_(49055637186).jpg",
+        "description": "The Port of Qingdao is a seaport on the Yellow Sea in the vicinity of Qingdao, Shandong Province, China. It is one of the ten busiest ports in the world",
+        "credit": "51341-Qingdao",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2018-11-04 14:55",
+        "version": "2023-10-05T09:49:51Z",
+        "sha1": "41b53fda78fdf08eae73fd048b046aa5b4431886",
+        "width": 3000,
+        "height": 2000,
+        "bytes": 1788157
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/1/18/Qingdao_Harbour_51341-Qingdao_%2849055637186%29.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/1/18/Qingdao_Harbour_51341-Qingdao_%2849055637186%29.jpg",
+      "downloadSha256": "eb864632dc5fc5bb4eed44a258b6c32fc1b3cbf116904d099e5c0985de5f3269",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 38098,
+          "sha256": "6d5a0c84f5208a3d83d6260306ae2dde0ea81cebf271d0d7a430207539773cfd"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 134626,
+          "sha256": "e17308e8322c03755da9fd82711750c9cb9a13ce9ca9795895835ae506a19238"
+        }
+      }
+    },
+    {
+      "id": "jinan",
+      "city": "济南",
+      "kind": "real",
+      "subject": "中央商务区天际线",
+      "alt": "济南中央商务区天际线实景照片",
+      "card": "assets/cities/jinan-card.webp",
+      "detail": "assets/cities/jinan-detail.webp",
+      "position": "50% 50%",
+      "author": "Ucabunx",
+      "source": "https://commons.wikimedia.org/wiki/File:Skyline_of_CBD,_Jinan,_China.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Skyline_of_CBD,_Jinan,_China.jpg",
+        "description": "Skyline of CBD, Jinan, China",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2022-07-17 20:38:06",
+        "version": "2022-07-20T03:45:56Z",
+        "sha1": "640b7e5e8ff8fc3c7d6e89d422b0cb8a1d76e159",
+        "width": 4000,
+        "height": 2287,
+        "bytes": 2594837
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/6/67/Skyline_of_CBD%2C_Jinan%2C_China.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/6/67/Skyline_of_CBD%2C_Jinan%2C_China.jpg",
+      "downloadSha256": "cbbadb464f8d23a004da37325a860fff01e3872cc7f9533419118ad417f88ac2",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 44920,
+          "sha256": "3575fe5cfed85d1d3b71425b113322240687e3f8add8adfdabf270ddc9b2b4f0"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 136138,
+          "sha256": "56fa317f320c43c1d09232449d20f70f7549687d0f1abbacc51a1238d9af3624"
+        }
+      }
+    },
+    {
+      "id": "hefei",
+      "city": "合肥",
+      "kind": "real",
+      "subject": "天鹅湖",
+      "alt": "合肥天鹅湖实景照片",
+      "card": "assets/cities/hefei-card.webp",
+      "detail": "assets/cities/hefei-detail.webp",
+      "position": "50% 50%",
+      "author": "钉钉",
+      "source": "https://commons.wikimedia.org/wiki/File:%E5%A4%A9%E9%B9%85%E6%B9%96.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "天鹅湖.jpg",
+        "description": "Swan Lake CBD",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2019-06-10",
+        "version": "2023-07-06T19:18:22Z",
+        "sha1": "aeca6090600f2b8aee1ba809a0e7d2a1726da999",
+        "width": 1920,
+        "height": 1080,
+        "bytes": 536618
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/9/91/%E5%A4%A9%E9%B9%85%E6%B9%96.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/9/91/%E5%A4%A9%E9%B9%85%E6%B9%96.jpg",
+      "downloadSha256": "f38bc3f70e623d621fbcc8a2377c830f07a72aa3768799f67cc9c3a1c823ee23",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 21194,
+          "sha256": "f36309959c5b3fba5ef2989245d127c8ef2948813d44d2a9eb16fffb256b217c"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 71134,
+          "sha256": "936e21105655751f0f5499fbd4e37a59a50008972bdb8a7b0aef21555d290c3f"
+        }
+      }
+    },
+    {
+      "id": "huangshan",
+      "city": "黄山",
+      "kind": "real",
+      "subject": "屯溪老街",
+      "alt": "黄山屯溪老街实景照片",
+      "card": "assets/cities/huangshan-card.webp",
+      "detail": "assets/cities/huangshan-detail.webp",
+      "position": "50% 50%",
+      "author": "EditQ",
+      "source": "https://commons.wikimedia.org/wiki/File:%E5%AE%89%E5%BE%BD%E9%BB%84%E5%B1%B1%E8%80%81%E8%A1%97_2.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "安徽黄山老街_2.jpg",
+        "description": "安徽黄山老街",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2022-10-21",
+        "version": "2023-02-03T11:58:30Z",
+        "sha1": "1dfb4434f325566d5c376de8046ccc4debc2341b",
+        "width": 4000,
+        "height": 3000,
+        "bytes": 2632909
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/%E5%AE%89%E5%BE%BD%E9%BB%84%E5%B1%B1%E8%80%81%E8%A1%97_2.jpg/1280px-%E5%AE%89%E5%BE%BD%E9%BB%84%E5%B1%B1%E8%80%81%E8%A1%97_2.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/0/0e/%E5%AE%89%E5%BE%BD%E9%BB%84%E5%B1%B1%E8%80%81%E8%A1%97_2.jpg",
+      "downloadSha256": "55f0e7239d3606a5331f0cb794645753ae808bc2cc39f8863015e474650c4a7c",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 44000,
+          "sha256": "abfb7d45836929b4cb284d22568dd30f42566fb4cd6e5e94c5406919a3315160"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 145638,
+          "sha256": "c87735003662c4deb0acf12419b6be1c9b794b3d067298340201b2cb50826e3b"
+        }
+      }
+    },
+    {
+      "id": "nanchang",
+      "city": "南昌",
+      "kind": "real",
+      "subject": "滕王阁与城市夜景",
+      "alt": "南昌滕王阁与城市夜景实景照片",
+      "card": "assets/cities/nanchang-card.webp",
+      "detail": "assets/cities/nanchang-detail.webp",
+      "position": "50% 50%",
+      "author": "Akira CA",
+      "source": "https://commons.wikimedia.org/wiki/File:Nanchang_Skyline.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Nanchang_Skyline.jpg",
+        "description": "Nanchang Skyline at night, with the Pavilion of Prince Teng in the front",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2023-07-01",
+        "version": "2024-09-15T21:30:18Z",
+        "sha1": "1c44face5a9fb4a02240cb7b1eee3f44c3be0536",
+        "width": 9504,
+        "height": 5778,
+        "bytes": 34093540
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Nanchang_Skyline.jpg/1280px-Nanchang_Skyline.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/8/82/Nanchang_Skyline.jpg",
+      "downloadSha256": "0ec2bd98ac671ccec87e3719bfd4cad35f66b7cc0b54c7fe4e6db1b8cd498513",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 44440,
+          "sha256": "01de7b824360cf0793f5372025d57059ca5f956bcc2f49317d8d57622f71f2a4"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 147982,
+          "sha256": "d487b3262407197c5ee2e13113ea43227991443b4e3fec0ff2ed782d0ec02f81"
+        }
+      }
+    },
+    {
+      "id": "wuhan",
+      "city": "武汉",
+      "kind": "real",
+      "subject": "黄鹤楼俯瞰城市",
+      "alt": "武汉黄鹤楼俯瞰城市实景照片",
+      "card": "assets/cities/wuhan-card.webp",
+      "detail": "assets/cities/wuhan-detail.webp",
+      "position": "50% 60%",
+      "author": "螺钉",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%AD%A6%E6%B1%89%E9%BB%84%E9%B9%A4%E6%A5%BC%E4%BF%AF%E7%9E%B0.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "武汉黄鹤楼俯瞰.jpg",
+        "description": "武汉黄鹤楼俯瞰",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2017-08-18",
+        "version": "2017-08-27T11:56:13Z",
+        "sha1": "3dfa04cdb9ab26f89ef198a55ca3108394ac4996",
+        "width": 3648,
+        "height": 2736,
+        "bytes": 4160042
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/%E6%AD%A6%E6%B1%89%E9%BB%84%E9%B9%A4%E6%A5%BC%E4%BF%AF%E7%9E%B0.jpg/1280px-%E6%AD%A6%E6%B1%89%E9%BB%84%E9%B9%A4%E6%A5%BC%E4%BF%AF%E7%9E%B0.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/f/f0/%E6%AD%A6%E6%B1%89%E9%BB%84%E9%B9%A4%E6%A5%BC%E4%BF%AF%E7%9E%B0.jpg",
+      "downloadSha256": "342847a172bc99e91cb9d821cdc78fb847ac3dc655650677527c1493d180d18d",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 45878,
+          "sha256": "534f19ff4443b6f6f1a4c6dad2aab7c0ed92c01c727e0c5f45537cace627ea19"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 147160,
+          "sha256": "a40e4be0023fd7c3a18a1485b367bb3b23b1e108ba07ef8806464a7d52b9728e"
+        }
+      }
+    },
+    {
+      "id": "changsha",
+      "city": "长沙",
+      "kind": "real",
+      "subject": "岳麓山爱晚亭秋景",
+      "alt": "长沙岳麓山爱晚亭秋景实景照片",
+      "card": "assets/cities/changsha-card.webp",
+      "detail": "assets/cities/changsha-detail.webp",
+      "position": "50% 50%",
+      "author": "Junchong",
+      "source": "https://commons.wikimedia.org/wiki/File:%E7%88%B1%E6%99%9A%E4%BA%AD%EF%BC%88%E7%A7%8B-%E4%BE%A7%E9%9D%A2%EF%BC%89.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "爱晚亭（秋-侧面）.jpg",
+        "description": "The Autumn-Admiring Pavilion or Aiwan Pavilion at Mount Yuelu, in Changsha, Hunan, China.",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2016-11-19 10:01:24",
+        "version": "2017-09-15T15:52:51Z",
+        "sha1": "0726de25292fed747b6f1cdb5e70058d3da74fe5",
+        "width": 1920,
+        "height": 1280,
+        "bytes": 2051281
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/%E7%88%B1%E6%99%9A%E4%BA%AD%EF%BC%88%E7%A7%8B-%E4%BE%A7%E9%9D%A2%EF%BC%89.jpg/960px-%E7%88%B1%E6%99%9A%E4%BA%AD%EF%BC%88%E7%A7%8B-%E4%BE%A7%E9%9D%A2%EF%BC%89.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/c/cc/%E7%88%B1%E6%99%9A%E4%BA%AD%EF%BC%88%E7%A7%8B-%E4%BE%A7%E9%9D%A2%EF%BC%89.jpg",
+      "downloadSha256": "6ebf890853df8ea8fb166abf4e9e05a0f2bae2f154578abb0e8401e6e3705445",
+      "outputs": {
+        "card": {
+          "width": 518,
+          "height": 324,
+          "bytes": 43408,
+          "sha256": "b2f2500e0cd964689dca13c8316bd0e0aed29ed35068822fc4a0b58953545dce"
+        },
+        "detail": {
+          "width": 960,
+          "height": 540,
+          "bytes": 144038,
+          "sha256": "bb43a85ebfe38e30d0e09d8f7557dee259f27a285cca3fb0fb61feb4893923b3"
+        }
+      }
+    },
+    {
+      "id": "zhangjiajie",
+      "city": "张家界",
+      "kind": "real",
+      "subject": "武陵源天子山峰林",
+      "alt": "张家界武陵源天子山峰林实景照片",
+      "card": "assets/cities/zhangjiajie-card.webp",
+      "detail": "assets/cities/zhangjiajie-detail.webp",
+      "position": "50% 50%",
+      "author": "chensiyuan",
+      "source": "https://commons.wikimedia.org/wiki/File:1_tianzishan_wulingyuan_zhangjiajie_2012.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "1_tianzishan_wulingyuan_zhangjiajie_2012.jpg",
+        "description": "Panoramic view from Mount Tianzi Shan, Wulingyuan Zhangjiajie hunan China tujia miao 2012",
+        "credit": "chensiyuan",
+        "attribution": "",
+        "restrictions": "",
+        "date": "",
+        "version": "2014-08-26T02:55:35Z",
+        "sha1": "3bb7de4baacc5bd1532bab1b61ad39866c0a41a0",
+        "width": 8841,
+        "height": 4415,
+        "bytes": 21819546
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/1_tianzishan_wulingyuan_zhangjiajie_2012.jpg/1280px-1_tianzishan_wulingyuan_zhangjiajie_2012.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/7/77/1_tianzishan_wulingyuan_zhangjiajie_2012.jpg",
+      "downloadSha256": "9d189d3a1ac558600e0baabe759cbf2f892f954b5ab4ea29b73964ab7c36aa21",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 46518,
+          "sha256": "e8d3042a695506faaa34207ecfa30b8bc95ac0858ea26318268d4857e73deba5"
+        },
+        "detail": {
+          "width": 1136,
+          "height": 639,
+          "bytes": 149556,
+          "sha256": "4f7138ac04685368e4bc70c5c767cc302e276740213804f831f05834e8e5bb46"
+        }
+      }
+    },
+    {
+      "id": "zhengzhou",
+      "city": "郑州",
+      "kind": "real",
+      "subject": "郑东新区城市景观",
+      "alt": "郑州郑东新区城市景观实景照片",
+      "card": "assets/cities/zhengzhou-card.webp",
+      "detail": "assets/cities/zhengzhou-detail.webp",
+      "position": "50% 50%",
+      "author": "白诗棋",
+      "source": "https://commons.wikimedia.org/wiki/File:Zhengzhou_CBDcity.jpg",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Zhengzhou_CBDcity.jpg",
+        "description": "ZhengZhou CBD",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2025-11-20",
+        "version": "2025-11-20T23:52:11Z",
+        "sha1": "358446cd8ffb01b21ed8a172ca5903b5652ab87f",
+        "width": 1270,
+        "height": 746,
+        "bytes": 239822
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Zhengzhou_CBDcity.jpg/960px-Zhengzhou_CBDcity.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/d/de/Zhengzhou_CBDcity.jpg",
+      "downloadSha256": "3c4db01f8db529ecdfe3884589fb3ce9925744f9f1f0aca5b1ff80824f26aa30",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 35656,
+          "sha256": "c0931f81fec5cb7d4142fd58cad47ddf15949a8fa683b152afee5998a435444a"
+        },
+        "detail": {
+          "width": 960,
+          "height": 540,
+          "bytes": 65946,
+          "sha256": "3ad9cd06a131a61bec506914dc7935e7ce1e7bde796696132919e0a0f41cf116"
+        }
+      }
+    },
+    {
+      "id": "xian",
+      "city": "西安",
+      "kind": "real",
+      "subject": "古城墙",
+      "alt": "西安古城墙实景照片",
+      "card": "assets/cities/xian-card.webp",
+      "detail": "assets/cities/xian-detail.webp",
+      "position": "50% 50%",
+      "author": "xiquinhosilva",
+      "source": "https://commons.wikimedia.org/wiki/File:City_wall_of_Xi%27an_51550-Xian_(27959363326).jpg",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "City_wall_of_Xi'an_51550-Xian_(27959363326).jpg",
+        "description": "51550-Xian",
+        "credit": "51550-Xian",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2012-04-21 13:27",
+        "version": "2023-10-21T16:06:52Z",
+        "sha1": "8c564abeb3ca5ef5b5869d060b0c6a946605e513",
+        "width": 3000,
+        "height": 1987,
+        "bytes": 1899261
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/3/32/City_wall_of_Xi%27an_51550-Xian_%2827959363326%29.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/3/32/City_wall_of_Xi%27an_51550-Xian_%2827959363326%29.jpg",
+      "downloadSha256": "f170bc52f66348368b57e8179b3ac92ed488bfec372af486f903605c6c003346",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 49466,
+          "sha256": "f5fe09f1a13e40907066a3e622333befdd89a019528b43adf4f8b4efb901cc2e"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 128928,
+          "sha256": "d0b9c773b789f0564624d41fe936c7290626acbcdd455a21d0cd15deaa2a4734"
+        }
+      }
+    },
+    {
+      "id": "lanzhou",
+      "city": "兰州",
+      "kind": "real",
+      "subject": "黄河两岸城市天际线",
+      "alt": "兰州黄河两岸城市天际线实景照片",
+      "card": "assets/cities/lanzhou-card.webp",
+      "detail": "assets/cities/lanzhou-detail.webp",
+      "position": "50% 50%",
+      "author": "Megalizard29",
+      "source": "https://commons.wikimedia.org/wiki/File:Skyline_Lanzhou_August_2025.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Skyline_Lanzhou_August_2025.jpg",
+        "description": "Lanzhou skyline",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2025-08-30 19:24:00",
+        "version": "2025-08-31T14:17:28Z",
+        "sha1": "75724325af69c804e1096d659731c9e75d4b4576",
+        "width": 6144,
+        "height": 4096,
+        "bytes": 15859712
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/Skyline_Lanzhou_August_2025.jpg/1280px-Skyline_Lanzhou_August_2025.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/5/58/Skyline_Lanzhou_August_2025.jpg",
+      "downloadSha256": "5b506b34219356f5ecba7680227f22013d5c1e5cce30bd68967988b462cd5c48",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 41198,
+          "sha256": "46741237cff54dae40a60904401657eae448fbac7c1ace97919885709d676322"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 149516,
+          "sha256": "b7f5b8f6ec7bfd81a20d7d6690e040a5ac507d16ce3532469043b79fb658128d"
+        }
+      }
+    },
+    {
+      "id": "xining",
+      "city": "西宁",
+      "kind": "real",
+      "subject": "城中区城市建筑",
+      "alt": "西宁城中区城市建筑实景照片",
+      "card": "assets/cities/xining-card.webp",
+      "detail": "assets/cities/xining-detail.webp",
+      "position": "50% 50%",
+      "author": "xiquinhosilva",
+      "source": "https://commons.wikimedia.org/wiki/File:Skyscrapers_in_Chengzhong_District,_Xining_(53727167629)_-_2024.jpg",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Skyscrapers_in_Chengzhong_District,_Xining_(53727167629)_-_2024.jpg",
+        "description": "Xining",
+        "credit": "https://www.flickr.com/photos/xiquinho/53727167629/",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2024-05-12 13:59:30",
+        "version": "2024-05-28T00:20:36Z",
+        "sha1": "0186e1bf5ef568631d2584735747805621f57426",
+        "width": 2130,
+        "height": 1598,
+        "bytes": 1061685
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Skyscrapers_in_Chengzhong_District%2C_Xining_%2853727167629%29_-_2024.jpg/1280px-Skyscrapers_in_Chengzhong_District%2C_Xining_%2853727167629%29_-_2024.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Skyscrapers_in_Chengzhong_District%2C_Xining_%2853727167629%29_-_2024.jpg",
+      "downloadSha256": "b67d43850f6d64e6982d122a1959b75766960a649840a1dac24e56e2f01cfe3a",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 33530,
+          "sha256": "d12f300c936e438ac7d9f12826e4fb71312bf9801fd7da967f563995b09a70a2"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 99978,
+          "sha256": "385c98155000690ea2019d3adfbf03c244c048555b41cba599491463633eb248"
+        }
+      }
+    },
+    {
+      "id": "yinchuan",
+      "city": "银川",
+      "kind": "real",
+      "subject": "金凤区城市天际线",
+      "alt": "银川金凤区城市天际线实景照片",
+      "card": "assets/cities/yinchuan-card.webp",
+      "detail": "assets/cities/yinchuan-detail.webp",
+      "position": "50% 50%",
+      "author": "xiquinhosilva",
+      "source": "https://commons.wikimedia.org/wiki/File:Skyline_of_Jinfeng_District,_Yinchuan_(53724463112).jpg",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Skyline_of_Jinfeng_District,_Yinchuan_(53724463112).jpg",
+        "description": "Yinchuan",
+        "credit": "https://www.flickr.com/photos/xiquinho/53724463112/",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2024-05-13 12:59:45",
+        "version": "2024-05-27T08:00:35Z",
+        "sha1": "2871fc071647965b7af8e5b5c72cb31a797a9c5f",
+        "width": 2560,
+        "height": 1707,
+        "bytes": 1217243
+      },
+      "download": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Skyline_of_Jinfeng_District%2C_Yinchuan_%2853724463112%29.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Skyline_of_Jinfeng_District%2C_Yinchuan_%2853724463112%29.jpg",
+      "downloadSha256": "db463f74f272641a5cd203e93dd327adf70847c907ca38e9bb644f1661e6c5f5",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 28320,
+          "sha256": "b4159e54ec0ec281268f3b4abf2084fd96df54023be792f17002c50fb3e47ee3"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 84438,
+          "sha256": "457c94c69de76dcf4924f4b092ef1cb2e5423375b6a2cfd15b990169b480154d"
+        }
+      }
+    },
+    {
+      "id": "urumqi",
+      "city": "乌鲁木齐",
+      "kind": "real",
+      "subject": "红山所见城市景观",
+      "alt": "乌鲁木齐红山所见城市景观实景照片",
+      "card": "assets/cities/urumqi-card.webp",
+      "detail": "assets/cities/urumqi-detail.webp",
+      "position": "50% 50%",
+      "author": "Albertaont",
+      "source": "https://commons.wikimedia.org/wiki/File:Urumqi_Skyline_July_2019.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Urumqi_Skyline_July_2019.jpg",
+        "description": "Urumqi CBD from Hong Shan.",
+        "credit": "I took a personal photograph.",
+        "attribution": "Albertaont at English Wikipedia",
+        "restrictions": "",
+        "date": "July 2019",
+        "version": "2023-12-22T00:17:58Z",
+        "sha1": "ea2fe7caf20026a16273c8268e27265d31a7307e",
+        "width": 4240,
+        "height": 2400,
+        "bytes": 3112960
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Urumqi_Skyline_July_2019.jpg/1280px-Urumqi_Skyline_July_2019.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/a/a8/Urumqi_Skyline_July_2019.jpg",
+      "downloadSha256": "f84a69b37b2f36b93f15021c7c23cbb3bcabe5a688f767742cf5f02a37221aa9",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 39022,
+          "sha256": "ec2af81302b02a99fc6e603396d23b54efeb1822a456864e6051694ddd244ebf"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 134194,
+          "sha256": "8a39e71c552252984aa4cd65d6ab176cb8ce9c3d22318f43d8ab79c300e74a8f"
+        }
+      }
+    },
+    {
+      "id": "altay",
+      "city": "阿勒泰",
+      "kind": "real",
+      "subject": "阿勒泰市区",
+      "alt": "阿勒泰阿勒泰市区实景照片",
+      "card": "assets/cities/altay-card.webp",
+      "detail": "assets/cities/altay-detail.webp",
+      "position": "50% 50%",
+      "author": "陈琛",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%96%B0%E7%96%86%E9%98%BF%E5%8B%92%E6%B3%B0%E5%B8%82._-_panoramio.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "新疆阿勒泰市._-_panoramio.jpg",
+        "description": "新疆阿勒泰市.",
+        "credit": "https://web.archive.org/web/20161012072857/http://www.panoramio.com/photo/17227280",
+        "attribution": "陈琛",
+        "restrictions": "",
+        "date": "Taken on 28 December 2008",
+        "version": "2016-09-22T12:26:40Z",
+        "sha1": "038d96c15ad9008310a133e5ff7dae7db5eb4777",
+        "width": 3648,
+        "height": 2736,
+        "bytes": 3282976
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a2/%E6%96%B0%E7%96%86%E9%98%BF%E5%8B%92%E6%B3%B0%E5%B8%82._-_panoramio.jpg/1280px-%E6%96%B0%E7%96%86%E9%98%BF%E5%8B%92%E6%B3%B0%E5%B8%82._-_panoramio.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/a/a2/%E6%96%B0%E7%96%86%E9%98%BF%E5%8B%92%E6%B3%B0%E5%B8%82._-_panoramio.jpg",
+      "downloadSha256": "41443649b5aa01dc8b2337ae4aa39dccf04342be79d0ea7218e89f53db5290b6",
+      "outputs": {
+        "card": {
+          "width": 576,
+          "height": 360,
+          "bytes": 49394,
+          "sha256": "7b2e279d043ff9408413d79f08fe93fe84946105c07c85e375d4a94f471c0381"
+        },
+        "detail": {
+          "width": 1037,
+          "height": 583,
+          "bytes": 136106,
+          "sha256": "2c022ffe1b42f773ad5f3927f958bf9c9a93c89a83cc2a12218ba92d0e671030"
+        }
+      }
+    },
+    {
+      "id": "hohhot",
+      "city": "呼和浩特",
+      "kind": "real",
+      "subject": "振华广场",
+      "alt": "呼和浩特振华广场实景照片",
+      "card": "assets/cities/hohhot-card.webp",
+      "detail": "assets/cities/hohhot-detail.webp",
+      "position": "50% 50%",
+      "author": "Jonashtand",
+      "source": "https://commons.wikimedia.org/wiki/File:20240812_Arriving_in_Hohhot_ROTATEEDIT.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "20240812_Arriving_in_Hohhot_ROTATEEDIT.jpg",
+        "description": "Zhenhua Plaza, Hohhot, 12 August 2024",
+        "credit": "File:20240812_Arriving_in_Hohhot_01.jpg",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2026-10-07",
+        "version": "2026-10-07T14:48:25Z",
+        "sha1": "2cfb8ddcd6c3f6a8f18778999a54bba41187d1a4",
+        "width": 5740,
+        "height": 3616,
+        "bytes": 14165853
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/20240812_Arriving_in_Hohhot_ROTATEEDIT.jpg/1280px-20240812_Arriving_in_Hohhot_ROTATEEDIT.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/1/1b/20240812_Arriving_in_Hohhot_ROTATEEDIT.jpg",
+      "downloadSha256": "bf2fddba5160bd21a83af7dbbf56465e908ebdefb261af231d1e4d2f12cf0194",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 44124,
+          "sha256": "9706e8a6ebf0a7b8a9fb7588a113c635f08226b4d92264af780991f46a699beb"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 145344,
+          "sha256": "0dc1e9aefd9dadb4c5a2af658214f26cabe23573ef2d2fafc6f123413fbe6afc"
+        }
+      }
+    },
+    {
+      "id": "taiyuan",
+      "city": "太原",
+      "kind": "real",
+      "subject": "城市天际线",
+      "alt": "太原城市天际线实景照片",
+      "card": "assets/cities/taiyuan-card.webp",
+      "detail": "assets/cities/taiyuan-detail.webp",
+      "position": "50% 50%",
+      "author": "xiquinhosilva",
+      "source": "https://commons.wikimedia.org/wiki/File:Taiyuan_xiquinhosilva.jpg",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Taiyuan_xiquinhosilva.jpg",
+        "description": "太原市天际线",
+        "credit": "https://www.flickr.com/photos/xiquinho/53690072305/",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2019-12-08 16:03:24",
+        "version": "2024-09-15T09:10:13Z",
+        "sha1": "1dfba0fc2bd6a427b1d23a66b0645ecea7b47dd6",
+        "width": 2560,
+        "height": 1703,
+        "bytes": 1665785
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Taiyuan_xiquinhosilva.jpg/1280px-Taiyuan_xiquinhosilva.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Taiyuan_xiquinhosilva.jpg",
+      "downloadSha256": "7a2c6386d7b2902c31b253d549e829f4b1eb6da0936d797c352c05c7dd1e56be",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 46344,
+          "sha256": "1bf335b53088327945773c018cb9e596e5e3800f3484c5190a58f9e6ccd244b6"
+        },
+        "detail": {
+          "width": 1280,
+          "height": 720,
+          "bytes": 143618,
+          "sha256": "5ce9ff4c0eec86c7125291ab22ac2fd7e52542d3d4da36d5e700d274af7d92ea"
+        }
+      }
+    },
+    {
+      "id": "shijiazhuang",
+      "city": "石家庄",
+      "kind": "real",
+      "subject": "正太广场",
+      "alt": "石家庄正太广场实景照片",
+      "card": "assets/cities/shijiazhuang-card.webp",
+      "detail": "assets/cities/shijiazhuang-detail.webp",
+      "position": "50% 50%",
+      "author": "E2568",
+      "source": "https://commons.wikimedia.org/wiki/File:Zhengtai_Square_1.jpg",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Zhengtai_Square_1.jpg",
+        "description": "石家庄正太广场",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2024-06-09",
+        "version": "2024-09-15T14:06:36Z",
+        "sha1": "4d4778ad25f24afe0a331db531639c6343ed424f",
+        "width": 4000,
+        "height": 3000,
+        "bytes": 3948450
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Zhengtai_Square_1.jpg/960px-Zhengtai_Square_1.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Zhengtai_Square_1.jpg",
+      "downloadSha256": "2ca96b550cabf32be2d8b61457bacbe80c27fea4e9098f6ec59c063b2d0cfa00",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 43678,
+          "sha256": "16d7b2abb3e142c125e786dc4234c0679c86acc9dc4c4bd6f239ecd8a19e9af8"
+        },
+        "detail": {
+          "width": 960,
+          "height": 540,
+          "bytes": 82702,
+          "sha256": "5980e5b6dfa2798f5a01c3b61c4e3c2b670bf784f8167ac38c287a18feee025e"
+        }
+      }
+    },
+    {
+      "id": "tianjin",
+      "city": "天津",
+      "kind": "real",
+      "subject": "天津之眼与城市夜景",
+      "alt": "天津天津之眼与城市夜景实景照片",
+      "card": "assets/cities/tianjin-card.webp",
+      "detail": "assets/cities/tianjin-detail.webp",
+      "position": "50% 50%",
+      "author": "KangTyngrwey",
+      "source": "https://commons.wikimedia.org/wiki/File:Tianjin_Eye_and_Tianjin.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Tianjin_Eye_and_Tianjin.jpg",
+        "description": "Tianjin skyline",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2023-07-22 13:38:17",
+        "version": "2023-07-24T02:01:01Z",
+        "sha1": "7cb5b65466b72d5646e1184fdc755b6e9e431885",
+        "width": 1454,
+        "height": 921,
+        "bytes": 436803
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/Tianjin_Eye_and_Tianjin.jpg/960px-Tianjin_Eye_and_Tianjin.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/8/81/Tianjin_Eye_and_Tianjin.jpg",
+      "downloadSha256": "26eb0f2b940dd23a663ba4ab8e7d73bb6ce2b8ee2a08acb5b2ed162b4efd8b26",
+      "outputs": {
+        "card": {
+          "width": 576,
+          "height": 360,
+          "bytes": 42784,
+          "sha256": "642adc50cb520c87447c223567349affc7cbafc34bcbd306ed3d594a813d15c5"
+        },
+        "detail": {
+          "width": 960,
+          "height": 540,
+          "bytes": 129562,
+          "sha256": "8945df5b23840cca92d0bf11f1d9fdc9546cd7f25369898a2982305696f79e91"
+        }
+      }
+    },
+    {
+      "id": "harbin",
+      "city": "哈尔滨",
+      "kind": "real",
+      "subject": "松花江与城市景观",
+      "alt": "哈尔滨松花江与城市景观实景照片",
+      "card": "assets/cities/harbin-card.webp",
+      "detail": "assets/cities/harbin-detail.webp",
+      "position": "50% 50%",
+      "author": "xiquinhosilva",
+      "source": "https://commons.wikimedia.org/wiki/File:26935-Harbin_(29661238117).jpg",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "26935-Harbin_(29661238117).jpg",
+        "description": "26935-Harbin",
+        "credit": "26935-Harbin",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2018-08-27 17:08",
+        "version": "2023-10-21T12:17:01Z",
+        "sha1": "8e925b5902d26cc788e1b4100550593b7ab09f53",
+        "width": 3000,
+        "height": 1561,
+        "bytes": 1088797
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/26935-Harbin_%2829661238117%29.jpg/1280px-26935-Harbin_%2829661238117%29.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/9/94/26935-Harbin_%2829661238117%29.jpg",
+      "downloadSha256": "9f4819e691fc412caba8ad609819d5904dc674d3fc7c0aa04e75935aa62e90e1",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 32704,
+          "sha256": "b29ed80220b464c5d7245786d5694ea6e7bf07ee03dec3fdc481365d8562a14a"
+        },
+        "detail": {
+          "width": 1184,
+          "height": 666,
+          "bytes": 102386,
+          "sha256": "2a9c7e9e2618dbde47f2fac9d374d7e04debd801249ac8c5be4afbfe7a59ad94"
+        }
+      }
+    },
+    {
+      "id": "changchun",
+      "city": "长春",
+      "kind": "real",
+      "subject": "地质宫",
+      "alt": "长春地质宫实景照片",
+      "card": "assets/cities/changchun-card.webp",
+      "detail": "assets/cities/changchun-detail.webp",
+      "position": "50% 50%",
+      "author": "N509FZ",
+      "source": "https://commons.wikimedia.org/wiki/File:Changchun_Geological_Palace_(20230723154904).jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Changchun_Geological_Palace_(20230723154904).jpg",
+        "description": "Built on the site of unfinished Manchukuo imperial palace.",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2023-07-23 15:49:04",
+        "version": "2023-07-23T11:28:38Z",
+        "sha1": "eeca051ec63b6c2a66f2762d88f202ffc5258d9a",
+        "width": 7305,
+        "height": 4870,
+        "bytes": 5815687
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Changchun_Geological_Palace_%2820230723154904%29.jpg/960px-Changchun_Geological_Palace_%2820230723154904%29.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/7/72/Changchun_Geological_Palace_%2820230723154904%29.jpg",
+      "downloadSha256": "22b7cf2078dd1656faf6a7a8926b6ecb71f2475588587ec691a1bc103c4f539d",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 41870,
+          "sha256": "76b14377103a4273684fcf6d7e4efc5f5453fc0d0f9b6d855340b13bde51edf8"
+        },
+        "detail": {
+          "width": 960,
+          "height": 540,
+          "bytes": 113770,
+          "sha256": "60a8eb1f5be57e57cfc1468bda6a9be2aafe5b5762c7b484719ecf3f0ee9f6c7"
+        }
+      }
+    },
+    {
+      "id": "changbaishan",
+      "city": "长白山",
+      "kind": "real",
+      "subject": "西坡所见天池",
+      "alt": "长白山西坡所见天池实景照片",
+      "card": "assets/cities/changbaishan-card.webp",
+      "detail": "assets/cities/changbaishan-detail.webp",
+      "position": "50% 50%",
+      "author": "Antigng",
+      "source": "https://commons.wikimedia.org/wiki/File:%E4%BB%8E%E9%95%BF%E7%99%BD%E5%B1%B1%E8%A5%BF%E5%9D%A1%E7%9C%8B%E5%A4%A9%E6%B1%A0-2017-08-24_1.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "从长白山西坡看天池-2017-08-24_1.jpg",
+        "description": "从长白山西坡看天池",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2017-08-24 12:21:57",
+        "version": "2017-08-24T09:05:38Z",
+        "sha1": "2c5a3f1e52595af527ccbf7e2e55e5d2ede31e0f",
+        "width": 5312,
+        "height": 2988,
+        "bytes": 3342056
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/%E4%BB%8E%E9%95%BF%E7%99%BD%E5%B1%B1%E8%A5%BF%E5%9D%A1%E7%9C%8B%E5%A4%A9%E6%B1%A0-2017-08-24_1.jpg/960px-%E4%BB%8E%E9%95%BF%E7%99%BD%E5%B1%B1%E8%A5%BF%E5%9D%A1%E7%9C%8B%E5%A4%A9%E6%B1%A0-2017-08-24_1.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/a/a9/%E4%BB%8E%E9%95%BF%E7%99%BD%E5%B1%B1%E8%A5%BF%E5%9D%A1%E7%9C%8B%E5%A4%A9%E6%B1%A0-2017-08-24_1.jpg",
+      "downloadSha256": "43c9ab2c970dc6b83c835d85c90a23ab4e75ec4fcc74c4a88b9555ca78101ab7",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 25560,
+          "sha256": "597ba85c26f4568320854ecdd788cf7f2296b3768ca5473bcd5030a9f1e07a12"
+        },
+        "detail": {
+          "width": 960,
+          "height": 540,
+          "bytes": 55534,
+          "sha256": "8407cf4c6b2a96b6889596c3ceabda37849af542d3075fa51877cd72baaf2b82"
+        }
+      }
+    },
+    {
+      "id": "shenyang",
+      "city": "沈阳",
+      "kind": "real",
+      "subject": "青年公园",
+      "alt": "沈阳青年公园实景照片",
+      "card": "assets/cities/shenyang-card.webp",
+      "detail": "assets/cities/shenyang-detail.webp",
+      "position": "50% 50%",
+      "author": "E2568",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%B2%88%E9%98%B3%E9%9D%92%E5%B9%B4%E5%85%AC%E5%9B%AD.jpg",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "沈阳青年公园.jpg",
+        "description": "沈阳青年公园",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2024-10-01",
+        "version": "2024-11-09T05:57:49Z",
+        "sha1": "01e9c485d1004495dd1c4ff5a6d0b943d97b20e6",
+        "width": 4000,
+        "height": 3000,
+        "bytes": 3756416
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/%E6%B2%88%E9%98%B3%E9%9D%92%E5%B9%B4%E5%85%AC%E5%9B%AD.jpg/960px-%E6%B2%88%E9%98%B3%E9%9D%92%E5%B9%B4%E5%85%AC%E5%9B%AD.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/b/bf/%E6%B2%88%E9%98%B3%E9%9D%92%E5%B9%B4%E5%85%AC%E5%9B%AD.jpg",
+      "downloadSha256": "ba967781f3e14595a630e6c4bbb9c68cb1430952c62445ccd6f1ece30f9a09bc",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 44538,
+          "sha256": "79516bc342347ab87a6602f8e7205e378a2199aefe44633c2b452849a1499ef8"
+        },
+        "detail": {
+          "width": 960,
+          "height": 540,
+          "bytes": 108036,
+          "sha256": "d926681b499335a5954c75f7ca23ccc61aa1f104275fc32f81d2db2f4f252252"
+        }
+      }
+    },
+    {
+      "id": "dalian",
+      "city": "大连",
+      "kind": "real",
+      "subject": "西岗区滨海城市景观",
+      "alt": "大连西岗区滨海城市景观实景照片",
+      "card": "assets/cities/dalian-card.webp",
+      "detail": "assets/cities/dalian-detail.webp",
+      "position": "50% 50%",
+      "author": "Fumihiko Ueno",
+      "source": "https://commons.wikimedia.org/wiki/File:Xigang,_Dalian,_Liaoning,_China_-_panoramio_(18).jpg",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Xigang,_Dalian,_Liaoning,_China_-_panoramio_(18).jpg",
+        "description": "Xigang, Dalian, Liaoning, China",
+        "credit": "https://web.archive.org/web/20161030113118/http://www.panoramio.com/photo/99520411",
+        "attribution": "Fumihiko Ueno",
+        "restrictions": "",
+        "date": "Taken on 15 February 2013",
+        "version": "2017-04-01T19:05:57Z",
+        "sha1": "e891f4865d92ab1b7a6e3a9a2e9de820cc5ba5b8",
+        "width": 5740,
+        "height": 3811,
+        "bytes": 11945784
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Xigang%2C_Dalian%2C_Liaoning%2C_China_-_panoramio_%2818%29.jpg/960px-Xigang%2C_Dalian%2C_Liaoning%2C_China_-_panoramio_%2818%29.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Xigang%2C_Dalian%2C_Liaoning%2C_China_-_panoramio_%2818%29.jpg",
+      "downloadSha256": "403e16fb987af6e3186b629087f5cf2753d210e399008fe98d050b8c5798033a",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 47376,
+          "sha256": "5b0644f6eb60811e3c600d04bf3e9ddd7732c7e4637e22b3f99a4e04a9ffee1b"
+        },
+        "detail": {
+          "width": 960,
+          "height": 540,
+          "bytes": 100318,
+          "sha256": "687e2c780a0cb965ce1aa10b302e9afc7f36b33c5f89cfd860043f9c32d8905a"
+        }
+      }
+    },
+    {
+      "id": "hongkong",
+      "city": "香港",
+      "kind": "real",
+      "subject": "太平山所见维多利亚港全景",
+      "alt": "香港太平山所见维多利亚港全景实景照片",
+      "card": "assets/cities/hongkong-card.webp",
+      "detail": "assets/cities/hongkong-detail.webp",
+      "position": "50% 50%",
+      "author": "Diliff",
+      "source": "https://commons.wikimedia.org/wiki/File:Hong_Kong_Skyline_Restitch_-_Dec_2007.jpg",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Hong Kong Skyline Restitch - Dec 2007.jpg",
+        "description": "A 26 segment × 3 exposure (78 frames in total) panoramic view of the Hong Kong skyline taken from a path around Victoria Peak.",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2007-12-13",
+        "version": "2008-04-29T21:55:10Z",
+        "sha1": "436d7824cfae5f121a0dd7dd12c0d2f5d1e3f9b8",
+        "width": 4250,
+        "height": 1844,
+        "bytes": 4120181
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Hong_Kong_Skyline_Restitch_-_Dec_2007.jpg/1280px-Hong_Kong_Skyline_Restitch_-_Dec_2007.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/2/23/Hong_Kong_Skyline_Restitch_-_Dec_2007.jpg",
+      "downloadSha256": "6799cdf4d782970a749b50c5ae7124c54021611366891038f49d2c84513e8625",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 48500,
+          "sha256": "b0f62c7291f743c43524269a7e1a3940174a96be8ce58f3047eb213c34b062e1"
+        },
+        "detail": {
+          "width": 987,
+          "height": 555,
+          "bytes": 144572,
+          "sha256": "177eae92067b431ad4a3c1d09f431620fac2ea273ea4fdd1ce26e8c635f82ba4"
+        }
+      }
+    },
+    {
+      "id": "macao",
+      "city": "澳门",
+      "kind": "real",
+      "subject": "大三巴牌坊",
+      "alt": "澳门大三巴牌坊实景照片",
+      "card": "assets/cities/macao-card.webp",
+      "detail": "assets/cities/macao-detail.webp",
+      "position": "50% 30%",
+      "author": "GG001213",
+      "source": "https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E4%B8%89%E5%B7%B4%E7%89%8C%E5%9D%8A.jpg",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "大三巴牌坊.jpg",
+        "description": "Taken on 7/21/2017",
+        "credit": "Own work",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2017-07-21 11:55:27",
+        "version": "2017-07-21T07:52:45Z",
+        "sha1": "866447cba29318620fe6d6fc8b9921cb5f7edc18",
+        "width": 6000,
+        "height": 4000,
+        "bytes": 8565248
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/%E5%A4%A7%E4%B8%89%E5%B7%B4%E7%89%8C%E5%9D%8A.jpg/960px-%E5%A4%A7%E4%B8%89%E5%B7%B4%E7%89%8C%E5%9D%8A.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/f/fc/%E5%A4%A7%E4%B8%89%E5%B7%B4%E7%89%8C%E5%9D%8A.jpg",
+      "downloadSha256": "4deb91bb9a742e38902e7dc876b0ed101e878e011fc9b4db6c1dfdd79503178d",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 47852,
+          "sha256": "8bedf69c6d97d00f9c8cf171a0d7ae97cb593e599f68b8439b74cf010f99ab0f"
+        },
+        "detail": {
+          "width": 960,
+          "height": 540,
+          "bytes": 121888,
+          "sha256": "37663cfdf4ae14259f146d4d670782bb5115d5cd77cbbb45e9d00453b433ed91"
+        }
+      }
+    },
+    {
+      "id": "taipei",
+      "city": "台北",
+      "kind": "real",
+      "subject": "象山所见城市天际线",
+      "alt": "台北象山所见城市天际线实景照片",
+      "card": "assets/cities/taipei-card.webp",
+      "detail": "assets/cities/taipei-detail.webp",
+      "position": "50% 35%",
+      "author": "毛貓大少爺",
+      "source": "https://commons.wikimedia.org/wiki/File:Taipei_Skyline_2022.06.29.jpg",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "changes": "已裁剪、缩放和压缩；图片沿用原作许可。",
+      "verified": "2026-11-14",
+      "evidence": {
+        "file": "Taipei_Skyline_2022.06.29.jpg",
+        "description": "Skyline of Taipei, Taiwan viewed from Mount Elephant on June 29, 2022",
+        "credit": "https://www.flickr.com/photos/92975612@N02/52185140077/",
+        "attribution": "",
+        "restrictions": "",
+        "date": "2022-06-29 09:47:18",
+        "version": "2022-07-04T00:52:34Z",
+        "sha1": "7da8a67790056deb6c8bbeca23b2ec4c3d9a1b37",
+        "width": 4484,
+        "height": 2989,
+        "bytes": 3196326
+      },
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Taipei_Skyline_2022.06.29.jpg/960px-Taipei_Skyline_2022.06.29.jpg",
+      "originalDownload": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Taipei_Skyline_2022.06.29.jpg",
+      "downloadSha256": "e41402144f44852b030388cc48d1ef934a5bff6e19e0329b6d1da99b35dc0923",
+      "outputs": {
+        "card": {
+          "width": 640,
+          "height": 400,
+          "bytes": 49604,
+          "sha256": "e8e2f68c9994ea9626db7d1d1d5b1f321c10912ff7deb1ab60297829084cdbc3"
+        },
+        "detail": {
+          "width": 960,
+          "height": 540,
+          "bytes": 115816,
+          "sha256": "d031ba8e5d71e0586475ec428d1de2cf66570c908953894ad89541f09a5743cf"
+        }
+      }
+    }
+  ]
+}

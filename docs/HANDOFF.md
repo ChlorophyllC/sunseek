@@ -19,9 +19,9 @@
 
 ## 2. 代码和版本状态
 
-- 当前功能版本：**v0.5.0**，功能提交 `2d5f14b`，分支 `main`。
-- v0.5.0 已完成并通过六组测试；这次交接提交以文档和远程仓库设置为主。
-- 现有标签：`v0.1.0`、`v0.2.0`、`v0.3.0`、`v0.3.1`、`v0.3.2`、`v0.4.0`、`v0.4.1`、`v0.4.2`、`v0.5.0`。不要移动已有标签。
+- 当前功能版本：**v0.5.1**，以同名 Git 标签定位，分支 `main`。
+- v0.5.0 功能提交为 `2d5f14b`，文档交接提交为 `60ad528`。v0.5.1 新增 48 城市实景配图，通过原有六组回归与配图专项，共七组测试。仅归档代码版本，未部署网站。
+- 现有标签：`v0.1.0`、`v0.2.0`、`v0.3.0`、`v0.3.1`、`v0.3.2`、`v0.4.0`、`v0.4.1`、`v0.4.2`、`v0.5.0`、`v0.5.1`。不要移动已有标签。
 - 远程仓库与推送结果见下方“GitHub 状态”；实际工作时先运行 `git status --short --branch`、`git remote -v`、`git log -5 --oneline` 确认最新状态。
 - 原生 HTML / CSS / JavaScript 静态站，无 npm 构建、框架、账号后台或项目 API 密钥。
 
@@ -29,7 +29,7 @@
 
 - 仓库：<https://github.com/ChlorophyllC/sunseek>，可见性 **Private**。
 - `origin`：`https://github.com/ChlorophyllC/sunseek.git`；`main` 对应 `origin/main`。
-- 本次交接上传范围：完整项目、Git 历史、上述 9 个版本标签，以及本交接文档。GitHub 上的 `main` 会比 v0.5.0 功能标签多一个文档交接提交。
+- v0.5.1 归档范围：48 城市配图及来源、显示与回退逻辑、压缩脚本、专项测试、README 与交接更新；保留之前 9 个版本标签。同步状态以 `git ls-remote` 结果为准。
 - 未开启 GitHub Pages、Cloudflare 部署或公开发布。再次操作时用 `git status --short --branch` 和 `git ls-remote --heads --tags origin` 检查同步状态。
 
 ## 3. 已实现功能
@@ -68,35 +68,18 @@
 - 高德“查看”按钮只是外链，**没有接通高德 POI API**。
 - 保留旧版景点收藏和来源标注；旧百科缓存不再使用。
 
-## 4. 下一步重点：城市真实配图（尚未实施）
+## 4. 已完成：48 城市实景配图（v0.5.1）
 
-上一轮最后讨论的是每城独立配图的托管成本和工作量。用户希望改善目前只有最初目的地有图片的情况。本次先上传 GitHub 和写交接，**尚未下载或替换城市图片**。
+- 48 个精选目的地已分别配上经过地点和许可核对的实景照片，来自 Wikimedia Commons；不是百科附近检索，不会在运行时请求百科或外部图片服务。
+- `assets/city-images.json` 为统一维护入口，记录作者、来源、逐图许可、修改说明、核对日期、源文件版本/摘要、实际下载摘要与输出摘要。`assets/city-images.js` 是生成的前端配置。
+- `assets/cities/` 包含 96 个 WebP，合计 7,625,664 bytes，约 7.6 MB；卡片最多 640 × 400、50,000 bytes，详情最多 1280 × 720、150,000 bytes，不放大低分辨率原图。
+- `placeVisual(city, detail)` 在推荐卡片、详情头图和对比表复用配置；`position` 适配焦点。详情使用大图，其余使用卡片图，懒加载卡片、及时加载已打开的详情。
+- 卡片/对比提供摄影者与许可链接，详情补充来源与修改说明。真实照片明确标为实景，旧意境图保留原标识；照片不代表实时天气，部分照片较早，例如香港全景为 2007 年。
+- 普通/自定义地点仍无图回退；图片加载失败也回退到地点示意，详情同步说明。资源均为相对路径。
+- 新增 `scripts/build_city_images.py` 和 `tests/city_images.py`；照片来源、许可和逐城清单见 [城市图片说明](city-images.md)。重建才需要 Pillow，正常浏览不需要构建。
+- 大原图/下载文件缓存位于 `/tmp/sunseek-photo-sources`，不会提交 Git，也不保证新会话保留。源图接口曾返回限流，最终使用同一文件的可用官方尺寸；实际下载地址及摘要已经记录。不要无理由再次批量下载。
 
-现状：
-
-- 本地四张通用意境图：`assets/coast.jpg` 123,498 bytes；`forest.jpg` 123,814；`landscape.jpg` 309,961；`mountains.jpg` 104,305。合计 661,578 bytes，约 0.66 MB。
-- 精选地点的 `cityRows` 只引用四个类型。普通及自定义地点的 `image` 为 `null`，采用地点示意。四张图不是对应城市的实景。
-- 图片展示集中在 `app.js` 的 `placeVisual(city)`，供推荐卡片、详情头图、对比表复用，已有 `loading="lazy"`。
-- 城市详情头图说明由 `city.image` 判断，当前有图也写着“风景意境图 · 非对应城市实景”。换真实图后必须同步改语义，不能把所有旧图直接改称实景。
-
-已经讨论的实施方向：
-
-1. 先给现有 48 个精选目的地匹配真实、地点核实过的照片；普通城市逐步补齐，找不到合适素材继续保留示意。
-2. 建立统一城市图片配置，建议包含城市 ID、卡片/详情路径、alt、作者、来源页面、许可、实景/意境标识和必要裁剪位置；不要为每座城写独立页面逻辑。
-3. 优先使用允许自行托管的素材，统一裁剪和批量压缩；卡片与详情用不同尺寸，研究 WebP / AVIF 等输出即可，不必引入前端框架。
-4. 来源与地点都要核对，不用随机风景冒充目的地。若使用生成图片，只能明确标记示意，不能作为真实城市照片。
-5. 讨论过的容量预算是每城约 50 KB 卡片图 + 150 KB 详情图，48 城约 9.6 MB、500 城约 100 MB；这是设计预算，不是现有资源或保证的压缩效果。
-6. Unsplash 按图片许可下载使用，与调用搜索 API 的要求不同；使用 API 时需核对 hotlink、署名等要求。不要不经核实地批量从 API 拉取再转存。
-7. 实施时新增图片清单与来源记录，检查无图回退、图片加载失败、三个展示位置、alt、手机裁剪以及 GitHub 子路径下的相对资源路径。
-
-托管讨论的结论是：几百张压缩图片不是眼前的容量瓶颈，主要投入是选图与核实。暂不购买独立图片服务或配置部署。曾核对 Cloudflare 静态托管与 GitHub Pages 官方限制；实际部署前重新核对价格、配额与地区访问情况，不把历史讨论当成永久承诺。
-
-参考官方入口：
-
-- Cloudflare Pages：<https://developers.cloudflare.com/pages/functions/pricing/>、<https://developers.cloudflare.com/pages/platform/limits/>
-- Workers Static Assets：<https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/>
-- GitHub Pages：<https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits>
-- Unsplash：<https://unsplash.com/license>、<https://help.unsplash.com/en/articles/2511245-unsplash-api-guidelines>
+本次工作范围未包含普通城市补图、购买图片服务、接入新天气或 POI API、上线部署。后续可按用户反馈继续调整选图与裁剪，不要把此段理解为自动扩展到全部 485 个地点的授权。
 
 ## 5. 尚未接入、不要误报完成的事项
 
@@ -104,7 +87,7 @@
 - 高德旅游 POI API：没有 Web 服务 Key；外链不等于 API 接入。
 - 实时活动、景点真实评分/推荐人数、交通时间/票价、官方预警接口：未接入。
 - 海外地点、亚洲地图、全球时区、自建后台、账号同步、正式部署：未实现。
-- 城市独立配图、图片来源清单和批量压缩脚本：未实现。
+- 普通/自定义地点独立配图：尚未批量补齐；48 个精选目的地已完成，见上一节。
 
 详见 `docs/weather-data.md`、`docs/travel-data.md`。未来需要密钥的接口应通过服务端代理，不能把凭据写入前端或提交 Git。
 
@@ -118,6 +101,10 @@
 | `weather.js` | 无 DOM 的预报解析、评分、危险天气判断、缓存编解码、`departureWindows` |
 | `destinations.js` | 地点分层、去重、地区匹配、自定义地点校验、地域多样排序 |
 | `attractions.js` | 折叠旅行灵感、收藏与天气预览衔接 |
+| `assets/city-images.json` / `assets/city-images.js` | 来源证据与生成的前端图片配置 |
+| `assets/cities/` | 48 城市卡片/详情压缩图片 |
+| `scripts/build_city_images.py` | 按清单重建图片及索引，需要 Pillow |
+| `docs/city-images.md` | 图片来源、许可、维护方式与逐城清单 |
 | `assets/places.js` | 本地地点索引 |
 | `assets/china.js` / `assets/local-boundaries.js` | 全国边界、港澳补充边界 |
 | `assets/travel-highlights.js` | 城市旅行灵感的静态资料 |
@@ -136,7 +123,7 @@ python3 -m http.server 4173
 
 浏览器访问 `http://localhost:4173`。若端口已有本项目服务，直接复用，不要反复启动。不是 Node 项目，没有 `npm test` 或构建步骤。
 
-开发测试依赖 Python Playwright 与 Chromium，现有开发机已安装。新环境按 README 安装；测试用例依赖支持 `page.clock` 的 Playwright。六组命令：
+开发测试依赖 Python Playwright 与 Chromium，现有开发机已安装。新环境按 README 安装；测试用例依赖支持 `page.clock` 的 Playwright。六组原有回归与配图专项命令（配图专项另需 Pillow）：
 
 ```sh
 python3 tests/engine.py
@@ -145,6 +132,7 @@ python3 tests/places.py
 python3 tests/attractions.py
 python3 tests/weather_network.py
 python3 tests/planning.py
+python3 tests/city_images.py
 ```
 
 - `engine.py`：28 项计算边界检查，含累计区间、夜间危险天气、缓存和连续出发日期。
@@ -153,6 +141,8 @@ python3 tests/planning.py
 - `attractions.py`：天气优先、旧收藏、临时预览/保存/关闭隔离，零 Wikipedia 请求。
 - `weather_network.py`：独立超时、广西缺失恢复、吉林限流、手机重试。
 - `planning.py`：单日地图与整段推荐隔离、日期建议/采用、未保存地点、过期/演示、4 种宽度。
+
+本次配图验收：原有六组回归与新增配图专项均通过；已检查桌面、手机和整组照片预览。专项覆盖 96 个资源、来源与摘要、三处展示、来源链接、对比移除、加载失败/无图回退、旧意境图标识、四种宽度和子路径访问。
 
 2026-11-14 的 v0.5.0 验收：以上六组全部通过，检查过桌面与手机截图。浏览器回归使用模拟天气/地名响应，不能当作实时接口连通性或准确度证明。截图写到 `/tmp`，不在仓库，也不保证新会话还保留。
 
@@ -176,4 +166,4 @@ python3 tests/planning.py
 
 ## 9. 新对话可直接使用的提示
 
-> 继续这个晴游 SUNSEEK 项目。请先读 `docs/HANDOFF.md`、`README.md`、`docs/weather-data.md` 和 `docs/travel-data.md`，并检查 Git 状态。当前功能版本是 v0.5.0。接下来优先为现有 48 个精选目的地匹配真实城市图片，先核实来源和使用许可，建立统一图片配置与来源记录，再做缩略图/详情图优化；普通地点保留无图回退。保持天气优先、先预览再保存、地域多样排序及现有视觉。暂不部署上线，不擅自接入付费 API。
+> 继续晴游 SUNSEEK 项目，先读交接文档、README 和城市图片说明，并检查 Git 状态。当前版本是 v0.5.1，已新增 48 个精选城市实景配图、来源清单、压缩脚本和专项测试，网站尚未部署。先核实当前工作区，不要重新执行已完成的整批选图/下载；按用户当前任务继续。保持天气优先、先预览再保存、地域多样排序及现有视觉，暂不部署或接入付费 API。

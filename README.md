@@ -1,10 +1,10 @@
-# 晴游 SUNSEEK · v0.5.0
+# 晴游 SUNSEEK · v0.5.1
 
 按出发地、出行日期与日间天气偏好，寻找中国境内的旅行目的地。保留初版的清爽界面，以天气选择为主，旅行灵感在天气详情后折叠展示；自选地点可以先查天气，再决定是否保存。
 
 当前继续本地打磨，代码与历史版本备份在私有 GitHub 仓库 [ChlorophyllC/sunseek](https://github.com/ChlorophyllC/sunseek)，尚未配置账号服务或线上部署。使用原生 HTML、CSS、JavaScript，无需前端构建工具或 API 密钥。
 
-继续开发或开启新对话时，先阅读 [项目交接文档](docs/HANDOFF.md)，其中包含当前状态、下一步城市配图计划、测试方式和需要保留的产品约定。
+继续开发或开启新对话时，先阅读 [项目交接文档](docs/HANDOFF.md)，其中包含当前状态、城市配图状态、测试方式和需要保留的产品约定。
 
 ## 本地运行
 
@@ -13,6 +13,13 @@ python3 -m http.server 4173
 ```
 
 浏览器打开 `http://localhost:4173`。刷新即可看到最新修改。推荐通过本地服务器访问，而非直接打开 HTML 文件。
+
+## v0.5.1：48 城市实景配图
+
+- 为 48 个精选目的地分别核实实景照片，卡片、详情、对比统一读取城市图片配置；普通与自定义地点继续保留无图示意。
+- 96 个本地 WebP 资源合计约 7.6 MB，卡片图最多约 50 KB，详情图最多约 150 KB；浏览时无需外部图片服务。
+- 页面提供作者、来源、许可与修改说明，区分真实照片、旧意境图和地点示意；加载失败自动回退。
+- 来源清单、图片许可和重建方法见 [城市图片说明](docs/city-images.md)。本版通过 Git 版本归档，尚未部署上线。
 
 ## v0.5.0：逐日地图与出发日期建议
 
@@ -134,7 +141,7 @@ python3 -m http.server 4173
 - 演示模式与真实缓存隔离，退出演示会重新获取天气或读取有效真实缓存。
 - 足迹和笔记仅存储于当前浏览器。浏览器限制存储时会提示；此时天气仍可在当前页面使用。
 
-地图与行政地点索引来源为阿里云 DataV，澳门陆地轮廓补充自 [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/)（公有领域）；在线搜索使用 Open-Meteo / GeoNames。Unsplash 图片为意境配图，不表示对应城市的实景。页面采用系统字体回退，不再依赖外部字体请求。
+地图与行政地点索引来源为阿里云 DataV，澳门陆地轮廓补充自 [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/)（公有领域）；在线搜索使用 Open-Meteo / GeoNames。首页保留的 Unsplash 图片为意境配图，不表示对应城市的实景；48 个精选城市的独立实景照片来自 Wikimedia Commons，各自许可、作者和来源见 [图片清单](docs/city-images.md)。页面采用系统字体回退，不再依赖外部字体请求。
 
 ## Git 版本
 
@@ -148,6 +155,7 @@ python3 -m http.server 4173
 - `v0.4.1`：天气优先布局、城市精选灵感、先预览再保存。
 - `v0.4.2`：天气请求超时隔离、缺失原因与省份重试。
 - `v0.5.0`：地图逐日预览、连续出发日期比较与采用。
+- `v0.5.1`：48 城市实景配图、图片来源许可清单、压缩脚本与配图专项验收。
 
 远程 `origin` 为私有仓库 `https://github.com/ChlorophyllC/sunseek.git`，上传 `main` 与上述历史版本标签。GitHub 备份不等于网站上线，尚未开启 Pages 或其他生产部署。忽略系统文件、Python 缓存、环境文件、日志与测试产物。
 
@@ -156,7 +164,7 @@ python3 -m http.server 4173
 需要 Python Playwright 与 Chromium。安装开发依赖后，先启动本地服务，再执行：
 
 ```sh
-python3 -m pip install playwright
+python3 -m pip install playwright Pillow
 python3 -m playwright install chromium
 python3 tests/engine.py
 python3 tests/smoke.py
@@ -164,6 +172,7 @@ python3 tests/places.py
 python3 tests/attractions.py
 python3 tests/weather_network.py
 python3 tests/planning.py
+python3 tests/city_images.py
 ```
 
 `tests/engine.py` 检查日间计数、已过去时段、夜雨累计归属、评分分解、距离及缓存边界，不发出网络请求。`tests/smoke.py` 使用确定性天气响应，覆盖四类偏好、出发地/距离、对比、足迹兼容、空值、阵风、日期校验、缓存到期、显式演示和部分请求失败，以及 360 / 390 / 768 / 1024 / 1440px 布局。`tests/places.py` 验证地域去重、同省折叠、省级投影、按需请求、普通地点图片回退、在线查询、坐标校验、自定义地点的持久化/编辑/去重/移除、足迹兼容与注入转义、逐地点时间戳和旧版缓存迁移，以及七个大区的视野、港澳详细轮廓、焦点边界与自动搜索、完整列表地域排序和排序同步、地区搜索与键盘选择。`tests/attractions.py` 检查天气优先布局、城市精选、旧收藏兼容与转义、预览不保存、显式保存与去重、关闭预览后的请求隔离、保存失败回退和手机布局。截图输出到 `/tmp`，不进入 Git。
@@ -185,9 +194,14 @@ python3 tests/planning.py
 - `weather.js`：无 DOM 依赖的预报解析、时段匹配、评分、距离与缓存编解码。
 - `attractions.js`：折叠旅行灵感、想去清单、旧版收藏兼容和天气预览入口。
 - `assets/travel-highlights.js`：12 城市的编辑精选与近似天气采样点。
+- `assets/city-images.json` / `assets/city-images.js`：图片来源清单与生成的运行时配置。
+- `assets/cities/`：48 城市的卡片与详情 WebP。
+- `scripts/build_city_images.py`：按已核实清单下载、裁剪、压缩并生成索引。
+- `tests/city_images.py`：资源、署名、三处展示、失败回退、手机和子路径验收；另需 Pillow。
+- `docs/city-images.md`：图片来源、逐城许可与维护方式。
 - `docs/travel-data.md`：旅行数据接口选型与待接入事项。
 - `docs/weather-data.md`：天气缺失排查、备用接口选型与接入限制。
-- `docs/HANDOFF.md`：新对话交接、产品约定、下一步城市配图计划与操作说明。
+- `docs/HANDOFF.md`：新对话交接、产品约定、城市配图状态与操作说明。
 - `assets/`：地图、意境图片与站点图标。
 - `tests/`：计算边界与浏览器验收。
 

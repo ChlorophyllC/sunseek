@@ -76,3 +76,23 @@ dialog{border:1px solid #e9eee3;box-shadow:0 30px 100px #17392e33;border-radius:
 .departure-empty{font-size:11px;color:#8e947c;line-height:1.9;padding:12px;border:1px dashed #dce5d2;border-radius:6px}
 @media(max-width:760px){.map-timeline{padding-left:20px;padding-right:20px}}
 @media(max-width:480px){.map-timeline{padding:11px 16px 12px}.map-timeline-heading{align-items:flex-start}.map-timeline-heading>span:first-child{white-space:nowrap}.map-timeline-heading>span:last-child{font-size:8px;max-width:200px}.map-date-tabs button{flex-basis:58px;padding:8px 5px}.map-date-tabs button:first-child{flex-basis:75px}.departure-options>summary{font-size:11px;padding:13px 12px}.departure-body{padding:0 12px 12px}.departure-option{align-items:flex-start;flex-direction:column;gap:9px;padding:11px}.departure-option button{align-self:flex-end}.departure-rules,.departure-summary,.departure-footnote{font-size:9px}.detail-trip-period{font-size:9px}}
+
+/* Shared city photos: keep cards, detail heroes and comparisons on one image ledger. */
+.place-visual{display:block;position:relative;width:100%;height:100%;overflow:hidden;border-radius:inherit}
+.place-visual>.place-placeholder{position:absolute;inset:0;min-height:0}
+.place-visual>img{position:relative;display:block;width:100%;height:100%;object-fit:cover}
+.place-visual:not(.image-unavailable)>.place-placeholder{visibility:hidden}
+.place-visual.image-unavailable>img,.place-visual.image-unavailable>.photo-attribution{display:none}
+.photo-attribution{position:absolute;z-index:2;bottom:0;left:0;right:0;display:flex;gap:4px;align-items:center;padding:3px 5px;background:#153629c9;color:#fff;font-size:8px;line-height:1.4}
+.photo-attribution a{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:underline;text-underline-offset:2px}
+.photo-attribution a:first-child{flex:1}
+.photo-attribution a:last-child{flex:0 1 auto;max-width:60%}
+.photo-attribution a:focus-visible{outline:2px solid white;outline-offset:0}
+.city-photo-credit{font-size:10px;line-height:1.9;color:#7b8c73;margin:0 0 14px;overflow-wrap:anywhere}
+.city-photo-credit a{text-decoration:underline;text-underline-offset:3px;color:var(--green)}
+.city-photo-credit small{display:block;font-size:9px;color:#93a184}
+.comparison-table thead .place-visual{height:100px;margin-bottom:12px;border-radius:7px}
+.comparison-table thead .place-visual img{height:100%;margin:0;border-radius:inherit}
+.comparison-remove{z-index:3}
+@media(max-width:760px){.comparison-table thead .place-visual{height:90px}}
+@media(max-width:480px){.comparison-table thead .place-visual{height:88px}.photo-attribution{flex-wrap:wrap;gap:0 3px}.photo-attribution a:first-child{flex-basis:100%}.photo-attribution a:last-child{max-width:100%}.dialog-image-note{max-width:calc(100% - 30px);text-align:right}}
