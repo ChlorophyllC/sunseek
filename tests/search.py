@@ -35,6 +35,7 @@ with sync_playwright() as p:
  assert page.locator('.filter-panel #discovery-scope').count()==1
  assert page.locator('.discovery-coverage,#discovery-hint,#region-dialog').count()==0
  page.locator('#region-search-btn').click();expect(page.locator('#search-dialog')).to_be_visible()
+ assert not loads,'opening an empty search should not download the extended atlas'
  page.locator('#city-search').fill('象山县')
  expect(page.locator('#search-results [data-online-place]').first).to_contain_text('象山县')
  expect(page.locator('#search-results [data-online-place]').first).to_contain_text('宁波')
@@ -124,7 +125,7 @@ with sync_playwright() as p:
  context=b.new_context();page=context.new_page();page.route('https://api.open-meteo.com/**',fixture);page.route('https://geocoding-api.open-meteo.com/**',lambda r:r.fulfill(json={}))
  page.route('**/assets/search-places.json',lambda r:r.abort());page.goto('http://localhost:4173')
  page.locator('#search-btn').click();page.locator('#city-search').fill('景德镇');expect(page.locator('#search-results [data-open-city="area-360200"]')).to_be_visible()
- expect(page.locator('#online-results')).to_contain_text('扩展地名索引暂不可用')
+ expect(page.locator('#search-index-status')).to_contain_text('扩展地名索引暂不可用')
  page.keyboard.press('Escape');page.unroute('**/assets/search-places.json');page.locator('#region-search-btn').click();page.locator('#city-search').fill('宁海县')
  expect(page.locator('#search-results .search-result').first).to_contain_text('宁波')
  assert not errors,errors

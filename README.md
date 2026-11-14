@@ -1,8 +1,8 @@
-# 晴游 SUNSEEK · v0.6.0
+# 晴游 SUNSEEK · v0.7.0
 
 按出发地、出行日期与日间天气偏好，寻找中国境内的旅行目的地。保留初版的清爽界面，以天气选择为主，旅行灵感在天气详情后折叠展示；自选地点可以先查天气，再决定是否保存。
 
-当前继续本地打磨，代码与历史版本备份在私有 GitHub 仓库 [ChlorophyllC/sunseek](https://github.com/ChlorophyllC/sunseek)，尚未配置账号服务或线上部署。使用原生 HTML、CSS、JavaScript，无需前端构建工具或 API 密钥。
+当前已部署腾讯云 [开发测试站](https://sunseek-noisy-sole-d5ganycu813519dcc.webapps.tcloudbase.com)，首次访问需确认平台提示；代码与历史版本备份在公开 GitHub 仓库 [ChlorophyllC/sunseek](https://github.com/ChlorophyllC/sunseek)，尚未配置账号服务或正式自定义域名。使用原生 HTML、CSS、JavaScript，无需前端构建工具或 API 密钥。
 
 继续开发或开启新对话时，先阅读 [项目交接文档](docs/HANDOFF.md)，其中包含当前状态、城市配图状态、测试方式和需要保留的产品约定。
 
@@ -13,6 +13,20 @@ python3 -m http.server 4173
 ```
 
 浏览器打开 `http://localhost:4173`。刷新即可看到最新修改。推荐通过本地服务器访问，而非直接打开 HTML 文件。
+
+## v0.7.0：手机交互、视觉与项目公开
+
+保留地图单指滚页、双指缩放/平移，以及搜索共用滚动区、键盘可视区域适配与背景锁定；恢复原有字号比例，卡片图片略加宽，手机顶部用“关于”入口。页脚与关于窗口提供 [GitHub Star](https://github.com/ChlorophyllC/sunseek) 链接，不额外请求 GitHub 计数或第三方脚本。细节见 [手机交互说明](docs/mobile-interaction.md)。
+
+搜索保持本地优先和独立在线分区：停笔满 1 秒，并且本地没有结果或已翻完全部本地结果才自动在线查询；中文输入法组合期间不查询，已有结果在当前会话复用。
+
+已归档此前搜索节流、测试站部署记录和命令更新工具。首次使用时 `python3 scripts/deploy_tencent.py login`，之后 `python3 scripts/deploy_tencent.py deploy` 更新同一应用；当前工作区工具已安装并曾登录，正式更新前仍需核对账户目标。完整步骤见 [命令更新说明](docs/command-deploy.md)。
+
+**Git 归档与腾讯云发布分开进行：当前 v0.7.0 代码尚未同步测试站，线上仍是首次文件上传的版本。** 用户当前安排是保留本地网页修改；本轮已明确要求提交推送 Git 并公开仓库。今后每轮修改验证后及时提交推送，网站发布按用户安排执行。
+
+## 跨用户共享天气缓存：设计已完成
+
+按地点保存首次获取后一小时的公共预报，不按全国/省份页面存整包；进入省份只补缺失/过期点，不扩大全国候选，也不延长其他点的时间戳。不同用户的日期、偏好与足迹仍由浏览器独立处理。详见 [共享缓存设计](docs/shared-weather-cache.md)。**当前尚未接入共享后端**，网站仍直连 Open-Meteo 并使用浏览器缓存；没有创建新的腾讯云资源或升级套餐。
 
 ## v0.6.0：统一地点搜索与台湾覆盖
 
@@ -86,7 +100,7 @@ python3 -m http.server 4173
 - 港澳使用更细的本地边界资源；香港采用 DataV 详细边界，澳门采用 Natural Earth 的陆地轮廓，避免把包含水域的行政范围误画成陆地。
 - 全国地图的悬停与键盘焦点轮廓独立绘制在上层，不再被相邻省份覆盖，轮廓不拦截点击。
 - 华东、华南等七个大区自动适配地图范围；点击“全国”恢复全国视野。
-- 输入至少两个字，停顿 450 毫秒后自动补充在线地名结果，支持县镇、村落；Enter 打开首个相关结果，点击“搜索更多地点”立即补充在线查询。切换查询或关闭窗口会取消旧查询。
+- 在线地名可补充县镇、村落；当前触发条件、独立分区与会话缓存见 [搜索说明](docs/place-search.md)。切换查询或关闭窗口会取消旧查询。
 - 添加地点窗口提供地名搜索入口，选择在线结果后自动填入坐标，仍需确认同名地点与行政归属。在线地名覆盖取决于数据源，未收录地点仍可手动添加。
 
 ## 第三版新增
@@ -183,8 +197,9 @@ python3 -m http.server 4173
 - `v0.5.1`：48 城市实景配图、图片来源许可清单、压缩脚本与配图专项验收。
 - `v0.5.2`：地图层级返回、周边省市切换、港澳快捷入口、装饰区划、推荐优先标记及默认关闭的圆点开关。
 - `v0.6.0`：本机备份与迁移、固定精选/主动全库推荐范围、统一相关度搜索、按需地名索引与台湾 22 县市参考点；十二组回归通过。
+- `v0.7.0`：搜索节流与分区、手机触摸/键盘滚动修复、原字号与加宽图片、手机关于和 Star 入口、命令发布工具、公开仓库及共享缓存设计；十六组测试通过。
 
-远程 `origin` 为私有仓库 `https://github.com/ChlorophyllC/sunseek.git`，上传 `main` 与上述历史版本标签。GitHub 备份不等于网站上线，尚未开启 Pages 或其他生产部署。忽略系统文件、Python 缓存、环境文件、日志与测试产物。
+远程 `origin` 为私有仓库 `https://github.com/ChlorophyllC/sunseek.git`，上传 `main` 与上述历史版本标签。已另行发布腾讯云测试站，尚未开启 GitHub Pages 或正式自定义域名。忽略系统文件、Python 缓存、环境文件、日志与测试产物。
 
 ## 测试
 
@@ -205,6 +220,10 @@ python3 tests/map_detail.py
 python3 tests/backup.py
 python3 tests/discovery_scope.py
 python3 tests/search.py
+python3 tests/search_requests.py
+python3 tests/mobile_interaction.py
+python3 tests/deploy.py
+python3 tests/presentation.py
 ```
 
 `tests/engine.py` 检查日间计数、已过去时段、夜雨累计归属、评分分解、距离及缓存边界，不发出网络请求。`tests/smoke.py` 使用确定性天气响应，覆盖四类偏好、出发地/距离、对比、足迹兼容、空值、阵风、日期校验、缓存到期、显式演示和部分请求失败，以及 360 / 390 / 768 / 1024 / 1440px 布局。`tests/places.py` 验证地域去重、同省折叠、省级投影、按需请求、普通地点图片回退、在线查询、坐标校验、自定义地点的持久化/编辑/去重/移除、足迹兼容与注入转义、逐地点时间戳和旧版缓存迁移，以及七个大区的视野、港澳详细轮廓、焦点边界与自动搜索、完整列表地域排序和排序同步、地区搜索与键盘选择。`tests/attractions.py` 检查天气优先布局、城市精选、旧收藏兼容与转义、预览不保存、显式保存与去重、关闭预览后的请求隔离、保存失败回退和手机布局。截图输出到 `/tmp`，不进入 Git。
@@ -223,6 +242,10 @@ python3 tests/search.py
 
 `tests/search.py` 验证实际地名索引、行政组合词、简繁体、岛屿类型排序、统一入口、搜索不查询天气、旧响应隔离、台湾 22 县市与离岛、加载失败恢复和四种宽度。
 
+`tests/search_requests.py` 检查自动在线查询的等待/滚动条件、输入法、缓存与失败重试，确保减少请求同时保留本地结果。
+
+`tests/mobile_interaction.py` 检查真实触摸、地图手势、弹窗滚动/背景锁定、键盘尺寸、可读性与工具栏；`tests/deploy.py` 不联网验证发布目标与运行文件白名单。
+
 ## 文件
 
 - `index.html`：页面、筛选控件、对话框、SVG 图标。
@@ -233,6 +256,10 @@ python3 tests/search.py
 - `search.js` / `assets/search-places.json`：统一相关度匹配与按需加载的搜索索引。
 - `assets/taiwan-places.js` / `scripts/build_search_places.py`：台湾县市参考点与 GeoNames 离线构建脚本。
 - `docs/place-search.md`：搜索规则、数据溯源、台湾采样与验收。
+- `docs/tencent-cloud.md` / `scripts/package_static.py`：腾讯云额度评估、部署步骤与静态文件打包。
+- `docs/command-deploy.md` / `scripts/deploy_tencent.py` / `scripts/setup_cloudbase.py`：一次登录与命令更新现有网站。
+- `docs/mobile-interaction.md`：触摸手势、可读性、滚动与验证边界。
+- `docs/shared-weather-cache.md`：按地点一小时复用、跨用户并发合并与后端落地边界。
 - `assets/subdivisions/` / `scripts/build_subdivisions.py`：按需加载的省内下级区划细线及离线生成脚本。
 - `docs/map-display.md`：地图入口、区划来源和城市标记规则。
 - `assets/local-boundaries.js`：香港详细边界来自阿里云 DataV，澳门陆地轮廓来自公有领域 Natural Earth。

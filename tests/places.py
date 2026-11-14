@@ -56,7 +56,7 @@ with sync_playwright() as p:
  page.locator('#collapse-results').click()
  page.locator('#region-search-btn').click()
  page.locator('#city-search').fill('不存在的地区')
- expect(page.locator('#search-results')).to_contain_text('没有找到')
+ expect(page.locator('#search-results')).to_contain_text('没有匹配')
  page.locator('#city-search').fill('华东');page.locator('#city-search').press('Enter')
  expect(page.locator('#region-filter')).to_have_value('华东')
  expect(page.locator('#map-scope-name')).to_have_text('华东')

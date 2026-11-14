@@ -10,3 +10,8 @@ node_modules/
 *.log
 test-results/
 playwright-report/
+
+# Project-local deployment tools and generated runtime output
+.tools/
+.deploy/
+.cloudbase-backup/

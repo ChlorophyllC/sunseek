@@ -162,3 +162,44 @@ dialog{border:1px solid #e9eee3;box-shadow:0 30px 100px #17392e33;border-radius:
 @media(max-width:600px){.results-topline{flex-wrap:wrap;gap:8px}.results-data{max-width:100%;justify-content:flex-start}.search-result{padding:12px 8px}.search-result>span:first-child{gap:7px}.search-result>span:last-child{font-size:9px}.search-result small{font-size:9px}}
 
 @media(max-width:760px){.discovery-control{grid-column:1/-1;flex-direction:row;align-items:center;gap:12px}.discovery-control .trip-control-label{min-width:60px}.discovery-control select{flex:1}}
+
+.search-group-heading{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 5px;font-size:10px;color:#7d936c;font-weight:500}
+.search-group-heading span{font-size:9px;color:#a1ad96;font-weight:400}
+.search-index-status,.online-search-status{padding:5px 20px 8px;font-size:10px;line-height:1.8;color:#94a386}
+.search-index-status:empty{display:none}.online-results{border-top:1px solid #e9efdf;padding:0 8px 8px}.online-results .search-group-heading,.online-search-status{padding-left:12px;padding-right:12px}
+.search-local-more{display:block;margin:6px auto 10px;padding:9px 15px;font-size:10px;color:var(--green);text-decoration:underline;text-underline-offset:3px}
+.search-modes button:disabled{opacity:.5;cursor:default}
+@media(max-width:480px){.search-group-heading{padding-left:15px;padding-right:15px}.search-index-status{padding-left:15px;padding-right:15px}.online-search-status{font-size:9px}}
+
+/* Touch and modal fixes retain the original type scale. */
+html{-webkit-text-size-adjust:100%}
+#weather-map{touch-action:pan-y}
+.map-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px 16px}
+.map-breadcrumb{max-width:none;min-width:0;flex-basis:auto}
+.map-toolbar>.map-actions:last-child{display:flex;flex-wrap:nowrap;gap:6px;margin-left:0;justify-content:flex-end}
+.map-actions .map-tool{font-size:11px;min-height:40px;padding:8px;white-space:nowrap}
+.map-scope-note{font-size:10px;line-height:1.8;overflow-wrap:anywhere;min-height:0;padding-bottom:12px}
+html.modal-open{overflow:hidden;overscroll-behavior:none}
+dialog{overscroll-behavior:contain}
+.search-dialog[open]{display:flex;flex-direction:column;position:fixed;inset:auto;left:50%;top:calc(var(--visual-top,0px) + var(--visual-height,100dvh)/2);transform:translate(-50%,-50%);margin:0;max-height:calc(var(--visual-height,100dvh) - 24px);overflow:hidden;animation:none}
+.search-dialog-input,.search-modes,.search-footer{flex-shrink:0}
+/* A 16px text input prevents iOS focus zoom; other UI type stays at its original size. */
+.search-dialog-input input{font-size:16px;min-height:28px}
+.search-scroll{min-height:0;max-height:520px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+.search-dialog .search-results,.search-dialog .online-results{max-height:none;overflow:visible;touch-action:pan-y}
+.search-result{min-height:54px}
+.about-mobile-label{display:none}
+.github-star{display:inline-flex;align-items:center;gap:5px;color:var(--green);min-height:32px;white-space:nowrap}
+.github-star .icon{width:14px;height:14px}.github-star:hover{text-decoration:underline;text-underline-offset:3px}
+.data-status{white-space:nowrap;flex-shrink:0}
+@media(min-width:1061px){.destination-image,.all-cards .destination-image{width:98px;min-width:98px;flex-shrink:0}}
+@media(max-width:760px){
+ .map-toolbar{grid-template-columns:minmax(0,1fr);row-gap:8px}.map-toolbar>.map-actions:last-child{justify-content:flex-start}.map-breadcrumb{line-height:1.8}
+ .search-dialog{max-width:calc(100vw - 24px)}.search-dialog-input{padding:14px 12px}.search-scroll{max-height:none}
+ .search-modes{font-size:9px}.search-footer{gap:7px}
+ .header-inner{gap:10px}.main-nav{gap:12px}#about-btn{display:flex;min-height:44px;padding:0 3px}
+ .about-desktop-label{display:none}.about-mobile-label{display:inline}
+}
+@media(max-width:600px){.results-data{width:100%;justify-content:flex-start}#discovery-progress{flex:1 1 180px}}
+@media(max-width:480px){.destination-image,.all-cards .destination-image{width:96px;min-width:96px;flex-shrink:0}.site-footer>div:last-child{gap:6px 10px}}
+@media(max-width:360px){.header-inner{padding:0 12px;gap:8px}.main-nav{gap:8px}.brand{gap:5px}.brand-mark{width:26px}}
