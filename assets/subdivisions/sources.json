@@ -1,0 +1,206 @@
+[
+  {
+    "province": 110000,
+    "children": 16,
+    "bytes": 37528,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/110000_full.json"
+  },
+  {
+    "province": 120000,
+    "children": 16,
+    "bytes": 30710,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/120000_full.json"
+  },
+  {
+    "province": 130000,
+    "children": 11,
+    "bytes": 57208,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/130000_full.json"
+  },
+  {
+    "province": 140000,
+    "children": 11,
+    "bytes": 46966,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/140000_full.json"
+  },
+  {
+    "province": 150000,
+    "children": 12,
+    "bytes": 61631,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/150000_full.json"
+  },
+  {
+    "province": 210000,
+    "children": 14,
+    "bytes": 104334,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/210000_full.json"
+  },
+  {
+    "province": 220000,
+    "children": 9,
+    "bytes": 92792,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/220000_full.json"
+  },
+  {
+    "province": 230000,
+    "children": 13,
+    "bytes": 114893,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/230000_full.json"
+  },
+  {
+    "province": 310000,
+    "children": 16,
+    "bytes": 19015,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/310000_full.json"
+  },
+  {
+    "province": 320000,
+    "children": 13,
+    "bytes": 62939,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/320000_full.json"
+  },
+  {
+    "province": 330000,
+    "children": 11,
+    "bytes": 83724,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/330000_full.json"
+  },
+  {
+    "province": 340000,
+    "children": 16,
+    "bytes": 83579,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/340000_full.json"
+  },
+  {
+    "province": 350000,
+    "children": 9,
+    "bytes": 81421,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/350000_full.json"
+  },
+  {
+    "province": 360000,
+    "children": 11,
+    "bytes": 81009,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/360000_full.json"
+  },
+  {
+    "province": 370000,
+    "children": 16,
+    "bytes": 111785,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/370000_full.json"
+  },
+  {
+    "province": 410000,
+    "children": 18,
+    "bytes": 99204,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/410000_full.json"
+  },
+  {
+    "province": 420000,
+    "children": 17,
+    "bytes": 101333,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/420000_full.json"
+  },
+  {
+    "province": 430000,
+    "children": 14,
+    "bytes": 119360,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/430000_full.json"
+  },
+  {
+    "province": 440000,
+    "children": 21,
+    "bytes": 135320,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/440000_full.json"
+  },
+  {
+    "province": 450000,
+    "children": 14,
+    "bytes": 115485,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/450000_full.json"
+  },
+  {
+    "province": 460000,
+    "children": 19,
+    "bytes": 23198,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/460000_full.json"
+  },
+  {
+    "province": 500000,
+    "children": 38,
+    "bytes": 103910,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/500000_full.json"
+  },
+  {
+    "province": 510000,
+    "children": 21,
+    "bytes": 123428,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/510000_full.json"
+  },
+  {
+    "province": 520000,
+    "children": 9,
+    "bytes": 88387,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/520000_full.json"
+  },
+  {
+    "province": 530000,
+    "children": 16,
+    "bytes": 96214,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/530000_full.json"
+  },
+  {
+    "province": 540000,
+    "children": 7,
+    "bytes": 107056,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/540000_full.json"
+  },
+  {
+    "province": 610000,
+    "children": 10,
+    "bytes": 56136,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/610000_full.json"
+  },
+  {
+    "province": 620000,
+    "children": 14,
+    "bytes": 81025,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/620000_full.json"
+  },
+  {
+    "province": 630000,
+    "children": 8,
+    "bytes": 76539,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/630000_full.json"
+  },
+  {
+    "province": 640000,
+    "children": 5,
+    "bytes": 31536,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/640000_full.json"
+  },
+  {
+    "province": 650000,
+    "children": 24,
+    "bytes": 89779,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/650000_full.json"
+  },
+  {
+    "province": 710000,
+    "children": 0,
+    "bytes": 44,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/710000_full.json"
+  },
+  {
+    "province": 810000,
+    "children": 18,
+    "bytes": 91263,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/810000_full.json"
+  },
+  {
+    "province": 820000,
+    "children": 8,
+    "bytes": 4073,
+    "source": "https://geo.datav.aliyun.com/areas_v3/bound/820000_full.json"
+  }
+]

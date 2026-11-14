@@ -121,9 +121,12 @@ with sync_playwright() as playwright:
     expect(page.locator('.score-parts meter')).to_have_count(4)
     expect(page.locator('.score-explanation')).to_contain_text('不表示天气发生概率')
     page.keyboard.press('Escape')
+    # Crowded non-recommended cities are available through the opt-in point layer.
+    page.locator('#map-extra-points').check()
     page.locator('[data-map-city="beijing"]').click()
     expect(page.locator('.detail-badge.warning').first).to_contain_text('有恶劣天气')
     page.keyboard.press('Escape')
+    page.locator('#map-extra-points').uncheck()
     print('PASS search, hourly details, score explanation, hazardous detail, keyboard close')
 
     page.locator('#more-filters').click()

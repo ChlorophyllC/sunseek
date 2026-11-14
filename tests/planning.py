@@ -61,6 +61,8 @@ def open_city(page, name, city_id):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     context, page, errors, calls = setup(browser)
+    # Include crowded/non-matching points when inspecting their per-day weather.
+    page.locator('#map-extra-points').check()
     expect(page.locator('[data-map-date]')).to_have_count(4)
     original_cards = page.locator('#recommendation-list').inner_html()
     original_dates = [page.locator('#start-date').input_value(), page.locator('#end-date').input_value()]
@@ -100,6 +102,7 @@ with sync_playwright() as p:
     expect(page.locator('[data-map-date=""]')).to_have_attribute('aria-pressed', 'true')
     expect(page.locator('[data-map-date]')).to_have_count(2)
     page.locator('#end-date').fill(DATES[3]); page.locator('#end-date').dispatch_event('change')
+    page.locator('#map-extra-points').uncheck()
     print('PASS province colors and hazards follow the preview day, region changes retain it, date-range changes reset it')
 
     open_city(page, '大理', 'dali')
