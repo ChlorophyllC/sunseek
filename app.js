@@ -161,7 +161,8 @@
   function recompute() {
     state.allRanked=cities.filter(c=>requestedIDs.has(c.id)||c.tier==='featured'||c.tier==='custom'||(isProvince()&&String(c.code)===state.region)).map(assess);
     state.ranked=state.allRanked.filter(c=>c.eligible&&inScope(c)&&(!state.hideVisited||!state.visited[c.id])).sort(sortCities);
-    state.featured=state.sort==='score'&&!isProvince()?Places.diversify(state.ranked):state.ranked.slice(0,3);
+    if(state.sort==='score'&&!isProvince())state.ranked=Places.diversify(state.ranked,state.ranked.length);
+    state.featured=state.ranked.slice(0,3);
   }
   function distanceText(city) {return city.distance===null?'未设置出发地':city.id===state.origin?'当前出发地':`约 ${Math.round(city.distance).toLocaleString('zh-CN')} km · 直线`;}
   function windowText(best) {return best?`${shortDate(best.date)} ${String(best.start).padStart(2,'0')}:00–${String(best.end).padStart(2,'0')}:00`:'暂无连续合拍时段';}
@@ -188,6 +189,8 @@
     Object.assign(state,{origin,maxDistance:origin&&$('#max-distance').value?Number($('#max-distance').value):null,hourStart,hourEnd,start,end,min:min===''?null:+min,max:max===''?null:+max,strict:$('#strict-match').checked,hideVisited:$('#hide-visited').checked,region:$('#region-filter').value,sort:$('#sort-order').value});
     $('#max-distance').disabled=!origin;
     $('#sort-order option[value=distance]').disabled=!origin;
+    $('#all-sort-order option[value=distance]').disabled=!origin;
+    $('#all-sort-order').value=state.sort;
     $('#distance-note').textContent=origin?`从${cityByID.get(origin).name}出发 · 距离为城市中心之间的近似直线距离，暂不提供交通时间与票价。`:'选择出发地后，可按直线距离筛选；交通时间与票价暂未接入。';
     try{localStorage.setItem('sunseek-preferences-v2',JSON.stringify({origin,hourStart,hourEnd,maxDistance:state.maxDistance}));}catch{}
     return true;
@@ -241,6 +244,7 @@
     const empty=loading?`<div class="empty-results loading-pulse">${icon('sun')}<h3>好天气，正在路上</h3><p>正在查询逐小时预报，稍等片刻。</p></div>`:!state.data.size?`<div class="empty-results">${icon('cloud')}<h3>先等等真实的天气</h3><p>连接恢复后，推荐会重新出现。<br>你仍然可以查看自己的旅行足迹。</p><button data-retry-weather>重新获取天气</button></div>`:`<div class="empty-results">${icon(preferences[state.preference].icon)}<h3>换个条件，也许就有好风景</h3><p>当前没有满足条件的目的地。<br>试试调整日期、活动时间或距离范围。</p><button id="empty-reset">放宽距离与高级筛选</button></div>`;
     $('#recommendation-list').innerHTML=state.ranked.length?state.featured.map(cardHTML).join(''):empty;
     $('#ranking-note').textContent=state.sort==='score'&&!isProvince()?'先看看不同省份的好天气，同省选择收在下方。':isProvince()?'正在浏览省内地点；灰色标记表示尚无完整天气。':'按所选条件直接排序，不限制同省数量。';
+    $('#all-ranking-note').textContent=state.sort==='score'&&!isProvince()?'每轮各省先展示一个地点，轮内按天气匹配度排列。':isProvince()?'当前浏览省内目的地，按所选条件排序。':'按所选条件排序，不限制同省数量。';
     const seen=new Set();
     $('#province-alternatives').innerHTML=state.featured.filter(c=>{if(seen.has(c.code))return false;seen.add(c.code);return true;}).map(c=>{
       const others=state.ranked.filter(item=>item.code===c.code&&!state.featured.some(top=>top.id===item.id));
@@ -459,6 +463,16 @@
     }).join('')+(!matches.length&&!regions.length?'<p class="search-empty">本地索引未找到，请查看下方在线结果，或换用所属县镇名称搜索。</p>':matches.length>60?'<p class="search-empty">显示前 60 个匹配地点，请输入更具体的名称。</p>':'');
   }
 
+  function renderRegionSearch() {
+    const query=$('#region-search').value.trim().toLowerCase();
+    const regions=[...$('#region-filter').options].map(option=>{
+      const province=Places.provinces.find(p=>String(p.code)===option.value);
+      const fullName=provinceFeatures.find(f=>String(f.properties.adcode)===option.value)?.properties.name||'';
+      return {value:option.value,name:option.textContent,description:province?`${province.region} · 省级地图`:option.value==='all'?'全部地区':'大区地图',search:option.textContent+fullName+(province?.region||'')};
+    }).filter(region=>region.search.toLowerCase().includes(query));
+    $('#region-search-results').innerHTML=regions.map(region=>`<button class="search-result" data-select-region="${region.value}" aria-pressed="${state.region===region.value}"><span>${icon('pin')}<span>${escapeHTML(region.name)}<small>${escapeHTML(region.description)}</small></span></span>${icon(state.region===region.value?'check':'arrow')}</button>`).join('')||'<p class="search-empty">没有找到这个地区，试试“华东”“广东”或“内蒙古”。</p>';
+  }
+
   function saveWeatherCache() {
     try {
       const forecasts=[...state.data].filter(([id])=>updatedAt.has(id)).map(([id,days])=>Weather.packCache(new Map([[id,days]]),updatedAt.get(id)));
@@ -641,6 +655,11 @@
   }
   function initEvents() {
     $('#region-filter').addEventListener('change',()=>setScope($('#region-filter').value));
+    $('#region-search-btn').addEventListener('click',()=>{closeAllDialogs();$('#region-search').value='';renderRegionSearch();showDialog($('#region-dialog'));$('#region-search').focus();});
+    $('#region-search').addEventListener('input',renderRegionSearch);
+    $('#region-search').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();$('#region-search-results [data-select-region]')?.click();}else if(event.key==='ArrowDown'){event.preventDefault();$('#region-search-results [data-select-region]')?.focus();}});
+    $('#region-search-results').addEventListener('click',event=>{const option=event.target.closest('[data-select-region]');if(!option)return;closeAllDialogs();setScope(option.dataset.selectRegion);$('#region-search-btn').focus();});
+    $('#all-sort-order').addEventListener('change',()=>{$('#sort-order').value=$('#all-sort-order').value;applyFilters();});
     $('#map-national').addEventListener('click',()=>setScope('all'));
     $('#map-pick').addEventListener('click',toggleMapPick);
     $('#add-place-btn').addEventListener('click',()=>openPlace());
@@ -746,6 +765,7 @@
 
   $('#start-date').value=state.start;$('#end-date').value=state.end;
   const originSelect=$('#origin-city');
+  $('#all-sort-order').innerHTML=$('#sort-order').innerHTML;
   refreshOriginOptions();
   const provinceGroup=document.createElement('optgroup');provinceGroup.label='按省份浏览';
   Places.provinces.forEach(p=>provinceGroup.append(new Option(p.name,String(p.code))));$('#region-filter').append(provinceGroup);

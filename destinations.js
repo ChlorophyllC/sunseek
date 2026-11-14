@@ -47,10 +47,10 @@ window.SunseekPlaces = (() => {
   }
   function scopeMatches(city,scope){return scope==='all'||city.region===scope||String(city.code)===scope;}
   function diversify(ranked,count=3){
-    const picked=[],seen=new Set();
-    for(const city of ranked){if(!seen.has(city.code)){picked.push(city);seen.add(city.code);}if(picked.length===count)break;}
-    for(const city of ranked){if(picked.length===count)break;if(!picked.includes(city))picked.push(city);}
-    return picked;
+    const seen=new Map();
+    // Each round takes one destination per province, retaining weather order within that round.
+    return ranked.map((city,index)=>{const round=seen.get(city.code)||0;seen.set(city.code,round+1);return {city,round,index};})
+      .sort((a,b)=>a.round-b.round||a.index-b.index).slice(0,count).map(item=>item.city);
   }
   return Object.freeze({provinces,shortNames,regionFor,buildCatalog,restoreCustom,provinceAt,scopeMatches,diversify});
 })();

@@ -33,6 +33,42 @@ with sync_playwright() as p:
  page.locator('#sort-order').select_option('score')
  print('PASS featured geographic diversity, same-province alternatives, explicit weather-only sort')
 
+ page.locator('#show-all-btn').click()
+ expect(page.locator('#all-sort-order')).to_have_value('score')
+ all_provinces=[text.split(' · ')[0] for text in page.locator('#all-cards .destination-province').all_text_contents()]
+ assert len(set(all_provinces[:len(set(all_provinces))]))==len(set(all_provinces))
+ counts={};rounds=[]
+ for province_name in all_provinces:
+  rounds.append(counts.get(province_name,0));counts[province_name]=rounds[-1]+1
+ assert rounds==sorted(rounds)
+ all_ids=page.locator('#all-cards [data-city]').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.city)')
+ assert len(all_ids)==len(set(all_ids))
+ assert page.locator('#recommendation-list [data-city]').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.city)')==all_ids[:3]
+ assert page.locator('#all-sort-order option[value=distance]').evaluate('(option)=>option.disabled')
+ page.locator('#all-sort-order').select_option('weather')
+ expect(page.locator('#sort-order')).to_have_value('weather')
+ scores=page.locator('#all-cards .match-score').evaluate_all('(nodes)=>nodes.map(n=>parseInt(n.textContent))')
+ assert scores==sorted(scores,reverse=True)
+ assert set(page.locator('#all-cards [data-city]').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.city)'))==set(all_ids)
+ page.locator('#sort-order').select_option('score')
+ expect(page.locator('#all-sort-order')).to_have_value('score')
+ page.locator('#all-destinations').screenshot(path='/tmp/sunseek-all-regional.png')
+ page.locator('#collapse-results').click()
+ page.locator('#region-search-btn').click()
+ page.locator('#region-search').fill('不存在的地区')
+ expect(page.locator('#region-search-results')).to_contain_text('没有找到')
+ page.locator('#region-search').fill('华东');page.locator('#region-search').press('Enter')
+ expect(page.locator('#region-filter')).to_have_value('华东')
+ expect(page.locator('#map-scope-name')).to_have_text('华东')
+ page.locator('#region-search-btn').click();page.locator('#region-search').fill('云南省')
+ expect(page.locator('#region-search-results [data-select-region]')).to_have_count(1)
+ page.locator('#region-search').press('ArrowDown');page.keyboard.press('Enter')
+ expect(page.locator('#region-filter')).to_have_value('530000')
+ expect(page.locator('#region-dialog')).not_to_be_visible()
+ page.wait_for_function("!document.querySelector('#data-status').textContent.includes('更新中')")
+ page.locator('#map-national').click()
+ print('PASS full-list geographic rounds, no lost/duplicate destinations, synchronized sorting, searchable regions and keyboard selection')
+
  national_path=page.locator('[data-province="330000"]').get_attribute('d')
  for region in ['华东','华南','华中','华北','西南','西北','东北']:
   page.locator('#region-filter').select_option(region)
@@ -175,6 +211,14 @@ with sync_playwright() as p:
   page.set_viewport_size({'width':width,'height':900})
   page.wait_for_timeout(180)
   assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),width
+  page.locator('#region-search-btn').click()
+  assert page.locator('#region-dialog').bounding_box()['width']<=width
+  page.keyboard.press('Escape')
+  page.locator('#show-all-btn').click()
+  expect(page.locator('#all-sort-order')).to_be_visible()
+  assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),width
+  if width==390:page.locator('#all-destinations .panel-heading').screenshot(path='/tmp/sunseek-all-controls-mobile.png')
+  page.locator('#collapse-results').click()
   page.locator('#add-place-btn').click()
   assert page.locator('#place-dialog').bounding_box()['width']<=width
   page.keyboard.press('Escape')
