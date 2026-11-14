@@ -33,7 +33,7 @@ with sync_playwright() as p:
         page.locator(f'#search-results [data-open-city="{id}"]').click()
     def open_online():
         page.locator('#search-btn').click();page.locator('#city-search').fill('宏村');page.locator('#search-online').click()
-        page.locator('[data-online-place="0"]').click()
+        page.locator('#search-results .search-result').first.click()
     def saved_places():return json.loads(page.evaluate("localStorage.getItem('sunseek-places-v3')||'[]'"))
     def cache_ids():return page.evaluate("()=>JSON.parse(localStorage.getItem('sunseek-weather-v3')||'{\"forecasts\":[]}').forecasts.flatMap(f=>f.data.map(row=>row[0]))")
     open_city('杭州','hangzhou')

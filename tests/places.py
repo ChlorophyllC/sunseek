@@ -55,16 +55,16 @@ with sync_playwright() as p:
  page.locator('#all-destinations').screenshot(path='/tmp/sunseek-all-regional.png')
  page.locator('#collapse-results').click()
  page.locator('#region-search-btn').click()
- page.locator('#region-search').fill('不存在的地区')
- expect(page.locator('#region-search-results')).to_contain_text('没有找到')
- page.locator('#region-search').fill('华东');page.locator('#region-search').press('Enter')
+ page.locator('#city-search').fill('不存在的地区')
+ expect(page.locator('#search-results')).to_contain_text('没有找到')
+ page.locator('#city-search').fill('华东');page.locator('#city-search').press('Enter')
  expect(page.locator('#region-filter')).to_have_value('华东')
  expect(page.locator('#map-scope-name')).to_have_text('华东')
- page.locator('#region-search-btn').click();page.locator('#region-search').fill('云南省')
- expect(page.locator('#region-search-results [data-select-region]')).to_have_count(1)
- page.locator('#region-search').press('ArrowDown');page.keyboard.press('Enter')
+ page.locator('#region-search-btn').click();page.locator('#city-search').fill('云南省')
+ expect(page.locator('#search-results [data-open-province]')).to_have_count(1)
+ page.locator('#city-search').press('ArrowDown');page.keyboard.press('Enter')
  expect(page.locator('#region-filter')).to_have_value('530000')
- expect(page.locator('#region-dialog')).not_to_be_visible()
+ expect(page.locator('#search-dialog')).not_to_be_visible()
  page.wait_for_function("!document.querySelector('#data-status').textContent.includes('更新中')")
  page.locator('#map-national').click()
  print('PASS full-list geographic rounds, no lost/duplicate destinations, synchronized sorting, searchable regions and keyboard selection')
@@ -114,8 +114,8 @@ with sync_playwright() as p:
  print('PASS province search, projected province map, on-demand city weather, national return')
 
  page.locator('#search-btn').click();page.locator('#city-search').fill('景德镇')
- expect(page.locator('#search-results .search-result')).to_have_count(1)
- page.locator('#search-results .search-result').click()
+ expect(page.locator('#search-results [data-open-city="area-360200"]')).to_be_visible()
+ page.locator('#search-results [data-open-city="area-360200"]').click()
  expect(page.locator('.city-dialog-title h2')).to_have_text('景德镇')
  expect(page.locator('.city-dialog-hero .place-placeholder')).to_be_visible()
  expect(page.locator('.city-dialog-hero img')).to_have_count(0)
@@ -187,7 +187,7 @@ with sync_playwright() as p:
  print('PASS coordinate validation, province mismatch, province map point picking')
 
  page.locator('#map-national').click()
- page.locator('#search-btn').click();page.locator('#city-search').fill('宏村');page.locator('#search-online').click();page.locator('[data-online-place="0"]').click()
+ page.locator('#search-btn').click();page.locator('#city-search').fill('宏村');page.locator('#search-online').click();page.locator(f'#search-results [data-open-city="{custom_id}"]').click()
  expect(page.locator('.city-dialog-title h2')).to_have_text('宏村')
  assert len(json.loads(page.evaluate("localStorage.getItem('sunseek-places-v3')")))==1
  page.keyboard.press('Escape')
@@ -202,7 +202,7 @@ with sync_playwright() as p:
  page.locator('#search-btn').click();page.locator('#city-search').fill('未收录村庄')
  page.route('https://geocoding-api.open-meteo.com/**',lambda route:route.abort())
  page.locator('#search-online').click();expect(page.locator('#online-results')).to_contain_text('在线搜索暂时不可用')
- page.locator('#city-search').fill('景德镇');expect(page.locator('#search-results .search-result')).to_have_count(1)
+ page.locator('#city-search').fill('景德镇');expect(page.locator('#search-results [data-open-city="area-360200"]')).to_be_visible()
  page.keyboard.press('Escape')
  print('PASS online lookup failure keeps local search available')
 
@@ -212,7 +212,7 @@ with sync_playwright() as p:
   page.wait_for_timeout(180)
   assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),width
   page.locator('#region-search-btn').click()
-  assert page.locator('#region-dialog').bounding_box()['width']<=width
+  assert page.locator('#search-dialog').bounding_box()['width']<=width
   page.keyboard.press('Escape')
   page.locator('#show-all-btn').click()
   expect(page.locator('#all-sort-order')).to_be_visible()
@@ -235,7 +235,7 @@ with sync_playwright() as p:
  page.locator('#search-results [data-open-city="dali"]').click()
  expect(page.locator('.detail-metrics')).not_to_contain_text('—')
  page.keyboard.press('Escape')
- page.locator('#search-btn').click();page.locator('#city-search').fill('景德镇');page.locator('#search-results .search-result').click()
+ page.locator('#search-btn').click();page.locator('#city-search').fill('景德镇');page.locator('#search-results [data-open-city="area-360200"]').click()
  expect(page.locator('.detail-metrics')).not_to_contain_text('—',timeout=8000)
  migrated=json.loads(page.evaluate("localStorage.getItem('sunseek-weather-v3')"))
  migrated_times={f['data'][0][0]:f['time'] for f in migrated['forecasts']}

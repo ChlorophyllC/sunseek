@@ -55,5 +55,9 @@ window.SunseekAttractions = (() => {
   }
   function mount(element,city,weather){host=element;current={city,weather};render();}
   function close(){host=null;current=null;}
-  return Object.freeze({init,mount,close});
+  function restoreSaved(items){
+    if(!Array.isArray(items)||items.length>100||items.some(item=>!validItem(item)))throw new Error('收藏格式不正确');
+    saved=items.map(clean);render();renderSaved();
+  }
+  return Object.freeze({init,mount,close,validItem,cleanItem:clean,snapshot:()=>saved.map(clean),restoreSaved});
 })();

@@ -1,7 +1,7 @@
 """Build a compact administrative place index from downloaded DataV province files.
 Usage: python3 scripts/build_places.py /tmp
 Source: https://geo.datav.aliyun.com/areas_v3/bound/{province}_full.json
-Taiwan has no matching full file in this dataset; its current curated point remains searchable.
+Taiwan has no matching full file here; build_search_places.py generates its separate GeoNames sampling catalog.
 """
 import json,sys
 from pathlib import Path

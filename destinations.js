@@ -10,13 +10,19 @@ window.SunseekPlaces = (() => {
   const plainName=name=>name.replace(/市$/,'');
   const finite=n=>typeof n==='number'&&Number.isFinite(n);
   function buildCatalog(curated,rows){
-    const result=curated.map(c=>({...c,capital:capitals.has(c.name),tier:'featured',countryCode:'CN',timezone:'Asia/Shanghai',source:'curated'}));
+    const result=curated.map(c=>({...c,capital:capitals.has(c.name),tier:'featured',countryCode:({710000:'TW',810000:'HK',820000:'MO'}[c.code]||'CN'),timezone:'Asia/Shanghai',source:'curated'}));
     for(const [adcode,name,code,lat,lon,level] of rows){
       // Do not conflate a city with a prefecture/autonomous region that contains it.
       const duplicate=result.find(c=>c.code===code&&plainName(c.name)===plainName(name));
       if(duplicate){duplicate.adcode=adcode;continue;}
       result.push({id:`area-${adcode}`,name:plainName(name),fullName:name,code,province:shortNames[code],region:regionFor(code),lat,lon,level,adcode,
-        tier:'basic',capital:false,marker:false,temp:20,type:'place',description:'',image:null,countryCode:'CN',timezone:'Asia/Shanghai',source:'datav',index:result.length});
+        tier:'basic',capital:false,marker:false,temp:20,type:'place',description:'',image:null,countryCode:({710000:'TW',810000:'HK',820000:'MO'}[code]||'CN'),timezone:'Asia/Shanghai',source:'datav',index:result.length});
+    }
+    for(const entry of window.TAIWAN_PLACES||[]){
+      const duplicate=result.find(c=>c.code===710000&&plainName(c.name)===plainName(entry.name));
+      if(duplicate){Object.assign(duplicate,{geoId:entry.geoId,fullName:entry.name,aliases:entry.aliases});continue;}
+      result.push({id:`geo-${entry.geoId}`,name:entry.name,fullName:entry.name,aliases:entry.aliases,code:710000,province:shortNames[710000],region:regionFor(710000),lat:entry.lat,lon:entry.lon,
+        tier:'basic',capital:false,marker:false,temp:20,type:'place',description:`县市参考采样点：${entry.sampleName}。天气为该点预报，不能代表全县市。`,image:null,countryCode:'TW',timezone:'Asia/Shanghai',source:'geonames',geoId:entry.geoId,sampleGeoId:entry.sampleGeoId,index:result.length});
     }
     return result;
   }
@@ -27,7 +33,7 @@ window.SunseekPlaces = (() => {
   function restoreCustom(value){
     if(!Array.isArray(value))return [];
     return value.slice(0,100).filter(validCustom).map(c=>({id:c.id,name:c.name.trim(),code:c.code,province:shortNames[c.code],region:regionFor(c.code),lat:c.lat,lon:c.lon,
-      tier:'custom',capital:false,marker:true,temp:20,type:'place',description:'',image:null,countryCode:'CN',timezone:'Asia/Shanghai',source:c.source==='geonames'?'geonames':'custom',geoId:Number.isInteger(c.geoId)?c.geoId:null}));
+      tier:'custom',capital:false,marker:true,temp:20,type:'place',description:'',image:null,countryCode:({710000:'TW',810000:'HK',820000:'MO'}[c.code]||'CN'),timezone:'Asia/Shanghai',source:c.source==='geonames'?'geonames':'custom',geoId:Number.isInteger(c.geoId)?c.geoId:null}));
   }
   function inRing(lon,lat,ring){
     let inside=false;
@@ -52,5 +58,5 @@ window.SunseekPlaces = (() => {
     return ranked.map((city,index)=>{const round=seen.get(city.code)||0;seen.set(city.code,round+1);return {city,round,index};})
       .sort((a,b)=>a.round-b.round||a.index-b.index).slice(0,count).map(item=>item.city);
   }
-  return Object.freeze({provinces,shortNames,regionFor,buildCatalog,restoreCustom,provinceAt,scopeMatches,diversify});
+  return Object.freeze({provinces,shortNames,regionFor,buildCatalog,validCustom,restoreCustom,provinceAt,scopeMatches,diversify});
 })();
