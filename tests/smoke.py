@@ -33,7 +33,7 @@ with sync_playwright() as playwright:
     expect(page.locator('#all-cards [data-city="dali"]')).to_contain_text('27 / 27h 合拍')
     expect(page.locator('#all-cards [data-city="lijiang"]')).to_contain_text('9 / 27h 合拍')
     assert '%' not in page.locator('#recommendation-list .match-score').first.inner_text()
-    assert page.evaluate("localStorage.getItem('sunseek-weather-v2').length")<2_000_000
+    assert page.evaluate("localStorage.getItem('sunseek-weather-v3').length")<2_000_000
     print('PASS hourly daylight ranking, night-rain handling, gust and null-data exclusion, compact cache')
 
     for preference in ['snow','rain','cool','sun']:
@@ -90,7 +90,7 @@ with sync_playwright() as playwright:
     for index in range(3):page.locator('#recommendation-list [data-compare]').nth(index).click()
     expect(page.locator('#compare-tray .compare-chips>span')).to_have_count(3)
     page.locator('#show-all-btn').click()
-    page.locator('#all-cards [data-compare]').nth(3).click()
+    page.locator('#all-cards [data-compare][aria-pressed=false]').first.click()
     expect(page.locator('#toast')).to_contain_text('最多比较 3 个')
     page.locator('[data-open-compare]').click()
     expect(page.locator('#compare-dialog')).to_be_visible()
@@ -111,8 +111,8 @@ with sync_playwright() as playwright:
 
     page.locator('#search-btn').click()
     page.locator('#city-search').fill('大理')
-    expect(page.locator('#search-results .search-result')).to_have_count(1)
-    page.locator('#search-results .search-result').click()
+    expect(page.locator('#search-results [data-open-city=\"dali\"]')).to_have_count(1)
+    page.locator('#search-results [data-open-city=\"dali\"]').click()
     expect(page.locator('#city-dialog')).to_be_visible()
     expect(page.locator('.day-plan')).to_have_count(3)
     page.locator('.hour-slot').first.click()
@@ -147,12 +147,12 @@ with sync_playwright() as playwright:
     print('PASS date/temperature validation, quick dates, map controls, no JavaScript errors')
 
     page.route('https://api.open-meteo.com/**',lambda route:route.abort())
-    page.evaluate("const c=JSON.parse(localStorage.getItem('sunseek-weather-v2'));c.time=Date.now()-2*3600000;localStorage.setItem('sunseek-weather-v2',JSON.stringify(c))")
+    page.evaluate("const c=JSON.parse(localStorage.getItem('sunseek-weather-v3'));c.forecasts.forEach(f=>f.time=Date.now()-2*3600000);localStorage.setItem('sunseek-weather-v3',JSON.stringify(c))")
     page.reload(wait_until='domcontentloaded')
     expect(page.locator('#data-notice')).to_contain_text('本次连接未成功')
     expect(page.locator('#data-status')).to_contain_text('缓存预报')
     assert page.locator('#all-cards .destination-card').count()>0
-    page.evaluate("const c=JSON.parse(localStorage.getItem('sunseek-weather-v2'));c.time=Date.now()-7*3600000;localStorage.setItem('sunseek-weather-v2',JSON.stringify(c))")
+    page.evaluate("const c=JSON.parse(localStorage.getItem('sunseek-weather-v3'));c.forecasts.forEach(f=>f.time=Date.now()-7*3600000);localStorage.setItem('sunseek-weather-v3',JSON.stringify(c))")
     page.reload(wait_until='domcontentloaded')
     expect(page.locator('#data-status')).to_contain_text('暂无可用预报')
     expect(page.locator('#all-cards .destination-card')).to_have_count(0)
@@ -164,7 +164,7 @@ with sync_playwright() as playwright:
     page.locator('[data-enter-demo]').click()
     expect(page.locator('#data-notice')).to_contain_text('正在体验演示模式')
     expect(page.locator('#recommendation-list .destination-card')).to_have_count(3)
-    assert page.evaluate("localStorage.getItem('sunseek-weather-v2')") is None
+    assert page.evaluate("JSON.parse(localStorage.getItem('sunseek-weather-v3')||'{\"forecasts\":[]}').forecasts.length") == 0
     page.locator('#recommendation-list .destination-card').first.click()
     expect(page.locator('.detail-badge.warning')).to_contain_text('示例数据')
     page.keyboard.press('Escape')

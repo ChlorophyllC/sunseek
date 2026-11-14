@@ -4,7 +4,8 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
   const Weather = window.SunseekWeather;
-  const CACHE_KEY = 'sunseek-weather-v2';
+  const Places = window.SunseekPlaces;
+  const CACHE_KEY = 'sunseek-weather-v3';
   const CACHE_MAX_AGE = 6 * 3600000;
   const icon = (name, extra = '') => `<svg class="icon ${extra}" aria-hidden="true"><use href="#i-${name}"/></svg>`;
   const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -74,15 +75,28 @@
     ['macao','澳门','澳门',820000,'华南',22.20,113.54,26,'coast','漫步在小街里，把旅程放慢一些。','coast',false],
     ['taipei','台北','台湾',710000,'华东',25.03,121.57,24,'forest','在山边、街角与小店之间，寻找日常的温柔。','forest',true]
   ];
-  const cities = cityRows.map(([id,name,province,code,region,lat,lon,temp,type,description,image,marker],index)=>({id,name,province,code,region,lat,lon,temp,type,description,image,marker,index}));
+  const curated = cityRows.map(([id,name,province,code,region,lat,lon,temp,type,description,image,marker],index)=>({id,name,province,code,region,lat,lon,temp,type,description,image,marker,index}));
+  const cities = Places.buildCatalog(curated,window.PLACE_ROWS||[]);
+  try { for(const city of Places.restoreCustom(JSON.parse(localStorage.getItem('sunseek-places-v3')||'[]')))if(!cities.some(c=>c.id===city.id))cities.push({...city,index:cities.length}); } catch {}
   const cityByID = new Map(cities.map(c=>[c.id,c]));
+  const featuredIDs=new Set(cities.filter(c=>c.tier==='featured').map(c=>c.id));
+  const requestedIDs=new Set(featuredIDs);
+  const pendingIDs=new Set();
+  const failedIDs=new Set();
+  const updatedAt=new Map();
+  let searchController=null,searchGeneration=0,onlineCandidates=[],placeCandidate=null;
+  let mapBounds=null;
+  const provinceFeatures=window.CHINA_GEO?.features||[];
+  const inScope=city=>Places.scopeMatches(city,state.region);
+  const isProvince=()=>/^\d{6}$/.test(state.region);
+  const escapeName=city=>escapeHTML(city.name);
   const preferences = {
     sun:{name:'追着阳光',icon:'sun',dayLabel:'晴好',mapLabel:'晴天分布',legend:'晴好小时占比',tag:'适合晒太阳',color:'#d3ac4c'},
     snow:{name:'赴一场雪',icon:'snow',dayLabel:'降雪',mapLabel:'降雪分布',legend:'降雪小时占比',tag:'等待一场雪',color:'#7d9fbc'},
     rain:{name:'听听下雨',icon:'rain',dayLabel:'细雨',mapLabel:'细雨分布',legend:'细雨小时占比',tag:'适合听听雨',color:'#829db2'},
     cool:{name:'寻一处清凉',icon:'leaf',dayLabel:'舒适',mapLabel:'舒适天气分布',legend:'舒适小时占比',tag:'温度刚刚好',color:'#80a078'}
   };
-  const state = {start:addDays(today,1),end:addDays(today,3),preference:'sun',region:'all',sort:'score',hideVisited:true,strict:false,min:null,max:null,origin:'',maxDistance:null,hourStart:9,hourEnd:18,compare:[],mode:'loading',data:new Map(),ranked:[],allRanked:[],visited:{},loading:false,lastUpdated:null,zoom:1,panX:0,panY:0,activeCity:null,toastTimer:null,requestId:0,controller:null,fetchError:false};
+  const state = {start:addDays(today,1),end:addDays(today,3),preference:'sun',region:'all',sort:'score',hideVisited:true,strict:false,min:null,max:null,origin:'',maxDistance:null,hourStart:9,hourEnd:18,compare:[],mode:'loading',data:new Map(),ranked:[],allRanked:[],visited:{},loading:false,lastUpdated:null,zoom:1,panX:0,panY:0,activeCity:null,toastTimer:null,requestId:0,controller:null,fetchError:false,picking:false,focusCity:null,featured:[]};
   let storageAvailable=true;
   try {
     const saved=JSON.parse(localStorage.getItem('sunseek-footprints-v1') || '{}');
@@ -142,16 +156,17 @@
     if(state.sort==='hours')return b.goodHours-a.goodHours||b.score-a.score||a.index-b.index;
     if(state.sort==='days')return b.matchCount-a.matchCount||b.score-a.score||a.index-b.index;
     if(state.sort==='temp')return a.mean-b.mean||b.score-a.score||a.index-b.index;
-    return b.score-a.score||b.goodHours-a.goodHours||a.index-b.index;
+    return b.score-a.score||b.goodHours-a.goodHours||(state.sort==='score'?(a.tier==='featured'?0:1)-(b.tier==='featured'?0:1):0)||a.index-b.index;
   }
   function recompute() {
-    state.allRanked=cities.map(assess);
-    state.ranked=state.allRanked.filter(c=>c.eligible&&(state.region==='all'||c.region===state.region)&&(!state.hideVisited||!state.visited[c.id])).sort(sortCities);
+    state.allRanked=cities.filter(c=>requestedIDs.has(c.id)||c.tier==='featured'||c.tier==='custom'||(isProvince()&&String(c.code)===state.region)).map(assess);
+    state.ranked=state.allRanked.filter(c=>c.eligible&&inScope(c)&&(!state.hideVisited||!state.visited[c.id])).sort(sortCities);
+    state.featured=state.sort==='score'&&!isProvince()?Places.diversify(state.ranked):state.ranked.slice(0,3);
   }
   function distanceText(city) {return city.distance===null?'未设置出发地':city.id===state.origin?'当前出发地':`约 ${Math.round(city.distance).toLocaleString('zh-CN')} km · 直线`;}
   function windowText(best) {return best?`${shortDate(best.date)} ${String(best.start).padStart(2,'0')}:00–${String(best.end).padStart(2,'0')}:00`:'暂无连续合拍时段';}
-  function dataLabel() {return state.mode==='demo'?'示例数据':state.mode==='cached'?'缓存预报':state.mode==='live'?'实时预报':'暂无可用预报';}
-  function timeLabel() {return state.lastUpdated?new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(state.lastUpdated)):'';}
+  function dataLabel(city=null) {if(city&&state.mode!=='demo'&&!state.data.has(city.id))return pendingIDs.has(city.id)?'正在获取预报':'暂无可用预报';return state.mode==='demo'?'示例数据':state.mode==='cached'?'缓存预报':state.mode==='live'?'实时预报':'暂无可用预报';}
+  function timeLabel(city=null) {const stamp=city?updatedAt.get(city.id):state.lastUpdated;return stamp?new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(stamp)):'';}
 
   function getFilters() {
     const start=$('#start-date').value,end=$('#end-date').value;
@@ -189,12 +204,12 @@
     $('#trip-length').textContent=`共 ${days} 天`;
     $('#map-date-label').textContent=`${shortDate(state.start)} – ${shortDate(state.end)}`;
     $('#map-mode-label').textContent=`${state.hourStart}–${state.hourEnd} 时 · ${preferences[state.preference].mapLabel}`;
-    const available=state.allRanked.filter(c=>c.complete&&(state.region==='all'||c.region===state.region)).length;
-    $('#results-summary').innerHTML=state.loading&&!state.data.size?'正在获取城市的逐小时天气…':!state.data.size?'暂无可用天气，连接恢复后再为你推荐':`${state.mode==='demo'?'示例覆盖':'已查询'} <strong>${available}</strong> 个目的地，找到 <strong>${state.ranked.length}</strong> 个合拍的地方${state.origin?` · 从${cityByID.get(state.origin).name}出发`:''}`;
+    const available=state.allRanked.filter(c=>c.complete&&inScope(c)).length;
+    $('#results-summary').innerHTML=state.loading&&!state.data.size?'正在获取城市的逐小时天气…':!state.data.size?'暂无可用天气，连接恢复后再为你推荐':`${state.mode==='demo'?'示例覆盖':'已查询'} <strong>${available}</strong> 个目的地，找到 <strong>${state.ranked.length}</strong> 个合拍的地方${state.origin?` · 从${escapeHTML(cityByID.get(state.origin).name)}出发`:''}`;
     $('#recommend-count').textContent=`${shortDate(state.start)} – ${shortDate(state.end)} · 每天 ${state.hourStart}–${state.hourEnd} 时`;
     $('#map-subtitle').textContent=state.mode==='demo'?'演示模式 · 仅供体验，不用于行程决策':`${days} 天的白昼合拍小时概览 · 省份着色仅代表采样城市`;
     $('#map-legend').innerHTML=`<span>${preferences[state.preference].legend}</span><span>少</span><div class="legend-gradient" style="background:linear-gradient(90deg,${provinceColor(0)},${provinceColor(.5)},${provinceColor(1)})"></div><span>多</span>`;
-    renderRecommendations();renderMap();renderVisited();renderDataStatus();renderCompareTray();
+    renderRecommendations();renderMap();renderVisited();renderDataStatus();renderCompareTray();renderSavedPlaces();
     if($('#compare-dialog').open)renderCompareDialog();
   }
   function renderDataStatus() {
@@ -213,18 +228,25 @@
       notice.hidden=false;notice.innerHTML=`${icon('cloud')}<div><strong>天气暂时连接不上，好风景值得等一等</strong><p>没有 6 小时内的有效缓存。你可以重试，或主动体验演示功能。</p></div><div class="notice-actions">${retry}<button class="text-button" data-enter-demo>体验演示</button></div>`;
     }else if(state.mode==='cached'){
       notice.hidden=false;notice.innerHTML=`${icon('info')}<div><strong>使用 ${timeLabel()} 获取的缓存预报</strong><p>${state.loading?'正在尝试更新，保留现有结果。':state.fetchError?'本次连接未成功，缓存仍在 6 小时有效期内。':'缓存 1 小时内复用；超过 6 小时将停止推荐。'}</p></div>${retry}`;
-    }else if(state.mode==='live'&&state.data.size<cities.length){
-      notice.hidden=false;notice.innerHTML=`${icon('info')}<div><strong>已取得 ${state.data.size} / ${cities.length} 个城市的数据</strong><p>其余城市暂不参与推荐，地图以灰色或缺失标识显示。</p></div>${retry}`;
+    }else if(state.mode==='live'&&state.data.size<requestedIDs.size){
+      notice.hidden=false;notice.innerHTML=`${icon('info')}<div><strong>已取得 ${state.data.size} / ${requestedIDs.size} 个地点的数据</strong><p>其余城市暂不参与推荐，地图以灰色或缺失标识显示。</p></div>${retry}`;
     }else notice.hidden=true;
   }
   function cardHTML(city,index) {
     const pref=preferences[state.preference],visited=!!state.visited[city.id],compared=state.compare.includes(city.id);
-    return `<article class="destination-card" data-city="${city.id}" tabindex="0" role="button" aria-label="查看${city.name}天气详情"><div class="destination-image"><img src="assets/${city.image}.jpg" alt="旅行意境图，非城市实景" loading="lazy"><div class="image-overlay"></div><span class="destination-rank">${String(index+1).padStart(2,'0')}</span></div><div class="destination-content"><div class="destination-top"><div><h3 class="destination-name">${city.name}</h3><p class="destination-province">${city.province} · ${state.origin?distanceText(city):city.region}</p></div><div class="match-score">${city.score}<small>分</small><span class="match-caption">天气匹配度</span></div></div><div class="destination-weather">${icon(pref.icon)}<strong>${city.goodHours} / ${city.availableHours}h 合拍</strong><span class="weather-dot">·</span><span>${round(city.min)}–${round(city.max)}°C</span></div><p class="card-best-window">${icon('calendar')}${windowText(city.best)}</p><p class="card-caution">${city.caution}</p><div class="destination-bottom"><button class="compare-button ${compared?'is-selected':''}" data-compare="${city.id}" aria-pressed="${compared}" aria-label="${compared?'移除':'加入'}${city.name}对比">${icon(compared?'check':'sliders')}${compared?'已选对比':'加入对比'}</button><button class="visit-button ${visited?'is-visited':''}" data-visit="${city.id}" aria-label="${visited?'取消':'标记'}去过${city.name}">${icon(visited?'check':'footprints')}${visited?'已去过':'去过了'}</button></div></div></article>`;
+    return `<article class="destination-card" data-city="${city.id}" tabindex="0" role="button" aria-label="查看${escapeHTML(city.name)}天气详情"><div class="destination-image">${placeVisual(city)}<div class="image-overlay"></div><span class="destination-rank">${String(index+1).padStart(2,'0')}</span></div><div class="destination-content"><div class="destination-top"><div><h3 class="destination-name">${escapeHTML(city.name)}</h3><p class="destination-province">${escapeHTML(city.province)} · ${state.origin?distanceText(city):city.capital?'省会 / 中心城市':city.tier==='featured'?'精选目的地':'基础地点'}</p></div><div class="match-score">${city.score}<small>分</small><span class="match-caption">天气匹配度</span></div></div><div class="destination-weather">${icon(pref.icon)}<strong>${city.goodHours} / ${city.availableHours}h 合拍</strong><span class="weather-dot">·</span><span>${round(city.min)}–${round(city.max)}°C</span></div><p class="card-best-window">${icon('calendar')}${windowText(city.best)}</p><p class="card-caution">${city.caution}</p><div class="destination-bottom"><button class="compare-button ${compared?'is-selected':''}" data-compare="${city.id}" aria-pressed="${compared}" aria-label="${compared?'移除':'加入'}${escapeHTML(city.name)}对比">${icon(compared?'check':'sliders')}${compared?'已选对比':'加入对比'}</button><button class="visit-button ${visited?'is-visited':''}" data-visit="${city.id}" aria-label="${visited?'取消':'标记'}去过${escapeHTML(city.name)}">${icon(visited?'check':'footprints')}${visited?'已去过':'去过了'}</button></div></div></article>`;
   }
   function renderRecommendations() {
     const loading=state.loading&&!state.data.size;
     const empty=loading?`<div class="empty-results loading-pulse">${icon('sun')}<h3>好天气，正在路上</h3><p>正在查询逐小时预报，稍等片刻。</p></div>`:!state.data.size?`<div class="empty-results">${icon('cloud')}<h3>先等等真实的天气</h3><p>连接恢复后，推荐会重新出现。<br>你仍然可以查看自己的旅行足迹。</p><button data-retry-weather>重新获取天气</button></div>`:`<div class="empty-results">${icon(preferences[state.preference].icon)}<h3>换个条件，也许就有好风景</h3><p>当前没有满足条件的目的地。<br>试试调整日期、活动时间或距离范围。</p><button id="empty-reset">放宽距离与高级筛选</button></div>`;
-    $('#recommendation-list').innerHTML=state.ranked.length?state.ranked.slice(0,3).map(cardHTML).join(''):empty;
+    $('#recommendation-list').innerHTML=state.ranked.length?state.featured.map(cardHTML).join(''):empty;
+    $('#ranking-note').textContent=state.sort==='score'&&!isProvince()?'先看看不同省份的好天气，同省选择收在下方。':isProvince()?'正在浏览省内地点；灰色标记表示尚无完整天气。':'按所选条件直接排序，不限制同省数量。';
+    const seen=new Set();
+    $('#province-alternatives').innerHTML=state.featured.filter(c=>{if(seen.has(c.code))return false;seen.add(c.code);return true;}).map(c=>{
+      const others=state.ranked.filter(item=>item.code===c.code&&!state.featured.some(top=>top.id===item.id));
+      if(!others.length||isProvince()||state.sort!=='score')return '';
+      return `<details class="province-more"><summary>${escapeHTML(c.province)}还有 ${others.length} 个合拍地点 ${icon('chevron')}</summary><div>${others.map(item=>`<button data-open-city="${item.id}"><span>${escapeName(item)}</span><small>${item.score} 分 · ${item.goodHours}h 合拍</small>${icon('arrow')}</button>`).join('')}<button class="province-open" data-open-province="${c.code}">展开${escapeHTML(c.province)}天气地图 ${icon('pin')}</button></div></details>`;
+    }).join('');
     $('#all-count').textContent=`(${state.ranked.length})`;
     $('#show-all-btn').hidden=state.ranked.length===0;
     $('#all-cards').innerHTML=state.ranked.map(cardHTML).join('');
@@ -236,7 +258,31 @@
     const end=state.preference==='snow'?[158,192,212]:state.preference==='rain'?[159,183,198]:state.preference==='cool'?[151,190,161]:[177,201,139];
     return `rgb(${start.map((n,i)=>Math.round(n+(end[i]-n)*ratio)).join(',')})`;
   }
-  function project(lon,lat) {return [61+(lon-73)*12.15,32+(54-lat)*12.65];}
+  function project(lon,lat) {
+    if(!mapBounds)return [61+(lon-73)*12.15,32+(54-lat)*12.65];
+    return [450+(lon-mapBounds.lon)*mapBounds.scale,280-(lat-mapBounds.lat)*mapBounds.scale];
+  }
+  function unproject(x,y) {return mapBounds?[mapBounds.lon+(x-450)/mapBounds.scale,mapBounds.lat-(y-280)/mapBounds.scale]:[73+(x-61)/12.15,54-(y-32)/12.65];}
+  function configureMapBounds() {
+    mapBounds=null;
+    if(!isProvince())return;
+    const feature=provinceFeatures.find(f=>String(f.properties.adcode)===state.region);
+    if(!feature)return;
+    let coordinates=feature.geometry.coordinates.flat(Infinity);
+    const points=[];for(let i=0;i<coordinates.length;i+=2)if(state.region!=='460000'||coordinates[i+1]>=17)points.push([coordinates[i],coordinates[i+1]]);
+    const focus=cityByID.get(state.focusCity);
+    if(focus&&String(focus.code)===state.region){mapBounds={lon:focus.lon,lat:focus.lat,scale:Math.min(500,400/1.4)};return;}
+    const minLon=Math.min(...points.map(p=>p[0])),maxLon=Math.max(...points.map(p=>p[0])),minLat=Math.min(...points.map(p=>p[1])),maxLat=Math.max(...points.map(p=>p[1]));
+    mapBounds={lon:(minLon+maxLon)/2,lat:(minLat+maxLat)/2,scale:Math.min(650/Math.max(.08,maxLon-minLon),390/Math.max(.08,maxLat-minLat))};
+  }
+  function setScope(scope,load=true,focus=null) {
+    state.region=scope;state.focusCity=focus;state.zoom=1;state.panX=0;state.panY=0;state.picking=false;
+    $('#region-filter').value=scope;configureMapBounds();initializeMap();getFilters();render();
+    if(load&&isProvince())ensureWeather(cities.filter(c=>String(c.code)===scope).map(c=>c.id));
+  }
+  function focusCity(id) {const city=cityByID.get(id);if(!city)return;closeAllDialogs();setScope(String(city.code),true,id);$('.map-panel').scrollIntoView({behavior:'smooth',block:'start'});}
+  function toggleMapPick() {state.picking=!state.picking;renderMap();if(state.picking)toast('在地图上点击一个位置，再确认名称和坐标。');}
+
   function geometryPath(geometry,projection=project) {
     const polygons=geometry.type==='MultiPolygon'?geometry.coordinates:geometry.type==='Polygon'?[geometry.coordinates]:[];
     return polygons.map(p=>p.map(ring=>ring.map(([lon,lat],i)=>{const [x,y]=projection(lon,lat);return `${i?'L':'M'}${x.toFixed(1)},${y.toFixed(1)}`;}).join('')+'Z').join('')).join('');
@@ -244,7 +290,7 @@
   function initializeMap() {
     const features=window.CHINA_GEO?.features;
     if(!features){$('#map-container').innerHTML='<div class="empty-results">地图资源未加载，请刷新页面。城市推荐仍可使用。</div>';return;}
-    $('#province-paths').innerHTML=features.map(f=>`<path class="province" data-province="${f.properties.adcode||0}" d="${geometryPath(f.geometry)}" fill="#e7edde"><title>${escapeHTML(f.properties.name||'中国南海诸岛')}</title></path>`).join('');
+    $('#province-paths').innerHTML=features.map(f=>`<path class="province" data-province="${f.properties.adcode||0}" d="${geometryPath(f.geometry)}" fill="#e7edde" tabindex="0" role="button" aria-label="查看${escapeHTML(f.properties.name||'中国南海诸岛')}地图"><title>${escapeHTML(f.properties.name||'中国南海诸岛')}</title></path>`).join('');
     const labels=[['新疆',84.2,40.4],['西藏',86.5,31.3],['青海',95,35.5],['内蒙古',113.8,43.5],['黑龙江',128,48.4],['四川',101.9,28.5],['甘肃',98.4,39.6],['台湾',122.6,23.3]];
     $('#province-labels').innerHTML=labels.map(([text,lon,lat])=>{const [x,y]=project(lon,lat);return `<text class="province-label" x="${x}" y="${y}" text-anchor="middle">${text}</text>`;}).join('');
     const islandProjection=(lon,lat)=>[774+(lon-106)*5.2,377+(24-lat)*5.7];
@@ -253,16 +299,23 @@
   function renderMap() {
     if(!$('#city-markers'))return;
     const pref=preferences[state.preference];
+    $('#map-pick').setAttribute('aria-pressed',String(state.picking));
+    $('#map-container').classList.toggle('picking',state.picking);
+    $('#map-scope-name').textContent=state.focusCity&&cityByID.has(state.focusCity)?`${cityByID.get(state.focusCity).name}附近`:isProvince()?Places.shortNames[state.region]:state.region==='all'?'精选目的地':state.region;
+    $('#map-scope-note').textContent=state.picking?'点击地图选取近似位置，再核对坐标。可先选择省份或城市，放大后更容易定位。':isProvince()?`${cities.filter(c=>String(c.code)===state.region).length} 个已收录地点 · ${pendingIDs.size?'正在按需更新天气':'位置为城市/地区采样点，不代表整个区域天气'}`:`全国首屏显示省会和代表目的地；本地索引 ${cities.length} 个地点，可搜索或点击省份展开。`;
+    $('#province-labels').style.display=isProvince()?'none':'';
+    $('#island-inset').style.display=isProvince()?'none':'';
     $$('.province').forEach(path=>{
       const code=Number(path.dataset.province);
       const samples=state.allRanked.filter(c=>c.code===code&&c.complete);
       const ratio=samples.length?samples.reduce((sum,c)=>sum+(c.hazardous?0:c.goodHours/(c.availableHours||1)),0)/samples.length:0;
       path.setAttribute('fill',samples.length?provinceColor(ratio):'#eef1ed');
-      path.style.opacity=state.region==='all'||samples.some(c=>c.region===state.region)?'1':'.33';
+      path.style.opacity=isProvince()?(String(code)===state.region?'1':'.15'):(state.region==='all'||samples.some(c=>c.region===state.region)?'1':'.33');
+      path.style.pointerEvents=isProvince()?'none':'';
     });
-    let visible=state.allRanked.filter(c=>c.marker);
-    if(state.region!=='all')visible=state.allRanked.filter(c=>c.region===state.region);
-    const top=state.ranked[0];
+    let visible=state.allRanked.filter(c=>c.tier==='featured'&&(c.marker||c.capital));
+    if(state.region!=='all')visible=state.allRanked.filter(inScope);
+    const top=state.allRanked.find(c=>c.id===state.focusCity)||state.featured[0];
     const origin=state.allRanked.find(c=>c.id===state.origin);
     if(origin&&!visible.some(c=>c.id===origin.id))visible.push(origin);
     if(top&&!visible.some(c=>c.id===top.id))visible.push(top);
@@ -274,12 +327,13 @@
     // Reserve actual label rectangles before rendering so adjacent city targets never overlap.
     for(const city of ordered){
       const [x,y]=project(city.lon,city.lat),isTop=city.id===top?.id;
-      const labelWidth=city.name.length*13+36;
+      if(x<25||x>830||y<55||y>500)continue;
+      const labelWidth=Math.min(city.name.length,9)*13+36;
       const preferredSide=city.id==='hohhot'?'left':'right';
       const sides=isTop?['right']:[preferredSide,preferredSide==='left'?'right':'left'];
       for(const side of sides){
         const left=isTop?-18:side==='left'?15-labelWidth:-15;
-        const width=isTop?(city.name.length>3?132:110):labelWidth;
+        const width=isTop?(Math.min(city.name.length,9)*13+80):labelWidth;
         const box={left:x+left*markerScale,right:x+(left+width)*markerScale,top:y-18*markerScale,bottom:y+(isTop?24:20)*markerScale};
         if(occupied.some(b=>box.left<b.right+4&&box.right>b.left-4&&box.top<b.bottom+4&&box.bottom>b.top-4))continue;
         occupied.push(box);layout.push({city,x,y,isTop,side,left,width});break;
@@ -290,9 +344,10 @@
       const sample=city.days.flatMap(d=>d.matching)[0]||city.days.flatMap(d=>d.daylight)[0];
       const info=sample?weatherInfo(sample.code):{name:'暂无数据',icon:'cloud'};
       const temp=city.complete?`${round(city.mean)}°`:'—';
+      const labelName=city.name.length>9?city.name.slice(0,8)+'…':city.name;
       const labelX=side==='left'?-18:18,anchor=side==='left'?'end':'start';
       const ico=`<svg class="map-weather-icon" x="-9" y="-9" width="18" height="18" style="color:${info.icon==='snow'?'#84a8bd':info.icon==='rain'?'#8ca6b4':'#cfaa50'};stroke:currentColor"><use href="#i-${info.icon}"/></svg>`;
-      return `<g class="map-city ${isTop?'top-match':''} ${city.id===state.origin?'origin-marker':''} ${state.visited[city.id]?'visited-marker':''}" data-map-city="${city.id}" tabindex="0" role="button" aria-label="${city.name}，${city.complete?info.name+'，平均最高温'+round(city.mean)+'摄氏度':'暂无完整预报'}，点击查看详情" transform="translate(${x},${y}) scale(${markerScale})">${isTop?`<rect class="marker-highlight" x="-18" y="-18" width="${width}" height="37" rx="7" filter="url(#marker-shadow)"/><path d="M-3 18 3 24 9 18" fill="#24866a"/><circle r="12" fill="#ffffff20"/>${ico}<text class="highlight-label" x="17" y="4">${city.name}</text><text class="highlight-temp" x="${city.name.length>3?80:62}" y="4">${temp}</text>`:`<rect x="${left}" y="-18" width="${width}" height="38" rx="5" fill="transparent" pointer-events="all"/><circle class="marker-dot" r="13"/>${ico}<text x="${labelX}" y="-1" text-anchor="${anchor}">${city.name}</text><text class="city-temp" x="${labelX}" y="14" text-anchor="${anchor}">${temp}</text>`}</g>`;
+      return `<g class="map-city ${isTop?'top-match':''} ${city.id===state.origin?'origin-marker':''} ${state.visited[city.id]?'visited-marker':''}" data-map-city="${city.id}" tabindex="0" role="button" aria-label="${escapeHTML(city.name)}，${city.complete?info.name+'，平均最高温'+round(city.mean)+'摄氏度':'暂无完整预报'}，点击查看详情" transform="translate(${x},${y}) scale(${markerScale})">${isTop?`<rect class="marker-highlight" x="-18" y="-18" width="${width}" height="37" rx="7" filter="url(#marker-shadow)"/><path d="M-3 18 3 24 9 18" fill="#24866a"/><circle r="12" fill="#ffffff20"/>${ico}<text class="highlight-label" x="17" y="4">${escapeHTML(labelName)}</text><text class="highlight-temp" x="${Math.min(city.name.length,9)*13+29}" y="4">${temp}</text>`:`<rect x="${left}" y="-18" width="${width}" height="38" rx="5" fill="transparent" pointer-events="all"/><circle class="marker-dot" r="13"/>${ico}<text x="${labelX}" y="-1" text-anchor="${anchor}">${escapeHTML(labelName)}</text><text class="city-temp" x="${labelX}" y="14" text-anchor="${anchor}">${temp}</text>`}</g>`;
     }).join('');
     updateMapTransform();
   }
@@ -316,7 +371,7 @@
     $('#visited-count').textContent=entries.length;$('#nav-count').textContent=entries.length;
     $('#visited-content').innerHTML=entries.length?entries.map(([id,entry])=>{
       const city=cityByID.get(id);
-      return `<article class="visited-card"><div class="visited-card-heading"><button data-open-city="${id}">${city.name}<span> · ${city.province}</span></button><span>${icon('check')}</span></div><textarea data-visit-note="${id}" maxlength="300" rows="2" aria-label="${city.name}旅行笔记" placeholder="留下一点旅行的记忆…">${escapeHTML(entry.note||'')}</textarea><div class="visited-card-footer"><span>${escapeHTML(entry.savedAt)} 记录 · 笔记自动保存</span><button data-visit="${id}">${icon('refresh')}移回推荐</button></div></article>`;
+      return `<article class="visited-card"><div class="visited-card-heading"><button data-open-city="${id}">${escapeHTML(city.name)}<span> · ${escapeHTML(city.province)}</span></button><span>${icon('check')}</span></div><textarea data-visit-note="${id}" maxlength="300" rows="2" aria-label="${escapeHTML(city.name)}旅行笔记" placeholder="留下一点旅行的记忆…">${escapeHTML(entry.note||'')}</textarea><div class="visited-card-footer"><span>${escapeHTML(entry.savedAt)} 记录 · 笔记自动保存</span><button data-visit="${id}">${icon('refresh')}移回推荐</button></div></article>`;
     }).join(''):`<div class="visited-empty">${icon('footprints')}旅途的故事，从第一次出发开始。<br>在目的地卡片上点击「去过了」，就能在这里保存足迹。</div>`;
     if(!storageAvailable)$('.local-note').innerHTML=`${icon('info')}浏览器存储不可用，当前足迹仅保留到此页面关闭。`;
   }
@@ -347,7 +402,7 @@
     const dailyPlans=dateRange(state.start,state.end).map(date=>rowData.has(date)?dayPlanHTML(rowData.get(date)):`<div class="day-plan"><strong>${formatDate(date)}</strong><p class="hour-detail-line">暂无此日完整预报</p></div>`).join('');
     const score=city.score===null?'—':city.score;
     const farDate=(parseDate(state.end)-parseDate(today))/86400000>7;
-    $('#city-dialog-content').innerHTML=`<button class="dialog-close icon-button" data-close-dialog aria-label="关闭天气详情">${icon('close')}</button><div class="city-dialog-hero"><img src="assets/${city.image}.jpg" alt="旅行意境图"><div class="city-dialog-title"><h2>${city.name}</h2><p>${city.province} · ${city.region}${state.origin?' / '+distanceText(city):''}</p></div><span class="dialog-image-note">风景意境图 · 非对应城市实景</span></div><div class="city-dialog-body"><p class="city-detail-intro">${city.description}</p><div class="city-detail-badges">${city.hazardous?`<span class="detail-badge warning">${icon('shield')}有恶劣天气 · 不纳入推荐</span>`:''}${!city.complete?'<span class="detail-badge warning">所选时段预报不完整</span>':''}${demo?'<span class="detail-badge warning">示例数据 · 非真实预报</span>':''}${state.mode==='cached'?'<span class="detail-badge warning">缓存预报 · 留意更新时间</span>':''}${state.origin&&!city.distanceOK?'<span class="detail-badge warning">当前出发地或超出距离范围</span>':''}</div><div class="detail-metrics"><div><strong>${city.complete?city.goodHours:'—'}<small>h</small></strong><span>合拍 / ${city.complete?city.availableHours:'—'}h 白昼</span></div><div><strong>${city.complete?(city.best?.length||0):'—'}<small>h</small></strong><span>最长连续合拍</span></div><div><strong>${score}<small>分</small></strong><span>天气匹配度</span></div></div>${city.complete?`<div class="best-window"><span>${icon(pref.icon)}这一段，最值得出去走走</span><strong>${windowText(city.best)}</strong><p>${city.caution}</p></div><details class="score-explanation"><summary>为什么是 ${score} 分？<span>查看评分依据 ${icon('chevron')}</span></summary><div class="score-parts">${city.breakdown.map(part=>`<div><span>${part.label}<small>${part.detail}</small></span><strong>${part.points} / ${part.max}</strong><meter min="0" max="${part.max}" value="${part.points}" aria-label="${part.label} ${part.points} 分，满分 ${part.max}"></meter></div>`).join('')}</div><p>满分 100 分，用于比较天气匹配程度，不表示天气发生概率。距离单独筛选，不参与天气分数。</p></details>`:''}<div class="hourly-heading"><h3>每天，什么时候适合出门</h3><span><i></i>合拍 <i class="neutral"></i>未匹配</span></div><p class="detail-data-label">${state.hourStart}:00–${state.hourEnd}:00 · 仅统计白昼 · ${dataLabel()}${state.lastUpdated?' · '+timeLabel()+' 更新':''}</p><div class="day-plans">${dailyPlans}</div><details class="daily-details"><summary>查看全天预报，含夜间天气 ${icon('chevron')}</summary><div class="forecast-scroll"><table class="forecast-table"><thead><tr><th>日期</th><th>全天概况</th><th>最低–最高温</th><th>降水概率</th><th>雨 / 雪量</th><th>风 / 阵风 km/h</th></tr></thead><tbody>${rows}</tbody></table></div></details><p class="detail-safety">${farDate?'行程包含 7 天以后的日期，建议先列为候选，临近出发时再确认。 ':''}${city.hazardous?'所选日期有强风、强雨雪、冻雨或雷暴等天气，已从推荐中排除。':state.preference==='snow'?'降雪不代表已有积雪或雪场开放，请单独核实山地和道路状况。':'城市预报无法覆盖所有景区，出发前请核实当地预警与开放信息。'} ${demo?'当前为示例数据，请勿据此安排行程。':'小时数是小时级估算，天气发生时间可能变化。'}</p><div class="city-dialog-actions"><button class="secondary-button" data-compare="${id}" aria-pressed="${state.compare.includes(id)}">${icon(state.compare.includes(id)?'check':'sliders')}${state.compare.includes(id)?'已选对比':'加入目的地对比'}</button><button class="primary-button" data-visit="${id}">${icon(isVisited?'refresh':'footprints')}${isVisited?'移回待探索':'去过了，保存足迹'}</button></div></div>`;
+    $('#city-dialog-content').innerHTML=`<button class="dialog-close icon-button" data-close-dialog aria-label="关闭天气详情">${icon('close')}</button><div class="city-dialog-hero">${placeVisual(city)}<div class="city-dialog-title"><h2>${escapeHTML(city.name)}</h2><p>${escapeHTML(city.province)} · ${escapeHTML(city.region)}${state.origin?' / '+distanceText(city):''}</p></div><span class="dialog-image-note">${city.image?'风景意境图 · 非对应城市实景':'地点示意 · 暂无实景配图'}</span></div><div class="city-dialog-body"><p class="city-detail-intro">${escapeHTML(city.description)||'按这个地点的坐标查询天气，让每一处想去的地方都有自己的出发时机。'}</p><div class="place-detail-tools"><button data-focus-city="${city.id}">${icon('pin')}在地图上查看</button><button data-origin-city="${city.id}">设为出发地</button><span>${city.lat.toFixed(4)}° N, ${city.lon.toFixed(4)}° E</span></div><div class="place-fetch-status">${pendingIDs.has(city.id)?'正在获取此地点的预报…':failedIDs.has(city.id)?'此地点天气获取失败，可稍后重试。':''}${!city.complete&&state.mode!=='demo'?`<button data-fetch-city="${city.id}">重新获取此地点</button>`:''}</div><div class="city-detail-badges">${city.hazardous?`<span class="detail-badge warning">${icon('shield')}有恶劣天气 · 不纳入推荐</span>`:''}${!city.complete?'<span class="detail-badge warning">所选时段预报不完整</span>':''}${demo?'<span class="detail-badge warning">示例数据 · 非真实预报</span>':''}${state.mode==='cached'?'<span class="detail-badge warning">缓存预报 · 留意更新时间</span>':''}${state.origin&&!city.distanceOK?'<span class="detail-badge warning">当前出发地或超出距离范围</span>':''}</div><div class="detail-metrics"><div><strong>${city.complete?city.goodHours:'—'}<small>h</small></strong><span>合拍 / ${city.complete?city.availableHours:'—'}h 白昼</span></div><div><strong>${city.complete?(city.best?.length||0):'—'}<small>h</small></strong><span>最长连续合拍</span></div><div><strong>${score}<small>分</small></strong><span>天气匹配度</span></div></div>${city.complete?`<div class="best-window"><span>${icon(pref.icon)}这一段，最值得出去走走</span><strong>${windowText(city.best)}</strong><p>${city.caution}</p></div><details class="score-explanation"><summary>为什么是 ${score} 分？<span>查看评分依据 ${icon('chevron')}</span></summary><div class="score-parts">${city.breakdown.map(part=>`<div><span>${part.label}<small>${part.detail}</small></span><strong>${part.points} / ${part.max}</strong><meter min="0" max="${part.max}" value="${part.points}" aria-label="${part.label} ${part.points} 分，满分 ${part.max}"></meter></div>`).join('')}</div><p>满分 100 分，用于比较天气匹配程度，不表示天气发生概率。距离单独筛选，不参与天气分数。</p></details>`:''}<div class="hourly-heading"><h3>每天，什么时候适合出门</h3><span><i></i>合拍 <i class="neutral"></i>未匹配</span></div><p class="detail-data-label">${state.hourStart}:00–${state.hourEnd}:00 · 仅统计白昼 · ${dataLabel(city)}${updatedAt.has(city.id)?' · '+timeLabel(city)+' 更新':''}</p><div class="day-plans">${dailyPlans}</div><details class="daily-details"><summary>查看全天预报，含夜间天气 ${icon('chevron')}</summary><div class="forecast-scroll"><table class="forecast-table"><thead><tr><th>日期</th><th>全天概况</th><th>最低–最高温</th><th>降水概率</th><th>雨 / 雪量</th><th>风 / 阵风 km/h</th></tr></thead><tbody>${rows}</tbody></table></div></details><p class="detail-safety">${farDate?'行程包含 7 天以后的日期，建议先列为候选，临近出发时再确认。 ':''}${city.hazardous?'所选日期有强风、强雨雪、冻雨或雷暴等天气，已从推荐中排除。':state.preference==='snow'?'降雪不代表已有积雪或雪场开放，请单独核实山地和道路状况。':'城市预报无法覆盖所有景区，出发前请核实当地预警与开放信息。'} ${demo?'当前为示例数据，请勿据此安排行程。':'小时数是小时级估算，天气发生时间可能变化。'}</p><div class="city-dialog-actions"><button class="secondary-button" data-compare="${id}" aria-pressed="${state.compare.includes(id)}">${icon(state.compare.includes(id)?'check':'sliders')}${state.compare.includes(id)?'已选对比':'加入目的地对比'}</button><button class="primary-button" data-visit="${id}">${icon(isVisited?'refresh':'footprints')}${isVisited?'移回待探索':'去过了，保存足迹'}</button></div></div>`;
   }
   function toggleCompare(id) {
     if(!cityByID.has(id))return;
@@ -358,110 +413,241 @@
     renderRecommendations();renderCompareTray();
     if($('#compare-dialog').open)renderCompareDialog();
     if($('#city-dialog').open&&state.activeCity)renderCityDialog(state.activeCity);
-    if(!selected)toast(`已加入${cityByID.get(id).name}，${state.compare.length<2?'再选一个就能比较':'可以打开对比了'}`);
+    if(!selected)toast(`已加入${escapeHTML(cityByID.get(id).name)}，${state.compare.length<2?'再选一个就能比较':'可以打开对比了'}`);
   }
   function renderCompareTray() {
     const tray=$('#compare-tray');tray.hidden=state.compare.length===0;
     document.body.classList.toggle('has-comparison',state.compare.length>0);
-    tray.innerHTML=`<div class="compare-tray-copy"><strong>${icon('sliders')}一起比一比<small>${state.compare.length} / 3</small></strong><div class="compare-chips">${state.compare.map(id=>`<span>${cityByID.get(id).name}<button data-compare="${id}" aria-label="移除${cityByID.get(id).name}对比">${icon('close')}</button></span>`).join('')}</div></div><div class="compare-tray-actions"><button class="text-button" data-clear-compare>清空</button><button class="primary-button" data-open-compare ${state.compare.length<2?'disabled':''}>${state.compare.length<2?'再选一个目的地':'开始对比'}${icon('arrow')}</button></div>`;
+    tray.innerHTML=`<div class="compare-tray-copy"><strong>${icon('sliders')}一起比一比<small>${state.compare.length} / 3</small></strong><div class="compare-chips">${state.compare.map(id=>`<span>${escapeHTML(cityByID.get(id).name)}<button data-compare="${id}" aria-label="移除${escapeHTML(cityByID.get(id).name)}对比">${icon('close')}</button></span>`).join('')}</div></div><div class="compare-tray-actions"><button class="text-button" data-clear-compare>清空</button><button class="primary-button" data-open-compare ${state.compare.length<2?'disabled':''}>${state.compare.length<2?'再选一个目的地':'开始对比'}${icon('arrow')}</button></div>`;
   }
   function renderCompareDialog() {
     const compared=state.compare.map(id=>assess(cityByID.get(id)));
     const rows=[
       ['天气匹配度',c=>c.score===null?'暂无完整预报':`<strong class="comparison-score">${c.score}<small> 分</small></strong>`],
+      ['天气更新时间',c=>updatedAt.has(c.id)?timeLabel(c):dataLabel(c)],
       ['日间合拍小时',c=>c.complete?`${c.goodHours} / ${c.availableHours} 小时`:'预报不完整'],
       ['至少半程合拍',c=>c.complete?`${c.matchCount} / ${c.expected} 天`:'—'],
       ['最长连续时段',c=>c.complete&&c.best?`${windowText(c.best)}<small>连续 ${c.best.length} 小时</small>`:'—'],
       ['日间平均体感',c=>c.complete?`${round(c.meanFeels)}°C`:'—'],
       [state.origin?'从'+cityByID.get(state.origin).name+'出发':'出发地距离',c=>distanceText(c)],
       ['需要留意',c=>escapeHTML(c.caution)],
-      ['当前筛选',c=>`<span class="comparison-status ${c.eligible?'good':'warning'}">${c.hazardous?'有恶劣天气，已排除':!c.complete?'数据不完整':!c.eligible?'不满足当前筛选':state.hideVisited&&state.visited[c.id]?'已去过，默认收起':state.region!=='all'&&c.region!==state.region?'不在所选地区':'符合当前偏好'}</span>`],
+      ['当前筛选',c=>`<span class="comparison-status ${c.eligible?'good':'warning'}">${c.hazardous?'有恶劣天气，已排除':!c.complete?'数据不完整':!c.eligible?'不满足当前筛选':state.hideVisited&&state.visited[c.id]?'已去过，默认收起':!inScope(c)?'不在所选地区':'符合当前偏好'}</span>`],
       ['详细预报',c=>`<button class="text-button" data-open-city="${c.id}">查看逐小时天气 ${icon('arrow')}</button>`]
     ];
-    $('#compare-dialog-content').innerHTML=`<button class="dialog-close icon-button" data-close-dialog aria-label="关闭目的地对比">${icon('close')}</button><div class="comparison-heading"><span class="eyebrow">找到更合拍的那一站</span><h2>把心动的地方，放在一起看看。</h2><p>${formatDate(state.start)}—${formatDate(state.end)} · 每天 ${state.hourStart}–${state.hourEnd} 时 · ${dataLabel()}${state.lastUpdated?' · '+timeLabel()+' 更新':''}</p>${state.mode==='demo'?'<p class="comparison-demo">演示模式 · 所有数值均为示例</p>':''}</div>${compared.length?`<div class="comparison-scroll"><table class="comparison-table"><caption class="sr-only">当前选择的目的地天气对比</caption><thead><tr><th scope="col">这次旅行</th>${compared.map(c=>`<th scope="col"><button class="comparison-remove" data-compare="${c.id}" aria-label="移除${c.name}对比">${icon('close')}</button><img src="assets/${c.image}.jpg" alt="风景意境配图"><strong>${c.name}</strong><small>${c.province} · ${c.region}</small></th>`).join('')}</tr></thead><tbody>${rows.map(([name,value])=>`<tr><th scope="row">${name}</th>${compared.map(c=>`<td>${value(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'<div class="empty-results">还没有选择目的地。关闭此窗口，在卡片上加入对比。</div>'}<p class="comparison-footnote">按相同日期与活动时段比较；分数是匹配程度，距离为直线距离。修改筛选后，已选目的地仍保留，并重新计算。窄屏可左右滑动查看完整对比。</p>`;
+    $('#compare-dialog-content').innerHTML=`<button class="dialog-close icon-button" data-close-dialog aria-label="关闭目的地对比">${icon('close')}</button><div class="comparison-heading"><span class="eyebrow">找到更合拍的那一站</span><h2>把心动的地方，放在一起看看。</h2><p>${formatDate(state.start)}—${formatDate(state.end)} · 每天 ${state.hourStart}–${state.hourEnd} 时 · ${dataLabel()}${state.lastUpdated?' · '+timeLabel()+' 更新':''}</p>${state.mode==='demo'?'<p class="comparison-demo">演示模式 · 所有数值均为示例</p>':''}</div>${compared.length?`<div class="comparison-scroll"><table class="comparison-table"><caption class="sr-only">当前选择的目的地天气对比</caption><thead><tr><th scope="col">这次旅行</th>${compared.map(c=>`<th scope="col"><button class="comparison-remove" data-compare="${c.id}" aria-label="移除${escapeHTML(c.name)}对比">${icon('close')}</button>${placeVisual(c)}<strong>${escapeHTML(c.name)}</strong><small>${escapeHTML(c.province)} · ${escapeHTML(c.region)}</small></th>`).join('')}</tr></thead><tbody>${rows.map(([name,value])=>`<tr><th scope="row">${name}</th>${compared.map(c=>`<td>${value(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'<div class="empty-results">还没有选择目的地。关闭此窗口，在卡片上加入对比。</div>'}<p class="comparison-footnote">按相同日期与活动时段比较；分数是匹配程度，距离为直线距离。修改筛选后，已选目的地仍保留，并重新计算。窄屏可左右滑动查看完整对比。</p>`;
   }
-  function openCity(id) {if(!cityByID.has(id))return;closeAllDialogs();state.activeCity=id;renderCityDialog(id);showDialog($('#city-dialog'));}
+  function openCity(id) {if(!cityByID.has(id))return;requestedIDs.add(id);closeAllDialogs();state.activeCity=id;renderCityDialog(id);showDialog($('#city-dialog'));ensureWeather([id]);}
   function showDialog(dialog) {dialog.showModal();document.body.classList.add('modal-open');}
-  function closeAllDialogs() {$$('dialog[open]').forEach(d=>d.close());document.body.classList.remove('modal-open');}
+  function closeAllDialogs() {searchController?.abort();searchGeneration++;$$('dialog[open]').forEach(d=>d.close());document.body.classList.remove('modal-open');}
   function showAbout(){closeAllDialogs();renderDataStatus();showDialog($('#about-dialog'));}
   function toast(message) {clearTimeout(state.toastTimer);$('#toast').textContent=message;$('#toast').hidden=false;state.toastTimer=setTimeout(()=>{$('#toast').hidden=true;},4200);}
+  function placeVisual(city) {
+    return city.image?`<img src="assets/${city.image}.jpg" alt="旅行意境配图，非地点实景" loading="lazy">`:`<div class="place-placeholder" aria-label="地点示意，无实景图片">${icon('pin')}<span>${escapeHTML(city.province)}</span></div>`;
+  }
   function renderSearch() {
     const query=$('#city-search').value.trim().toLowerCase();
-    const matches=cities.filter(c=>(c.name+c.province+c.region+c.id).toLowerCase().includes(query));
-    $('#search-results').innerHTML=matches.length?matches.map(c=>{
+    const matches=cities.filter(c=>(c.name+(c.fullName||'')+c.province+c.region+c.id).toLowerCase().includes(query));
+    const regions=query?Places.provinces.filter(p=>p.name.includes(query)||query===p.name+'省'):[];
+    $('#search-results').innerHTML=regions.map(p=>`<button class="search-result province-search" data-open-province="${p.code}"><span>${icon('compass')}<span>${p.name}<small>展开省级天气地图</small></span></span>${icon('arrow')}</button>`).join('')+matches.slice(0,60).map(c=>{
       const assessment=assess(c);
-      return `<button class="search-result" data-open-city="${c.id}"><span>${icon('pin')}<span>${c.name}<small>${c.province} · ${c.region}</small></span></span><span>${state.visited[c.id]?'已去过 · ':''}${assessment.complete?`${round(assessment.min)}–${round(assessment.max)}°C`:'暂无预报'}</span></button>`;
-    }).join(''):'<p class="search-empty">还没有覆盖这个目的地，试试搜索省份或附近城市。</p>';
+      return `<button class="search-result" data-open-city="${c.id}"><span>${icon('pin')}<span>${escapeName(c)}<small>${escapeHTML(c.province)} · ${c.tier==='featured'?'精选':c.tier==='custom'?'我的地点':'基础地点'}</small></span></span><span>${state.visited[c.id]?'已去过 · ':''}${assessment.complete?`${round(assessment.min)}–${round(assessment.max)}°C`:'按需查天气'}</span></button>`;
+    }).join('')+(!matches.length&&!regions.length?'<p class="search-empty">本地索引未找到。试试在线搜索，或者用坐标添加地点。</p>':matches.length>60?'<p class="search-empty">显示前 60 个匹配地点，请输入更具体的名称。</p>':'');
   }
 
+  function saveWeatherCache() {
+    try {
+      const forecasts=[...state.data].filter(([id])=>updatedAt.has(id)).map(([id,days])=>Weather.packCache(new Map([[id,days]]),updatedAt.get(id)));
+      localStorage.setItem(CACHE_KEY,JSON.stringify({version:3,forecasts}));
+    }catch{/* Session data remains available if storage is full. */}
+  }
   function loadCachedWeather() {
     try {
-      const cache=Weather.unpackCache(JSON.parse(localStorage.getItem(CACHE_KEY)||'null'),new Set(cityByID.keys()),Date.now(),CACHE_MAX_AGE);
-      if(!cache)return false;
-      state.data=cache.data;state.mode='cached';state.lastUpdated=cache.time;return true;
-    }catch{return false;}
+      const stored=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');
+      const sources=stored?.version===3&&Array.isArray(stored.forecasts)?stored.forecasts:[JSON.parse(localStorage.getItem('sunseek-weather-v2')||'null')];
+      for(const source of sources){
+        const cache=Weather.unpackCache(source,new Set(cityByID.keys()),Date.now(),CACHE_MAX_AGE);
+        if(!cache)continue;
+        for(const [id,days] of cache.data){state.data.set(id,days);updatedAt.set(id,cache.time);requestedIDs.add(id);}
+      }
+      if(state.data.size){state.mode='cached';state.lastUpdated=Math.min(...updatedAt.values());return true;}
+    }catch{}
+    return false;
   }
   function enterDemo() {
     state.requestId++;state.controller?.abort();state.loading=false;state.fetchError=false;
+    pendingIDs.clear();failedIDs.clear();updatedAt.clear();
     state.mode='demo';state.data=demoData();state.lastUpdated=null;render();
     if($('#city-dialog').open&&state.activeCity)renderCityDialog(state.activeCity);
   }
-  async function fetchWeather(force=false) {
-    if(state.loading)return;
-    if(state.mode==='demo'){state.mode='loading';state.data=new Map();state.lastUpdated=null;loadCachedWeather();}
-    if(!force&&loadCachedWeather()&&Date.now()-state.lastUpdated<3600000&&[...state.data.values()].every(days=>days.some(d=>d.date===lastForecastDate))){render();return;}
-    state.loading=true;state.fetchError=false;render();
-    const requestId=++state.requestId;
-    const controller=new AbortController();state.controller=controller;
-    const timer=setTimeout(()=>controller.abort(),22000);
-    const batches=[];for(let i=0;i<cities.length;i+=16)batches.push(cities.slice(i,i+16));
-    const results=await Promise.allSettled(batches.map(async batch=>{
-      const params=new URLSearchParams({latitude:batch.map(c=>c.lat).join(','),longitude:batch.map(c=>c.lon).join(','),
-        daily:'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,snowfall_sum,wind_speed_10m_max,wind_gusts_10m_max',
-        hourly:'weather_code,temperature_2m,apparent_temperature,precipitation,snowfall,wind_speed_10m,wind_gusts_10m,cloud_cover,is_day',
-        timezone:'Asia/Shanghai',forecast_days:'16',wind_speed_unit:'kmh',precipitation_unit:'mm',temperature_unit:'celsius'});
-      const response=await fetch(`https://api.open-meteo.com/v1/forecast?${params}`,{signal:controller.signal});
-      if(!response.ok)throw new Error(`Weather service: ${response.status}`);
-      const payload=await response.json(),list=Array.isArray(payload)?payload:[payload];
-      if(list.length!==batch.length)throw new Error('Weather response location count mismatch');
-      return batch.map((city,index)=>[city.id,Weather.normalizeForecast(list[index])]);
-    }));
-    clearTimeout(timer);if(requestId!==state.requestId)return;
-    state.loading=false;state.controller=null;
-    const data=new Map();
-    for(const result of results)if(result.status==='fulfilled')for(const [id,days] of result.value)if(days.some(d=>d.date>=today&&d.date<=lastForecastDate&&d.hours.some(Weather.validHour)))data.set(id,days);
-    if(data.size){
-      state.data=data;state.mode='live';state.lastUpdated=Date.now();
-      try{localStorage.setItem(CACHE_KEY,JSON.stringify(Weather.packCache(data,state.lastUpdated)));}catch{/* In-memory forecasts remain usable if storage is full. */}
-      if(force)toast(`已更新 ${data.size} 个城市的逐小时预报`);
-    }else{
-      state.fetchError=true;
-      if(state.lastUpdated&&Date.now()-state.lastUpdated<CACHE_MAX_AGE&&state.data.size){state.mode='cached';if(force)toast('更新未成功，继续使用有效缓存，并保留原更新时间。');}
-      else{state.mode='unavailable';state.data=new Map();state.lastUpdated=null;}
+  function ensureWeather(ids) {
+    const valid=ids.filter(id=>cityByID.has(id));valid.forEach(id=>requestedIDs.add(id));
+    if(state.mode==='demo'){state.data=demoData();render();if($('#city-dialog').open&&state.activeCity)renderCityDialog(state.activeCity);return;}
+    const missing=valid.filter(id=>!state.data.has(id)||!updatedAt.has(id)||Date.now()-updatedAt.get(id)>=3600000||!state.data.get(id).some(d=>d.date===lastForecastDate));
+    if(missing.length)fetchWeather(false,missing);
+    else render();
+  }
+  async function fetchWeather(force=false,ids=null) {
+    if(state.mode==='demo'){state.mode='loading';state.data=new Map();updatedAt.clear();state.lastUpdated=null;loadCachedWeather();}
+    if(!state.data.size&&!state.loading)loadCachedWeather();
+    const targets=(ids||[...requestedIDs]).filter(id=>cityByID.has(id));
+    targets.forEach(id=>requestedIDs.add(id));
+    const needed=targets.filter(id=>force||!state.data.has(id)||!updatedAt.has(id)||Date.now()-updatedAt.get(id)>=3600000||!state.data.get(id).some(d=>d.date===lastForecastDate));
+    needed.forEach(id=>pendingIDs.add(id));
+    if(state.loading){render();return;}
+    if(!pendingIDs.size){render();return;}
+    state.loading=true;state.fetchError=false;
+    const requestId=++state.requestId,controller=new AbortController();state.controller=controller;
+    const idsToFetch=[...pendingIDs];idsToFetch.forEach(id=>failedIDs.delete(id));
+    render();if($('#city-dialog').open&&state.activeCity)renderCityDialog(state.activeCity);
+    let success=0;
+    // One batch at a time limits bursts when expanding an entire province.
+    for(let i=0;i<idsToFetch.length;i+=16){
+      if(requestId!==state.requestId)break;
+      const batch=idsToFetch.slice(i,i+16).map(id=>cityByID.get(id));
+      const timer=setTimeout(()=>controller.abort(),22000);
+      try {
+        const params=new URLSearchParams({latitude:batch.map(c=>c.lat).join(','),longitude:batch.map(c=>c.lon).join(','),
+          daily:'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,snowfall_sum,wind_speed_10m_max,wind_gusts_10m_max',
+          hourly:'weather_code,temperature_2m,apparent_temperature,precipitation,snowfall,wind_speed_10m,wind_gusts_10m,cloud_cover,is_day',
+          timezone:'Asia/Shanghai',forecast_days:'16',wind_speed_unit:'kmh',precipitation_unit:'mm',temperature_unit:'celsius'});
+        const response=await fetch(`https://api.open-meteo.com/v1/forecast?${params}`,{signal:controller.signal});
+        if(!response.ok)throw new Error('Forecast unavailable');
+        const payload=await response.json(),list=Array.isArray(payload)?payload:[payload];
+        if(list.length!==batch.length)throw new Error('Location count mismatch');
+        if(requestId!==state.requestId)return;
+        for(let j=0;j<batch.length;j++){
+          const city=batch[j];if(cityByID.get(city.id)!==city)continue;const days=Weather.normalizeForecast(list[j]);
+          if(days.some(d=>d.date>=today&&d.date<=lastForecastDate&&d.hours.some(Weather.validHour))){state.data.set(city.id,days);updatedAt.set(city.id,Date.now());success++;}
+          else failedIDs.add(city.id);
+        }
+      }catch{if(requestId===state.requestId)batch.forEach(c=>failedIDs.add(c.id));}
+      finally{clearTimeout(timer);if(requestId===state.requestId)batch.forEach(c=>pendingIDs.delete(c.id));}
     }
-    render();
+    if(requestId!==state.requestId)return;
+    state.loading=false;state.controller=null;state.fetchError=failedIDs.size>0;
+    for(const [id,time] of updatedAt)if(Date.now()-time>=CACHE_MAX_AGE){updatedAt.delete(id);state.data.delete(id);}
+    state.mode=success?'live':state.data.size?'cached':'unavailable';
+    state.lastUpdated=updatedAt.size?Math.min(...updatedAt.values()):null;
+    saveWeatherCache();render();
     if($('#city-dialog').open&&state.activeCity)renderCityDialog(state.activeCity);
     if($('#search-dialog').open)renderSearch();
+    if(force)toast(success?`更新了 ${success} 个地点的预报`:'本次更新未成功，有效缓存继续保留。');
+    if(pendingIDs.size)fetchWeather(false,[...pendingIDs]);
   }
   function expireWeather() {
-    if(state.mode!=='demo'&&state.lastUpdated&&Date.now()-state.lastUpdated>=CACHE_MAX_AGE){
-      state.data=new Map();state.lastUpdated=null;state.mode='unavailable';render();
-      if($('#city-dialog').open&&state.activeCity)renderCityDialog(state.activeCity);
+    if(state.mode==='demo')return;
+    let changed=false;
+    for(const [id,time] of updatedAt)if(Date.now()-time>=CACHE_MAX_AGE){state.data.delete(id);updatedAt.delete(id);changed=true;}
+    if(changed){
+      state.lastUpdated=updatedAt.size?Math.min(...updatedAt.values()):null;
+      if(!state.data.size)state.mode='unavailable';
+      render();if($('#city-dialog').open&&state.activeCity)renderCityDialog(state.activeCity);
       if($('#search-dialog').open)renderSearch();
     }
   }
 
+  function persistPlaces() {
+    try{localStorage.setItem('sunseek-places-v3',JSON.stringify(cities.filter(c=>c.tier==='custom')));return true;}
+    catch{toast('浏览器无法保存地点，当前地点仅保留到页面关闭。');return false;}
+  }
+  function refreshOriginOptions() {
+    const selected=$('#origin-city').value;
+    $('#origin-city').replaceChildren(new Option('先看看全国',''));
+    for(const region of ['华东','华北','华南','华中','西南','西北','东北']){
+      const group=document.createElement('optgroup');group.label=region;
+      cities.filter(c=>c.region===region&&(c.tier==='featured'||c.tier==='custom'||c.id===selected||c.id===state.origin)).sort((a,b)=>a.name.localeCompare(b.name,'zh-CN')).forEach(c=>group.append(new Option(c.name,c.id)));
+      $('#origin-city').append(group);
+    }
+    if(cityByID.has(selected))$('#origin-city').value=selected;
+  }
+  function setOrigin(id) {
+    if(!cityByID.has(id))return;
+    state.origin=id;refreshOriginOptions();$('#origin-city').value=id;getFilters();render();closeAllDialogs();
+    toast(`已设置从${cityByID.get(id).name}出发`);
+  }
+  function renderSavedPlaces() {
+    const custom=cities.filter(c=>c.tier==='custom');$('#saved-places').hidden=!custom.length;
+    $('#saved-place-list').innerHTML=custom.map(c=>`<div class="saved-place-row"><button data-open-city="${c.id}">${icon('pin')}<span><strong>${escapeName(c)}</strong><small>${escapeHTML(c.province)} · ${c.lat.toFixed(4)}° N, ${c.lon.toFixed(4)}° E</small></span></button><div><button data-origin-city="${c.id}">从这里出发</button><button data-edit-place="${c.id}">编辑</button><button data-remove-place="${c.id}" ${state.visited[c.id]?'disabled title="先在足迹中移回推荐，再删除地点"':''}>移除</button></div></div>`).join('');
+  }
+  function openPlace(candidate={}) {
+    placeCandidate=candidate;closeAllDialogs();
+    $('#place-form').reset();$('#place-name').value=candidate.name||'';$('#place-lat').value=Number.isFinite(candidate.lat)?candidate.lat.toFixed(5):'';$('#place-lon').value=Number.isFinite(candidate.lon)?candidate.lon.toFixed(5):'';
+    $('#place-province').value=candidate.code?String(candidate.code):isProvince()?state.region:'';
+    $('#place-error').hidden=true;updatePlacePreview();showDialog($('#place-dialog'));
+  }
+  function updatePlacePreview() {
+    const latText=$('#place-lat').value,lonText=$('#place-lon').value;
+    $('#place-preview').textContent=latText&&lonText?`${Number(latText).toFixed(5)}° N, ${Number(lonText).toFixed(5)}° E · 请确认这是你想去的位置`:'可以输入坐标，也可以关闭窗口后使用地图选点。';
+  }
+  function savePlace(event) {
+    event.preventDefault();
+    const name=$('#place-name').value.trim(),lat=Number($('#place-lat').value),lon=Number($('#place-lon').value),code=Number($('#place-province').value);
+    let error='';
+    const detected=Places.provinceAt(lon,lat,provinceFeatures);
+    if(placeCandidate?.id&&pendingIDs.has(placeCandidate.id))error='这个地点的天气还在更新，请稍候再编辑。';
+    else if(!name||name.length>40||!Number.isFinite(lat)||!Number.isFinite(lon)||lat<0||lat>55||lon<73||lon>136||!Places.shortNames[code])error='请填写地点名称、有效坐标和所属省份。';
+    else if(detected&&detected!==code)error=`这个坐标位于${Places.shortNames[detected]}，请核对坐标与所属省份。`;
+    else if(!detected&&!(placeCandidate?.source==='geonames'&&Math.abs(placeCandidate.lat-lat)<0.00001&&Math.abs(placeCandidate.lon-lon)<0.00001&&placeCandidate.code===code))error='这个坐标未落在当前中国地图覆盖范围内。请核对位置；边界和小岛暂可通过在线搜索确认后添加。';
+    $('#place-error').hidden=!error;$('#place-error').textContent=error;if(error)return;
+    const existing=cities.find(c=>c.id!==placeCandidate?.id&&((placeCandidate?.geoId&&c.geoId===placeCandidate.geoId)||(c.name===name&&Weather.distanceKm(c,{lat,lon})<1)));
+    if(existing){openCity(existing.id);toast('这个地点已存在，已打开已有记录。');return;}
+    if(!placeCandidate?.id&&cities.filter(c=>c.tier==='custom').length>=100)error='最多保存 100 个自定义地点，请先移除不用的地点。';
+    $('#place-error').hidden=!error;$('#place-error').textContent=error;if(error)return;
+    const id=placeCandidate?.id||`user-${crypto.randomUUID()}`;
+    const city={id,name,lat,lon,code,province:Places.shortNames[code],region:Places.regionFor(code),tier:'custom',capital:false,marker:true,temp:20,type:'place',description:'',image:null,countryCode:'CN',timezone:'Asia/Shanghai',source:placeCandidate?.source==='geonames'?'geonames':'custom',geoId:placeCandidate?.geoId||null,index:cityByID.get(id)?.index??cities.length};
+    const old=cityByID.get(id);
+    if(old){cities[cities.indexOf(old)]=city;if(old.lat!==lat||old.lon!==lon){state.data.delete(id);updatedAt.delete(id);saveWeatherCache();}}
+    else cities.push(city);
+    cityByID.set(id,city);requestedIDs.add(id);persistPlaces();refreshOriginOptions();state.picking=false;setScope(String(code),false,id);openCity(id);
+  }
+  function removePlace(id) {
+    const city=cityByID.get(id);if(!city||city.tier!=='custom'||state.visited[id])return;
+    if(pendingIDs.has(id)){toast('天气正在更新，请稍候再移除地点。');return;}
+    if(state.origin===id){state.origin='';$('#origin-city').value='';$('#max-distance').value='';getFilters();}
+    cities.splice(cities.indexOf(city),1);cityByID.delete(id);state.data.delete(id);updatedAt.delete(id);requestedIDs.delete(id);pendingIDs.delete(id);failedIDs.delete(id);state.compare=state.compare.filter(item=>item!==id);
+    if(state.focusCity===id){state.focusCity=null;state.zoom=1;state.panX=0;state.panY=0;configureMapBounds();initializeMap();}
+    persistPlaces();saveWeatherCache();refreshOriginOptions();render();toast('已移除这个自定义地点。');
+  }
+  async function searchOnline() {
+    const query=$('#city-search').value.trim();
+    const output=$('#online-results');
+    if(query.length<2){output.textContent='请输入至少两个字，再在线查找。';return;}
+    searchController?.abort();searchController=new AbortController();const generation=++searchGeneration;
+    const controller=searchController,timer=setTimeout(()=>controller.abort(),12000);
+    output.innerHTML='<p class="search-empty loading-pulse">正在查找城市、县镇与村落…</p>';
+    try {
+      const params=new URLSearchParams({name:query,count:'20',language:'zh',format:'json'});
+      const response=await fetch(`https://geocoding-api.open-meteo.com/v1/search?${params}`,{signal:controller.signal});
+      if(!response.ok)throw new Error('Search unavailable');
+      const payload=await response.json();if(generation!==searchGeneration)return;
+      onlineCandidates=(Array.isArray(payload.results)?payload.results:[]).filter(c=>['CN','HK','MO','TW'].includes(c.country_code)&&typeof c.name==='string'&&Number.isFinite(c.latitude)&&Number.isFinite(c.longitude)).map(c=>{
+        const code=Places.provinceAt(c.longitude,c.latitude,provinceFeatures)||Places.provinces.find(p=>(c.admin1||'').includes(p.name))?.code||({HK:810000,MO:820000,TW:710000}[c.country_code]);
+        return {name:c.name.slice(0,40),lat:c.latitude,lon:c.longitude,code,source:'geonames',geoId:c.id,admin:[c.country,c.admin1,c.admin2].filter(Boolean).join(' · ')};
+      }).filter(c=>c.code);
+      output.innerHTML='<p class="online-source">在线地名来自 Open-Meteo / GeoNames · 请核对同名地点</p>'+onlineCandidates.map((c,i)=>`<button class="search-result" data-online-place="${i}"><span>${icon('pin')}<span>${escapeHTML(c.name)}<small>${escapeHTML(c.admin)}</small></span></span><span>确认位置 ${icon('arrow')}</span></button>`).join('')+(!onlineCandidates.length?'<p class="search-empty">未找到本版支持的地点。可以换个名称，或用坐标添加；海外地点暂未开放。</p>':'');
+    }catch{if(generation===searchGeneration)output.innerHTML='<p class="search-empty">在线搜索暂时不可用。本地城市搜索仍可使用，也可以手动添加坐标。<button class="text-button" data-new-place>手动添加地点</button></p>';}
+    finally{clearTimeout(timer);}
+  }
+
   function resetAdvanced() {
     $('#min-temp').value='';$('#max-temp').value='';$('#strict-match').checked=false;
-    $('#region-filter').value='all';$('#hide-visited').checked=true;$('#max-distance').value='';$('#hour-start').value='9';$('#hour-end').value='18';applyFilters();
+    setScope('all',false);$('#hide-visited').checked=true;$('#max-distance').value='';$('#hour-start').value='9';$('#hour-end').value='18';applyFilters();
   }
   function initEvents() {
+    $('#region-filter').addEventListener('change',()=>setScope($('#region-filter').value));
+    $('#map-national').addEventListener('click',()=>setScope('all'));
+    $('#map-pick').addEventListener('click',toggleMapPick);
+    $('#add-place-btn').addEventListener('click',()=>openPlace());
+    $('#saved-add-place').addEventListener('click',()=>openPlace());
+    $('#place-form').addEventListener('submit',savePlace);
+    ['place-lat','place-lon'].forEach(id=>$('#'+id).addEventListener('input',updatePlacePreview));
+    $('#search-online').addEventListener('click',searchOnline);
     $$('.preference').forEach(button=>button.addEventListener('click',()=>{
       state.preference=button.dataset.preference;
       $$('.preference').forEach(b=>{const active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
       applyFilters();
     }));
-    ['start-date','end-date','min-temp','max-temp','strict-match','hide-visited','region-filter','sort-order','origin-city','max-distance','hour-start','hour-end'].forEach(id=>$('#'+id).addEventListener('change',()=>{if(id.includes('date'))$$('[data-quick-date]').forEach(b=>b.classList.remove('active'));applyFilters();}));
+    ['start-date','end-date','min-temp','max-temp','strict-match','hide-visited','sort-order','origin-city','max-distance','hour-start','hour-end'].forEach(id=>$('#'+id).addEventListener('change',()=>{if(id.includes('date'))$$('[data-quick-date]').forEach(b=>b.classList.remove('active'));applyFilters();}));
     $$('#start-date,#end-date').forEach(input=>{input.min=today;input.max=lastForecastDate;});
     $$('[data-quick-date]').forEach(button=>button.addEventListener('click',()=>{
       let start,end;
@@ -478,10 +664,19 @@
     ['about-btn','source-btn','data-status'].forEach(id=>$('#'+id).addEventListener('click',showAbout));
     $('#retry-weather').addEventListener('click',()=>fetchWeather(true));
     $('#demo-weather').addEventListener('click',()=>state.mode==='demo'?fetchWeather(true):enterDemo());
-    $('#search-btn').addEventListener('click',()=>{closeAllDialogs();$('#city-search').value='';renderSearch();showDialog($('#search-dialog'));$('#city-search').focus();});
-    $('#city-search').addEventListener('input',renderSearch);
-    document.addEventListener('keydown',event=>{if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==='k'){event.preventDefault();$('#search-btn').click();}});
+    $('#search-btn').addEventListener('click',()=>{closeAllDialogs();$('#city-search').value='';$('#online-results').replaceChildren();searchController?.abort();searchGeneration++;renderSearch();showDialog($('#search-dialog'));$('#city-search').focus();});
+    $('#city-search').addEventListener('input',()=>{searchController?.abort();searchGeneration++;$('#online-results').replaceChildren();renderSearch();});
+    $('#city-search').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();searchOnline();}});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.querySelector('dialog[open]')){event.preventDefault();closeAllDialogs();return;}if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==='k'){event.preventDefault();$('#search-btn').click();}});
     document.addEventListener('click',event=>{
+      const province=event.target.closest('[data-open-province]');if(province){closeAllDialogs();setScope(province.dataset.openProvince);$('.map-panel').scrollIntoView({behavior:'smooth',block:'start'});return;}
+      const online=event.target.closest('[data-online-place]');if(online){const candidate=onlineCandidates[Number(online.dataset.onlinePlace)];if(candidate)openPlace(candidate);return;}
+      if(event.target.closest('[data-new-place]')){openPlace();return;}
+      const edit=event.target.closest('[data-edit-place]');if(edit){openPlace(cityByID.get(edit.dataset.editPlace));return;}
+      const remove=event.target.closest('[data-remove-place]');if(remove){removePlace(remove.dataset.removePlace);return;}
+      const origin=event.target.closest('[data-origin-city]');if(origin){setOrigin(origin.dataset.originCity);return;}
+      const focus=event.target.closest('[data-focus-city]');if(focus){focusCity(focus.dataset.focusCity);return;}
+      const retry=event.target.closest('[data-fetch-city]');if(retry){fetchWeather(true,[retry.dataset.fetchCity]);return;}
       const compare=event.target.closest('[data-compare]');if(compare){event.preventDefault();event.stopPropagation();toggleCompare(compare.dataset.compare);return;}
       if(event.target.closest('[data-clear-compare]')){state.compare=[];renderRecommendations();renderCompareTray();return;}
       if(event.target.closest('[data-open-compare]')){closeAllDialogs();renderCompareDialog();showDialog($('#compare-dialog'));return;}
@@ -503,15 +698,26 @@
     let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(renderMap,120);});
     const svg=$('#weather-map');
     let pointer=null,dragged=false;
-    svg.addEventListener('pointerdown',event=>{if(event.button!==0)return;pointer={x:event.clientX,y:event.clientY,panX:state.panX,panY:state.panY};dragged=false;});
+    svg.addEventListener('pointerdown',event=>{if(event.button!==0||state.picking)return;pointer={x:event.clientX,y:event.clientY,panX:state.panX,panY:state.panY};dragged=false;});
     svg.addEventListener('pointermove',event=>{
       if(pointer&&state.zoom>1){const scale=900/svg.getBoundingClientRect().width;const dx=event.clientX-pointer.x,dy=event.clientY-pointer.y;if(Math.abs(dx)+Math.abs(dy)>5){dragged=true;svg.setPointerCapture(event.pointerId);$('#map-tooltip').hidden=true;state.panX=clamp(pointer.panX+dx*scale,-450*(state.zoom-1),450*(state.zoom-1));state.panY=clamp(pointer.panY+dy*scale,-275*(state.zoom-1),275*(state.zoom-1));updateMapTransform();}}
     });
     svg.addEventListener('pointerup',event=>{pointer=null;if(svg.hasPointerCapture(event.pointerId))svg.releasePointerCapture(event.pointerId);});
     svg.addEventListener('pointercancel',()=>{pointer=null;dragged=false;});
-    svg.addEventListener('click',event=>{if(dragged){dragged=false;return;}const marker=event.target.closest('[data-map-city]');if(marker)openCity(marker.dataset.mapCity);});
-    svg.addEventListener('keydown',event=>{const marker=event.target.closest('[data-map-city]');if(marker&&(event.key==='Enter'||event.key===' ')){event.preventDefault();openCity(marker.dataset.mapCity);}});
-    svg.addEventListener('pointerover',event=>{const marker=event.target.closest('[data-map-city]');if(!marker||pointer||event.pointerType==='touch')return;const city=state.allRanked.find(c=>c.id===marker.dataset.mapCity);if(!city)return;const box=marker.getBoundingClientRect(),container=$('#map-container').getBoundingClientRect();$('#map-tooltip').innerHTML=`<strong>${city.name} <span>· ${dataLabel()}</span></strong><span>${city.complete?`${city.goodHours} / ${city.availableHours}h 合拍 · ${round(city.min)}–${round(city.max)}°C`:'暂无完整预报'}${city.hazardous?' · 有不利天气':''}</span>`;$('#map-tooltip').style.left=`${clamp(box.left-container.left-35,10,container.width-175)}px`;$('#map-tooltip').style.top=`${Math.max(8,box.top-container.top-64)}px`;$('#map-tooltip').hidden=false;});
+    svg.addEventListener('click',event=>{
+      if(dragged){dragged=false;return;}
+      if(state.picking){
+        let point=svg.createSVGPoint();point.x=event.clientX;point.y=event.clientY;
+        point=point.matrixTransform($('#map-viewport').getScreenCTM().inverse());
+        const [lon,lat]=unproject(point.x,point.y),code=Places.provinceAt(lon,lat,provinceFeatures);
+        if(!code){toast('请选择地图覆盖范围内的陆地点位；也可以直接输入坐标。');return;}
+        state.picking=false;renderMap();openPlace({lat,lon,code});return;
+      }
+      const marker=event.target.closest('[data-map-city]');if(marker){openCity(marker.dataset.mapCity);return;}
+      const province=event.target.closest('[data-province]');if(province&&Places.shortNames[province.dataset.province])setScope(province.dataset.province);
+    });
+    svg.addEventListener('keydown',event=>{const province=event.target.closest('[data-province]');if(province&&Places.shortNames[province.dataset.province]&&(event.key==='Enter'||event.key===' ')){event.preventDefault();setScope(province.dataset.province);return;}const marker=event.target.closest('[data-map-city]');if(marker&&(event.key==='Enter'||event.key===' ')){event.preventDefault();openCity(marker.dataset.mapCity);}});
+    svg.addEventListener('pointerover',event=>{const marker=event.target.closest('[data-map-city]');if(!marker||pointer||event.pointerType==='touch')return;const city=state.allRanked.find(c=>c.id===marker.dataset.mapCity);if(!city)return;const box=marker.getBoundingClientRect(),container=$('#map-container').getBoundingClientRect();$('#map-tooltip').innerHTML=`<strong>${escapeHTML(city.name)} <span>· ${dataLabel(city)}</span></strong><span>${city.complete?`${city.goodHours} / ${city.availableHours}h 合拍 · ${round(city.min)}–${round(city.max)}°C`:'暂无完整预报'}${city.hazardous?' · 有不利天气':''}</span>`;$('#map-tooltip').style.left=`${clamp(box.left-container.left-35,10,container.width-175)}px`;$('#map-tooltip').style.top=`${Math.max(8,box.top-container.top-64)}px`;$('#map-tooltip').hidden=false;});
     svg.addEventListener('pointerout',event=>{if(event.target.closest('[data-map-city]'))$('#map-tooltip').hidden=true;});
     function zoom(delta){state.zoom=clamp(state.zoom+delta,1,2.5);if(state.zoom===1){state.panX=0;state.panY=0;}updateMapTransform();}
     $('#map-zoom-in').addEventListener('click',()=>zoom(.3));$('#map-zoom-out').addEventListener('click',()=>zoom(-.3));
@@ -521,19 +727,18 @@
 
   $('#start-date').value=state.start;$('#end-date').value=state.end;
   const originSelect=$('#origin-city');
-  for(const region of ['华东','华北','华南','华中','西南','西北','东北']){
-    const group=document.createElement('optgroup');group.label=region;
-    cities.filter(c=>c.region===region).sort((a,b)=>a.name.localeCompare(b.name,'zh-CN')).forEach(city=>{
-      const option=document.createElement('option');option.value=city.id;option.textContent=city.name;group.append(option);
-    });originSelect.append(group);
-  }
+  refreshOriginOptions();
+  const provinceGroup=document.createElement('optgroup');provinceGroup.label='按省份浏览';
+  Places.provinces.forEach(p=>provinceGroup.append(new Option(p.name,String(p.code))));$('#region-filter').append(provinceGroup);
+  $('#place-province').append(new Option('请选择省份',''));
+  Places.provinces.forEach(p=>$('#place-province').append(new Option(p.name,String(p.code))));
   $('#hour-start').innerHTML=Array.from({length:16},(_,i)=>`<option value="${i+6}">${String(i+6).padStart(2,'0')}:00</option>`).join('');
   $('#hour-end').innerHTML=Array.from({length:16},(_,i)=>`<option value="${i+7}">${String(i+7).padStart(2,'0')}:00</option>`).join('');
   $('#hour-start').value='9';$('#hour-end').value='18';
   try{
     const saved=JSON.parse(localStorage.getItem('sunseek-preferences-v2')||'null');
     if(saved){
-      if(cityByID.has(saved.origin))originSelect.value=saved.origin;
+      if(cityByID.has(saved.origin)){state.origin=saved.origin;refreshOriginOptions();originSelect.value=saved.origin;}
       if([200,500,1000,2000].includes(saved.maxDistance))$('#max-distance').value=String(saved.maxDistance);
       if(Number.isInteger(saved.hourStart)&&Number.isInteger(saved.hourEnd)&&saved.hourStart>=6&&saved.hourEnd<=22&&saved.hourStart<saved.hourEnd){$('#hour-start').value=String(saved.hourStart);$('#hour-end').value=String(saved.hourEnd);}
     }
