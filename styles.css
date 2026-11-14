@@ -39,3 +39,40 @@ dialog{border:1px solid #e9eee3;box-shadow:0 30px 100px #17392e33;border-radius:
 .travel-inspiration{padding:0;background:#fbfdf8;margin:24px 0 0}.travel-inspiration>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:15px;padding:16px 18px;color:#607b54;font-size:13px}.travel-inspiration>summary::-webkit-details-marker{display:none}.travel-inspiration>summary small{display:block;font-size:9px;color:#9aaa8c;margin-top:6px}.inspiration-toggle{font-size:10px;color:#839b70}.travel-inspiration[open] .inspiration-toggle{font-size:0}.travel-inspiration[open] .inspiration-toggle:after{content:'收起';font-size:10px}.travel-inspiration>.attraction-weather-note{margin:0 18px 14px}.travel-inspiration>.attraction-grid{grid-template-columns:1fr;padding:0 18px}.travel-inspiration .attraction-card{padding:13px 0;border:0;border-bottom:1px solid #e6ecdf;border-radius:0;background:transparent}.travel-inspiration .attraction-description{margin:7px 0 10px}.travel-inspiration>.attraction-source,.travel-inspiration>.attraction-empty{margin:12px 18px 16px}.preview-badge{font-size:10px;color:var(--green);background:#edf5e8;border-radius:5px;padding:6px 9px}.place-detail-tools>.preview-badge{margin-left:0}
 
 .map-toolbar>div:last-child{flex-wrap:wrap;justify-content:flex-end}.map-tool:disabled{opacity:.5;cursor:wait}
+
+/* Explore individual travel days without changing the trip recommendation. */
+.map-timeline{padding:12px 24px 14px;border-top:1px solid #edf1e7;min-width:0}
+.map-timeline-heading{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px;font-size:11px;color:#668357}
+.map-timeline-heading>span:last-child{font-size:9px;color:#89977e;text-align:right;line-height:1.7}
+.map-date-tabs{position:relative;display:flex;gap:7px;overflow-x:auto;overscroll-behavior-x:contain;padding:2px 2px 7px;scrollbar-width:thin;scrollbar-color:#cad9bc transparent}
+.map-date-tabs button{flex:0 0 65px;border:1px solid #e2e9da;border-radius:7px;padding:9px 7px;background:#fafcf7;color:#7c8e6f;text-align:center}
+.map-date-tabs strong{display:block;font-size:11px;font-weight:500;white-space:nowrap}
+.map-date-tabs small{display:block;font-size:9px;margin-top:5px}
+.map-date-tabs button:first-child{flex-basis:83px}
+.map-date-tabs button[aria-pressed=true]{background:#edf5e4;border-color:#96b982;color:#426f3c}
+.map-date-tabs button:focus-visible{outline:2px solid #5c8950;outline-offset:1px}
+.detail-trip-period{margin-top:22px;font-size:10px;line-height:1.8;color:#7e916e}
+.detail-trip-period+.hourly-heading{margin-top:10px}
+.departure-options{margin-top:22px;border:1px solid #dce7d2;border-radius:8px;background:#fafcf7;overflow:hidden}
+.departure-options>summary{display:flex;justify-content:space-between;align-items:center;gap:12px;list-style:none;padding:15px 16px;font-size:12px;color:#526f47;cursor:pointer}
+.departure-options>summary::-webkit-details-marker{display:none}
+.departure-options>summary>span{display:flex;align-items:center;gap:7px}
+.departure-options>summary .icon{width:15px;height:15px;flex-shrink:0}
+.departure-options[open]>summary>.icon{transform:rotate(180deg)}
+.departure-body{padding:0 16px 16px}
+.departure-controls{display:flex;align-items:center;gap:12px;font-size:11px;color:#637e54}
+.departure-controls select{border:1px solid #d8e3ce;background:white;border-radius:5px;padding:7px 10px;font-size:11px;color:#506f44}
+.departure-rules,.departure-footnote{font-size:10px;color:#829476;line-height:1.8;margin-top:11px}
+.departure-summary{font-size:10px;color:#677f58;line-height:1.8;margin:12px 0}
+.departure-results{display:grid;gap:9px}
+.departure-option{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px;border:1px solid #e1e9d9;border-radius:6px;background:white}
+.departure-option>div{min-width:0}
+.departure-label{display:block;color:#839874;font-size:9px;margin-bottom:6px}
+.departure-option strong{display:block;font-size:13px;font-weight:500;color:#476c3d;line-height:1.6}
+.departure-option p{color:#6f865f;font-size:10px;line-height:1.8;margin-top:5px}
+.departure-option small{display:block;font-size:9px;line-height:1.8;color:#8f9c83;margin-top:4px}
+.departure-option button{flex-shrink:0;border:1px solid #d5e3c7;background:#edf5e6;padding:8px 10px;border-radius:5px;font-size:10px;color:#52793f}
+.departure-option button:disabled{color:#8c9b80;background:#f5f7f1;border-color:#e7ebdf;cursor:default}
+.departure-empty{font-size:11px;color:#8e947c;line-height:1.9;padding:12px;border:1px dashed #dce5d2;border-radius:6px}
+@media(max-width:760px){.map-timeline{padding-left:20px;padding-right:20px}}
+@media(max-width:480px){.map-timeline{padding:11px 16px 12px}.map-timeline-heading{align-items:flex-start}.map-timeline-heading>span:first-child{white-space:nowrap}.map-timeline-heading>span:last-child{font-size:8px;max-width:200px}.map-date-tabs button{flex-basis:58px;padding:8px 5px}.map-date-tabs button:first-child{flex-basis:75px}.departure-options>summary{font-size:11px;padding:13px 12px}.departure-body{padding:0 12px 12px}.departure-option{align-items:flex-start;flex-direction:column;gap:9px;padding:11px}.departure-option button{align-self:flex-end}.departure-rules,.departure-summary,.departure-footnote{font-size:9px}.detail-trip-period{font-size:9px}}

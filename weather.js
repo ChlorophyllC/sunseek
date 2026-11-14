@@ -112,6 +112,30 @@ window.SunseekWeather = (() => {
     return {...city,days,complete,hazardous,availableHours,goodHours,matchCount,expected:options.dates.length,best,meanFeels,score,breakdown,
       min,max,mean,distance,distanceOK,tempOK,caution,eligible:complete&&!hazardous&&availableHours>0&&goodHours>0&&tempOK&&distanceOK&&(!options.strict||matchCount===options.dates.length)};
   }
+  function departureWindows(city,rawDays,options) {
+    const duration=options.duration;
+    const dates=[...new Set(options.dates||[])].filter(d=>validDate(d)&&d>options.today).sort();
+    const result={windows:[],possible:0,complete:0,eligible:0};
+    if(!Number.isInteger(duration)||duration<1||duration>16)return result;
+    const candidates=[];
+    for(let i=0;i+duration<=dates.length;i++){
+      const windowDates=dates.slice(i,i+duration);
+      if(windowDates.some((date,j)=>j>0&&Date.parse(date+'T00:00:00Z')-Date.parse(windowDates[j-1]+'T00:00:00Z')!==86400000))continue;
+      result.possible++;
+      const assessed=assess(city,rawDays,{...options,dates:windowDates});
+      if(assessed.complete)result.complete++;
+      if(assessed.eligible)candidates.push({...assessed,start:windowDates[0],end:windowDates[duration-1]});
+    }
+    result.eligible=candidates.length;
+    candidates.sort((a,b)=>b.score-a.score||b.goodHours-a.goodHours||a.start.localeCompare(b.start));
+    // Show the best window first, then distinct alternatives without overlapping dates.
+    for(const candidate of candidates){
+      if(result.windows.some(w=>candidate.start<=w.end&&candidate.end>=w.start))continue;
+      result.windows.push(candidate);
+      if(result.windows.length===3)break;
+    }
+    return result;
+  }
   function packCache(data,time) {
     return {version:2,time,source:'open-meteo',data:[...data].map(([id,days])=>[id,days.map(d=>[...DAY_FIELDS.map(k=>d[k]),(d.hours||[]).map(h=>HOUR_FIELDS.map(k=>h[k]??null))])])};
   }
@@ -132,5 +156,5 @@ window.SunseekWeather = (() => {
     }
     return data.size?{data,time:cache.time}:null;
   }
-  return Object.freeze({distanceKm,validHour,validDay,isHazard,matchesHour,normalizeForecast,analyzeDay,assess,packCache,unpackCache});
+  return Object.freeze({distanceKm,validHour,validDay,isHazard,matchesHour,normalizeForecast,analyzeDay,assess,departureWindows,packCache,unpackCache});
 })();

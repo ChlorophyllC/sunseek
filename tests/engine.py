@@ -47,6 +47,25 @@ with sync_playwright() as p:
       assert(W.unpackCache(cache,new Set(['dali']),now+6*3600000)===null,'expire exactly at max age');
       assert(W.unpackCache({...cache,time:now+1000},new Set(['dali']),now)===null,'future timestamp rejected');
       assert(W.unpackCache({...cache,source:'demo'},new Set(['dali']),now)===null,'demo never accepted as live cache');
+      const planOptions={...options,dates, duration:3};
+      const windows=W.departureWindows(city,data,planOptions);
+      assert(windows.possible===13&&windows.complete===13&&windows.eligible===13,'future complete three-day windows');
+      assert(windows.windows.length===3&&windows.windows[0].start===dates[1],'equal scores choose earlier departure and omit today');
+      assert(windows.windows[1].start===dates[4]&&windows.windows[2].start===dates[7],'suggestions must not overlap');
+      assert(windows.windows[0].goodHours===27,'window metrics use the same hourly scoring');
+      const badDay=JSON.parse(JSON.stringify(data));
+      badDay[2].hours.find(h=>h.hour===21).code=95;
+      const safe=W.departureWindows(city,badDay,planOptions);
+      assert(safe.windows[0].start===dates[3]&&safe.eligible===11,'night hazard excludes every overlapping trip');
+      const incomplete=W.departureWindows(city,missing,planOptions);
+      assert(incomplete.complete===12&&incomplete.windows[0].start===dates[2],'missing hourly data excludes overlapping windows');
+      assert(W.departureWindows(city,data,{...planOptions,min:30}).eligible===0,'temperature filter applies to date suggestions');
+      assert(W.departureWindows(city,data,{...planOptions,preference:'snow'}).eligible===0,'weather preference applies to date suggestions');
+      assert(W.departureWindows(city,data,{...planOptions,hourStart:6,hourEnd:8}).eligible===0,'no daylight is not a travel window');
+      assert(W.departureWindows(city,data,{...planOptions,duration:16}).possible===0,'do not extend the forecast horizon');
+      assert(W.departureWindows(city,data,{...planOptions,duration:0}).possible===0,'reject invalid duration');
+      const gaps=W.departureWindows(city,data,{...planOptions,dates:[dates[1],dates[3],dates[4]],duration:2});
+      assert(gaps.possible===1&&gaps.windows[0].start===dates[3],'calendar gaps must not become consecutive days');
       return {checks,score:a.score,distanceKm:Math.round(dist)};
     }''',{'raw':payload_for('https://example.test/?latitude=25.61&longitude=100.27')[0],'dates':DATES})
     print('PASS pure forecast boundary checks:',result)
