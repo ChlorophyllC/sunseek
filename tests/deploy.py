@@ -21,7 +21,7 @@ def fake_cli(args,**kwargs):
  stage=Path(kwargs['cwd']);names={str(p.relative_to(stage)) for p in stage.rglob('*') if p.is_file()}
  expected={str(p.relative_to(ROOT)) for p in D.runtime_files()}
  assert names==expected and 'index.html' in names
- assert not any(n.startswith(('.git/','.tools/','docs/','tests/','scripts/')) for n in names)
+ assert not any(n.startswith(('.git/','.tools/','docs/','tests/','scripts/','server/')) for n in names)
  assert args[args.index('--framework')+1]=='static' and args[args.index('--deploy-path')+1]=='/'
  return SimpleNamespace(returncode=0)
 with patch.object(D,'run_cli',fake_cli),contextlib.redirect_stdout(io.StringIO()):D.publish(T)

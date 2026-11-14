@@ -7,7 +7,7 @@ sys.stdout.reconfigure(line_buffering=True)
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
     context=browser.new_context(viewport={'width':1440,'height':1100},locale='zh-CN',timezone_id='Asia/Shanghai',reduced_motion='reduce')
-    page=context.new_page();page.set_default_timeout(10000)
+    context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();page.set_default_timeout(10000)
     errors=[];wiki_requests=[];pending=[];weather_mode='normal'
     page.on('pageerror',lambda e:errors.append(str(e)))
     def forecast(route):

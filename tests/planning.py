@@ -13,7 +13,7 @@ BASE = 'http://localhost:4173'
 def setup(browser, width=1440, clock=False):
     context = browser.new_context(viewport={'width': width, 'height': 1100},
                                   locale='zh-CN', timezone_id='Asia/Shanghai', reduced_motion='reduce')
-    page = context.new_page()
+    context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page = context.new_page()
     if clock:
         page.clock.install()
     page.set_default_timeout(10000)

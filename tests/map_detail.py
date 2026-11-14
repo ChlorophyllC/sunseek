@@ -32,7 +32,7 @@ def forecast(route):
 
 def setup(browser):
     context=browser.new_context(viewport={'width':1440,'height':1100},locale='zh-CN',timezone_id='Asia/Shanghai',reduced_motion='reduce')
-    page=context.new_page();page.set_default_timeout(8000)
+    context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();page.set_default_timeout(8000)
     errors=[];boundaries=[];weather=[]
     page.on('pageerror',lambda e:errors.append(str(e)))
     def request(req):

@@ -16,7 +16,7 @@ assert all(len(s['sha256'])==64 for s in atlas['sources'])
 with sync_playwright() as p:
  b=p.chromium.launch(headless=True)
  context=b.new_context(viewport={'width':1440,'height':1100},locale='zh-CN',timezone_id='Asia/Shanghai',reduced_motion='reduce')
- page=context.new_page();page.set_default_timeout(12000)
+ context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();page.set_default_timeout(12000)
  errors=[];weather=[];geocoding=[];held=[];mode={'value':'empty'};loads=[]
  page.on('pageerror',lambda e:errors.append(str(e)))
  def forecast(route):
@@ -122,7 +122,7 @@ with sync_playwright() as p:
  assert len(loads)==2 and not errors,errors
  context.close()
  # A failed lazy atlas cannot break base/add-place search; a later opening retries it.
- context=b.new_context();page=context.new_page();page.route('https://api.open-meteo.com/**',fixture);page.route('https://geocoding-api.open-meteo.com/**',lambda r:r.fulfill(json={}))
+ context=b.new_context();context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();page.route('https://api.open-meteo.com/**',fixture);page.route('https://geocoding-api.open-meteo.com/**',lambda r:r.fulfill(json={}))
  page.route('**/assets/search-places.json',lambda r:r.abort());page.goto('http://localhost:4173')
  page.locator('#search-btn').click();page.locator('#city-search').fill('景德镇');expect(page.locator('#search-results [data-open-city="area-360200"]')).to_be_visible()
  expect(page.locator('#search-index-status')).to_contain_text('扩展地名索引暂不可用')

@@ -16,7 +16,7 @@ BASE = 'http://localhost:4173'
 def new_page(browser, handler, width=1440):
     context = browser.new_context(viewport={'width': width, 'height': 1100},
                                   locale='zh-CN', timezone_id='Asia/Shanghai', reduced_motion='reduce')
-    page = context.new_page()
+    context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page = context.new_page()
     page.set_default_timeout(10000)
     errors = []
     page.on('pageerror', lambda error: errors.append(str(error)))

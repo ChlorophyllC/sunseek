@@ -9,7 +9,7 @@ sys.stdout.reconfigure(line_buffering=True)
 with sync_playwright() as p:
  b=p.chromium.launch(headless=True)
  context=b.new_context(viewport={'width':1440,'height':1100},locale='zh-CN',timezone_id='Asia/Shanghai',reduced_motion='reduce')
- page=context.new_page();page.set_default_timeout(12000);page.clock.install(time=datetime.now())
+ context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();page.set_default_timeout(12000);page.clock.install(time=datetime.now())
  calls=[];held=[];errors=[];mode={'value':'normal'}
  page.on('pageerror',lambda e:errors.append(str(e)))
  page.route('https://api.open-meteo.com/**',fixture)
@@ -84,7 +84,7 @@ with sync_playwright() as p:
  print('PASS in-flight deduplication, stale-response isolation, explicit error retry and empty-cache expiry')
  context.close()
  # A slow atlas is not mistaken for an empty local search and does not trigger an online lookup early.
- context=b.new_context();page=context.new_page();page.clock.install(time=datetime.now());held_atlas=[];requests=[]
+ context=b.new_context();context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();page.clock.install(time=datetime.now());held_atlas=[];requests=[]
  page.route('https://api.open-meteo.com/**',fixture)
  page.route('**/assets/search-places.json',lambda r:held_atlas.append(r))
  page.route('https://geocoding-api.open-meteo.com/**',lambda r:(requests.append(r.request.url),r.fulfill(json={})))

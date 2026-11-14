@@ -13,7 +13,7 @@ BASE='http://localhost:4173'
 
 def setup_page(browser,width=1440,height=1100,failure=False,handler=None):
     context=browser.new_context(viewport={'width':width,'height':height},locale='zh-CN',timezone_id='Asia/Shanghai',reduced_motion='reduce')
-    page=context.new_page()
+    context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page()
     errors=[]
     page.on('pageerror',lambda error:errors.append(str(error)))
     page.route('https://api.open-meteo.com/**',handler or ((lambda route:route.abort()) if failure else fixture))

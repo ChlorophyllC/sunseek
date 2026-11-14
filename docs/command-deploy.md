@@ -57,3 +57,16 @@ python3 scripts/deploy_tencent.py login
 ## 当前验证状态
 
 CLI 安装和版本、应用命令参数、无网络发布预览已检查。`tests/deploy.py` 验证错误目标停止、预览零云请求、运行文件白名单和 static 参数。官方设备码流程已返回 login succeeded，但未取得环境列表信息。用户随后明确选择“暂时只保留本地修改”，已停止后续流程，没有查询目标或执行发布。下次用户明确要求同步时，先检查现有登录状态、核对目标应用/地域；登录过期才重新授权，不复用旧设备码。实际发布及线上验收仍待进行。
+
+## v0.8.0 共享服务单独更新
+
+共享函数已经部署，当前静态网页仍暂缓同步。服务端源文件位于 `server/`，不属于静态运行白名单，不要上传到静态站。仅维护后端时使用：
+
+```sh
+python3 scripts/deploy_weather_cache.py init-db
+python3 scripts/deploy_weather_cache.py deploy --coverage all
+python3 scripts/deploy_weather_cache.py function-url
+python3 scripts/deploy_weather_cache.py status
+```
+
+只有明确同步网页时再运行原 `deploy_tencent.py deploy`。函数入口为精确 Function URL，不创建通配网关；无需永久 API Key。详见 [缓存实现](shared-weather-cache.md)。

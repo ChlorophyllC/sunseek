@@ -1,0 +1,24 @@
+'use strict';
+const https=require('node:https'),{gunzipSync}=require('node:zlib');
+// Explicit IPv4 avoids IPv6 routes unavailable in some domestic serverless networks.
+function attempt(url,{signal}={}){return new Promise((resolve,reject)=>{
+ let connected=false;
+ const request=https.get(url,{family:4,signal,headers:{Accept:'application/json','Accept-Encoding':'gzip'}},response=>{
+  connected=true;const chunks=[];let size=0;
+  response.on('data',chunk=>{size+=chunk.length;if(size>8*1024*1024){request.destroy(Error('Upstream payload too large'));return;}chunks.push(chunk);});
+  response.on('error',reject);
+  response.on('end',()=>{
+   try{let body=Buffer.concat(chunks);if(response.headers['content-encoding']==='gzip')body=gunzipSync(body,{maxOutputLength:8*1024*1024});
+    resolve({ok:response.statusCode>=200&&response.statusCode<300,status:response.statusCode,headers:{get:name=>response.headers[name.toLowerCase()]},json:async()=>JSON.parse(body.toString('utf8'))});
+   }catch(error){reject(error);}
+  });
+ });
+ let connectTimer;
+ request.on('socket',socket=>{if(socket.connecting){connectTimer=setTimeout(()=>request.destroy(Object.assign(Error('Upstream connect timeout'),{code:'ETIMEDOUT'})),3500);socket.once('secureConnect',()=>{connected=true;clearTimeout(connectTimer);});}});
+ request.on('close',()=>clearTimeout(connectTimer));
+ request.on('error',error=>{error.beforeConnect=!connected;reject(error);});
+});}
+async function fetchForecast(url,options={}){
+ for(let i=0;i<3;i++){try{return await attempt(url,options);}catch(error){if(options.signal?.aborted||i===2||!error.beforeConnect||!['ETIMEDOUT','ECONNRESET','EAI_AGAIN','ENETUNREACH','EHOSTUNREACH'].includes(error.code))throw error;}}
+}
+module.exports={fetchForecast};

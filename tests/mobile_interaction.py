@@ -22,7 +22,7 @@ def pinch(page,cdp,box,start=50,end=100,shift=0):
 with sync_playwright() as p:
  b=p.chromium.launch()
  context=b.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True,locale='zh-CN',timezone_id='Asia/Shanghai',reduced_motion='reduce')
- page=context.new_page();page.set_default_timeout(10000);errors=[];requests=[]
+ context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();page.set_default_timeout(10000);errors=[];requests=[]
  page.on('pageerror',lambda e:errors.append(str(e)))
  page.route('https://api.open-meteo.com/**',fixture)
  page.route('https://geocoding-api.open-meteo.com/**',lambda r:(requests.append(r.request.url),r.fulfill(json={})))
@@ -100,7 +100,7 @@ with sync_playwright() as p:
  print('PASS touch result scrolling, keyboard-sized viewport fit, fixed background, 16 px input, modal transition and scroll restoration')
  context.close()
  # Desktop dragging retains pointer behavior after the touch changes.
- context=b.new_context(viewport={'width':1440,'height':1100});page=context.new_page();page.route('https://api.open-meteo.com/**',fixture);page.goto('http://localhost:4173');expect(page.locator('#data-status')).to_contain_text('实时预报')
+ context=b.new_context(viewport={'width':1440,'height':1100});context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();page.route('https://api.open-meteo.com/**',fixture);page.goto('http://localhost:4173');expect(page.locator('#data-status')).to_contain_text('实时预报')
  page.locator('#map-zoom-in').click();page.locator('#weather-map').scroll_into_view_if_needed();box=page.locator('#weather-map').bounding_box();before=page.locator('#map-viewport').get_attribute('transform')
  page.mouse.move(box['x']+box['width']*.5,box['y']+box['height']*.5);page.mouse.down();page.mouse.move(box['x']+box['width']*.5+45,box['y']+box['height']*.5+30,steps=5);page.mouse.up()
  assert page.locator('#map-viewport').get_attribute('transform')!=before

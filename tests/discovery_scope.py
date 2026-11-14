@@ -15,7 +15,7 @@ def clean_fixture(route):
 
 def setup(browser,seed=None):
     context=browser.new_context(viewport={'width':1440,'height':1100},locale='zh-CN',timezone_id='Asia/Shanghai',reduced_motion='reduce')
-    page=context.new_page();page.set_default_timeout(12000)
+    context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();page.set_default_timeout(12000)
     calls=[];held=[];mode={'value':'normal'};errors=[]
     def weather(route):
         query=parse_qs(urlparse(route.request.url).query)
@@ -177,7 +177,7 @@ with sync_playwright() as p:
 
     # Change modes while the original first batch is still in flight.
     context=browser.new_context(locale='zh-CN',timezone_id='Asia/Shanghai')
-    page=context.new_page();calls=[];held=[]
+    context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();calls=[];held=[]
     def slow_start(route):
         calls.append(route)
         if len(calls)==1:held.append(route)

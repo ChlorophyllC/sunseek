@@ -3,7 +3,7 @@ from playwright.sync_api import sync_playwright,expect
 from fixtures import fixture
 with sync_playwright() as p:
  b=p.chromium.launch();context=b.new_context(viewport={'width':1440,'height':1100},locale='zh-CN',timezone_id='Asia/Shanghai',reduced_motion='reduce')
- page=context.new_page();errors=[];github_requests=[]
+ context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();errors=[];github_requests=[]
  page.on('pageerror',lambda e:errors.append(str(e)))
  page.route('https://api.open-meteo.com/**',fixture)
  page.route('https://geocoding-api.open-meteo.com/**',lambda r:r.fulfill(json={}))

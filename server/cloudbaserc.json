@@ -1,0 +1,23 @@
+{
+  "envId": "noisy-sole-d5ganycu813519dcc",
+  "functionRoot": ".",
+  "functions": [
+    {
+      "name": "sunseek-weather-cache",
+      "dir": "weather-cache",
+      "handler": "index.main",
+      "runtime": "Nodejs20.19",
+      "type": "Event",
+      "timeout": 30,
+      "memorySize": 256,
+      "installDependency": false,
+      "ignore": [
+        "schema.sql"
+      ],
+      "envVariables": {
+        "SUNSEEK_ENV_ID": "noisy-sole-d5ganycu813519dcc",
+        "SUNSEEK_COVERAGE": "all"
+      }
+    }
+  ]
+}

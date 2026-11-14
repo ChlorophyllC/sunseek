@@ -31,7 +31,7 @@ def open_city(page, name):
 
 def setup(browser):
     context = browser.new_context(viewport={'width':1440,'height':1100},locale='zh-CN',timezone_id='Asia/Shanghai',reduced_motion='reduce')
-    page = context.new_page(); page.set_default_timeout(8000)
+    context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page = context.new_page(); page.set_default_timeout(8000)
     calls=[]; errors=[]
     def forecast(route):
         query=parse_qs(urlparse(route.request.url).query)

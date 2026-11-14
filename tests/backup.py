@@ -18,7 +18,7 @@ def file_payload(data):return dict(name='旅行备份.json',mimeType='applicatio
 
 def setup(browser,seed=True):
     context=browser.new_context(viewport={'width':1440,'height':1100},locale='zh-CN',timezone_id='Asia/Shanghai',reduced_motion='reduce',accept_downloads=True)
-    page=context.new_page();page.set_default_timeout(8000)
+    context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();page.set_default_timeout(8000)
     errors=[];calls=[]
     page.on('pageerror',lambda e:errors.append(str(e)))
     def forecast(route):calls.append(route.request.url);fixture(route)
