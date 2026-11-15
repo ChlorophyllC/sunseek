@@ -1,0 +1,6 @@
+{
+  "functionName": "sunseek-weather-objects",
+  "enabled": false,
+  "endpoint": "https://1330730699-m02h85g9p0.ap-shanghai.tencentscf.com/api/weather",
+  "origin": "https://sunseek-noisy-sole-d5ganycu813519dcc.webapps.tcloudbase.com"
+}

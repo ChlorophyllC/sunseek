@@ -13,6 +13,9 @@ value=U.summarize(sample)
 assert value['summary']['totalDeductValue']==268.66
 assert [r['module'] for r in value['resources']]==['PostgreSQL','HOSTING']
 assert 'not-for-output' not in json.dumps(value) and 'raw' not in value['resources'][0]['items'][0]
+sample['data']['Usages'][0]['MetricUsageDetail'][0]['ValueDetailList']=[{'CalcTime':'2026-11-15 00:00:00','RawValue':2620,'CreditsValue':248.97,'DeductValue':248.97,'secret':'not-for-output'}]
+daily=U.summarize(sample,True)['resources'][0]['items'][0]['daily']
+assert daily==[{'CalcTime':'2026-11-15 00:00:00','RawValue':2620,'CreditsValue':248.97,'DeductValue':248.97}]
 calls=[]
 def fake(args,**kwargs):
  calls.append(args)

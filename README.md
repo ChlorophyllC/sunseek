@@ -14,6 +14,10 @@ python3 -m http.server 4173
 
 浏览器打开 `http://localhost:4173`。刷新即可看到最新修改。推荐通过本地服务器访问，而非直接打开 HTML 文件。
 
+## 当前开发候选：按需对象缓存（尚未发布）
+
+已实现 48 个精选地点的 COS 缓存、条件追加的并发/预算状态和浏览器静态复用，新后端供验证，前端开关仍为关闭。已有缓存的第二个独立浏览器实测约 0.51 秒、零函数/天气请求；但真实冷启动约 42 秒且当时仅成功 44/48，成本快照中的 PG 计算累计也有尚未归属的增长。**冷启动与成本验收未通过，线上继续 v0.8.2，暂不扩展至 506 点。** 具体实现、失败证据和后续边界见 [候选检查记录](docs/on-demand-object-cache.md)。没有定时刷新或预热任务。
+
 ## v0.7.0：手机交互、视觉与项目公开
 
 保留地图单指滚页、双指缩放/平移，以及搜索共用滚动区、键盘可视区域适配与背景锁定；恢复原有字号比例，手机顶部用“关于”入口。后续按用户要求将“你的好天气目的地”照片与“全部推荐”统一：桌面 90px、手机 80px，平板上图下文布局保持整列宽度。页脚与关于窗口提供 [GitHub Star](https://github.com/ChlorophyllC/sunseek) 链接，不额外请求 GitHub 计数或第三方脚本。细节见 [手机交互说明](docs/mobile-interaction.md)。
@@ -246,6 +250,11 @@ python3 tests/presentation.py
 python3 tests/search_asset.py
 python3 tests/weather_storage_probe.py
 .tools/node/bin/node tests/weather_object_probe.cjs
+python3 tests/object_weather.py
+python3 tests/deploy_object_weather.py
+.tools/node/bin/node tests/object_weather.cjs
+.tools/node/bin/node tests/object_weather_http.cjs
+.tools/node/bin/node tests/object_weather_transport.cjs
 python3 tests/default_weather_transport.py
 python3 tests/tencent_usage.py
 python3 tests/shared_weather.py
@@ -288,6 +297,7 @@ python3 tests/shared_weather.py
 - `docs/tencent-cloud.md` / `scripts/package_static.py`：腾讯云额度评估、部署步骤与静态文件打包。
 - `docs/command-deploy.md` / `scripts/deploy_tencent.py` / `scripts/setup_cloudbase.py`：一次登录与命令更新现有网站。
 - `docs/mobile-interaction.md`：触摸手势、可读性、滚动与验证边界。
+- `docs/on-demand-object-cache.md`：下一版按需 COS 缓存及未通过的冷启动/成本检查，当前默认关闭。
 - `docs/shared-weather-cache.md`：按地点一小时复用、跨用户并发合并与后端落地边界。
 - `assets/subdivisions/` / `scripts/build_subdivisions.py`：按需加载的省内下级区划细线及离线生成脚本。
 - `docs/map-display.md`：地图入口、区划来源和城市标记规则。

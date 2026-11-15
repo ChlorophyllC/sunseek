@@ -993,15 +993,27 @@
     if(pendingIDs.size)fetchWeather(false,[...pendingIDs]);
   }
   async function requestWeatherPlaces(batch,signal){
+    const objectConfig=window.SUNSEEK_OBJECT_WEATHER_SERVICE||{enabled:false};
+    if(objectConfig.enabled&&(!Array.isArray(objectConfig.ids)||!objectConfig.ids.length||!objectConfig.contract)){
+      const error=new Error('共享天气配置未加载完整，请刷新后重试');error.sharedUnavailable=true;throw error;
+    }
+    const objectPoints=objectConfig.enabled?batch.filter(c=>featuredIDs.has(c.id)&&objectConfig.ids?.includes(c.id)):[];
+    let records=[];
+    if(objectPoints.length){
+      try{
+        if(!window.SunseekObjectWeatherClient)throw new Error('共享天气模块加载未成功，请刷新后重试');
+        records=await window.SunseekObjectWeatherClient.request(objectPoints.map(c=>c.id),signal);
+      }catch(error){error.sharedUnavailable=true;throw error;}
+    }
+    const remaining=batch.filter(c=>!objectPoints.includes(c));
     const shared=window.SunseekWeatherClient;
     // An older cached client module must not re-enable the experimental cloud route.
     const sharedConfig=window.SUNSEEK_WEATHER_SERVICE||{enabled:false};
-    if(sharedConfig.enabled&&!shared&&batch.some(c=>publicWeatherIDs.has(c.id))){const error=new Error('共享天气模块加载未成功，请刷新后重试');error.sharedUnavailable=true;throw error;}
-    const publicPoints=sharedConfig.enabled?batch.filter(c=>publicWeatherIDs.has(c.id)):[];
-    const directPoints=batch.filter(c=>!publicPoints.includes(c));
+    if(sharedConfig.enabled&&!shared&&remaining.some(c=>publicWeatherIDs.has(c.id))){const error=new Error('共享天气模块加载未成功，请刷新后重试');error.sharedUnavailable=true;throw error;}
+    const publicPoints=sharedConfig.enabled?remaining.filter(c=>publicWeatherIDs.has(c.id)):[];
+    const directPoints=remaining.filter(c=>!publicPoints.includes(c));
     // A shared service failure must never fan out to one upstream request per visitor.
-    let records=[];
-    if(publicPoints.length){try{records=await shared.request(publicPoints.map(c=>c.id),signal);}catch(error){error.sharedUnavailable=true;throw error;}}
+    if(publicPoints.length){try{records.push(...await shared.request(publicPoints.map(c=>c.id),signal));}catch(error){error.sharedUnavailable=true;throw error;}}
     if(directPoints.length){
       const params=new URLSearchParams({latitude:directPoints.map(c=>c.lat).join(','),longitude:directPoints.map(c=>c.lon).join(','),
         daily:'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,snowfall_sum,wind_speed_10m_max,wind_gusts_10m_max',

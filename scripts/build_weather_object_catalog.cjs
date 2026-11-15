@@ -1,0 +1,15 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'..'),check=process.argv.includes('--check');
+const featured=require('../server/weather-cache/catalog.json').filter(c=>c.featured).map(({id,lat,lon})=>({id,lat,lon}));
+const catalogPath=path.join(root,'server/weather-object-cache/catalog.json'),catalog=JSON.stringify(featured,null,2)+'\n';
+if(check){if(fs.readFileSync(catalogPath,'utf8')!==catalog)throw Error('Featured object catalog is stale');}else fs.writeFileSync(catalogPath,catalog);
+const {CONTRACT,PROFILE}=require('../server/weather-object-cache/profile.cjs');
+if(JSON.stringify(PROFILE)!==JSON.stringify(require('../server/weather-cache/core.cjs').PROFILE))throw Error('Weather query profiles differ');
+const target=JSON.parse(fs.readFileSync(path.join(root,'scripts/weather-object-target.json'),'utf8'));
+const config={enabled:target.enabled,endpoint:target.endpoint,cacheBase:'_weather-shared/v2/batches',contract:CONTRACT,ids:featured.map(c=>c.id)};
+if(config.enabled&&(!config.endpoint.startsWith('https://')||!target.origin))throw Error('Verified endpoint/origin required');
+const output="'use strict';\n// Generated defaults. Local previews stay direct; explicit test overrides are preserved.\nwindow.SUNSEEK_OBJECT_WEATHER_SERVICE??={..."+JSON.stringify(config)+",enabled:"+JSON.stringify(config.enabled)+"&&location.origin==="+JSON.stringify(target.origin)+"};\n";
+const clientPath=path.join(root,'assets/weather-service-config.js');
+if(check){if(fs.readFileSync(clientPath,'utf8')!==output)throw Error('Object client defaults are stale');}else fs.writeFileSync(clientPath,output);
+console.log(JSON.stringify({featured:featured.length,contract:CONTRACT,enabled:config.enabled}));
