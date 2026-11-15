@@ -15,9 +15,13 @@ window.SunseekSearch=(()=>{
     if(entity.parents?.length>1){const paths=entity.parentPaths||[entity.parents.map(fold).join('')];for(const path of paths)signatures.push(...[...names,...roots].map(n=>normalize(path)+n));}
     return {...entity,_search:{names,roots,contexts,signatures}};
   }
-  function score(entity,query){
-    const q=normalize(query);if(!q)return entity.kind==='city'?1:0;
-    const f=fold(q),s=entity._search;let value=0;
+  function prepareQuery(query){
+    const text=String(query||''),q=normalize(text);
+    return {q,f:fold(q),terms:text.trim().split(/[\s,，·/]+/u).map(normalize).filter(Boolean),island:/[岛島]$/.test(text)};
+  }
+  function scoreQuery(entity,{q,f,terms,island}){
+    if(!q)return entity.kind==='city'?1:0;
+    const s=entity._search;let value=0;
     if(s.names[0]===q)value=1080;
     else if(s.names.includes(q))value=1000;
     else if(s.signatures.includes(q))value=1050;
@@ -27,17 +31,18 @@ window.SunseekSearch=(()=>{
     else if(q.length>=2&&s.names.some(n=>n.includes(q)))value=500;
     else if(q.length>=2&&s.signatures.some(n=>n.includes(q)))value=440;
     // Split terms may appear in either the name or its administrative context.
-    const terms=query.trim().split(/[\s,，·/]+/u).map(normalize).filter(Boolean);
     if(!value&&terms.length>1&&terms.some(t=>s.names.some(n=>n.includes(t)))&&terms.every(t=>[...s.names,...s.contexts].some(n=>n.includes(t))))value=800;
     if(!value)return 0;
-    if(/[岛島]$/.test(query)&&/^ISL/.test(entity.feature||''))value+=70;
+    if(island&&/^ISL/.test(entity.feature||''))value+=70;
     if(entity.kind==='scope')value+=35;
     if(entity.kind==='city')value+=25;
     if(['ADM2','ADM3','PPLA','PPLA2','PPLA3','PPLC'].includes(entity.feature))value+=10;
     return value+Math.min(9,Math.log10((entity.population||0)+1));
   }
+  function score(entity,query){return scoreQuery(entity,prepareQuery(query));}
   function rank(entities,query,limit=60){
-    return entities.map((entity,index)=>({entity,index,score:score(entity,query)})).filter(r=>r.score>0)
+    const prepared=prepareQuery(query);
+    return entities.map((entity,index)=>({entity,index,score:scoreQuery(entity,prepared)})).filter(r=>r.score>0)
       .sort((a,b)=>b.score-a.score||a.index-b.index).slice(0,limit).map(r=>r.entity);
   }
   function queryPlan(query,entities){
@@ -53,5 +58,19 @@ window.SunseekSearch=(()=>{
     const name=fold(leaf);
     return {name:name.length>=2?name:leaf,...(country?{countryCode:country}:{})};
   }
-  return Object.freeze({normalize,fold,prepare,score,rank,queryPlan});
+  async function loadAtlas(){
+    const read=async url=>{const response=await fetch(url);if(!response.ok)throw new Error('Search index unavailable');return response;};
+    if(typeof DecompressionStream==='function'){
+      try{
+        const response=await read('assets/search-places.json.gz'),bytes=new Uint8Array(await response.arrayBuffer());
+        // Some hosts already apply Content-Encoding: gzip; fetch then supplies decoded JSON.
+        if(bytes[0]===0x1f&&bytes[1]===0x8b){
+          return await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).json();
+        }
+        return JSON.parse(new TextDecoder().decode(bytes));
+      }catch{/* Older hosts/browsers and failed compressed assets retain the original JSON path. */}
+    }
+    return (await read('assets/search-places.json')).json();
+  }
+  return Object.freeze({normalize,fold,prepare,score,rank,queryPlan,loadAtlas});
 })();

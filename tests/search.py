@@ -28,7 +28,7 @@ with sync_playwright() as p:
   route.fulfill(json={})
  page.route('https://api.open-meteo.com/**',forecast)
  page.route('https://geocoding-api.open-meteo.com/**',geocoder)
- page.on('request',lambda r:loads.append(r.url) if r.url.endswith('/assets/search-places.json') else None)
+ page.on('request',lambda r:loads.append(r.url) if '/assets/search-places.json' in r.url else None)
  page.goto('http://localhost:4173',wait_until='domcontentloaded')
  expect(page.locator('#data-status')).to_contain_text('实时预报')
  assert len(weather)==48 and not loads
@@ -123,10 +123,10 @@ with sync_playwright() as p:
  context.close()
  # A failed lazy atlas cannot break base/add-place search; a later opening retries it.
  context=b.new_context();context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();page.route('https://api.open-meteo.com/**',fixture);page.route('https://geocoding-api.open-meteo.com/**',lambda r:r.fulfill(json={}))
- page.route('**/assets/search-places.json',lambda r:r.abort());page.goto('http://localhost:4173')
+ page.route('**/assets/search-places.json*',lambda r:r.abort());page.goto('http://localhost:4173')
  page.locator('#search-btn').click();page.locator('#city-search').fill('景德镇');expect(page.locator('#search-results [data-open-city="area-360200"]')).to_be_visible()
  expect(page.locator('#search-index-status')).to_contain_text('扩展地名索引暂不可用')
- page.keyboard.press('Escape');page.unroute('**/assets/search-places.json');page.locator('#region-search-btn').click();page.locator('#city-search').fill('宁海县')
+ page.keyboard.press('Escape');page.unroute('**/assets/search-places.json*');page.locator('#region-search-btn').click();page.locator('#city-search').fill('宁海县')
  expect(page.locator('#search-results .search-result').first).to_contain_text('宁波')
  assert not errors,errors
  print('PASS compact desktop/mobile filters, search dialog layout, lazy-load reuse and retry without losing base places')

@@ -1,4 +1,4 @@
-# 晴游 SUNSEEK · v0.8.1
+# 晴游 SUNSEEK · v0.8.2
 
 按出发地、出行日期与日间天气偏好，寻找中国境内的旅行目的地。保留初版的清爽界面，以天气选择为主，旅行灵感在天气详情后折叠展示；自选地点可以先查天气，再决定是否保存。
 
@@ -22,7 +22,13 @@ python3 -m http.server 4173
 
 已归档此前搜索节流、测试站部署记录和命令更新工具。首次使用时 `python3 scripts/deploy_tencent.py login`，之后 `python3 scripts/deploy_tencent.py deploy` 更新同一应用；当前工作区工具已安装并曾登录，正式更新前仍需核对账户目标。完整步骤见 [命令更新说明](docs/command-deploy.md)。
 
-**当前测试站已发布 v0.8.1（应用版本 sunseek-003）。** 用户已授权上线，原先暂留本地的安排已被取代。每轮修改验证后及时提交推送 Git；网页发布使用命令工具更新原应用。
+**当前测试站已发布 v0.8.2（应用版本 sunseek-004）。** 用户已授权上线，原先暂留本地的安排已被取代。每轮修改验证后及时提交推送 Git；网页发布使用命令工具更新原应用。
+
+## v0.8.2：搜索资源压缩与共享存储验证
+
+地名索引源文件仍为 2.94 MB / 25,569 条记录，新增约 0.89 MB 的 gzip 产物，支持的浏览器优先读取，减少 69.8% 索引下载量；保持两字才加载、会话复用与原 JSON 兼容回退。检索查询词每轮只预处理一次，保留覆盖、相关度与行政归属规则。实测与内存限制见 [搜索资源检查](docs/search-resource-check.md)。
+
+已验证现有静态 COS/CDN 文件分发及云函数临时角色直连读写，无 PostgreSQL 或真实天气调用。并发禁止覆盖曾出现双成功，不能直接用作锁；追加位置比较的初步检查通过。该结果是后续按需共享实现的依据，**新天气缓存尚未接入，线上仍默认直连与本机缓存，也没有定时刷新**。详见 [存储验证](docs/weather-object-storage-check.md)。
 
 ## v0.8.1：恢复查询速度与稳定性
 
@@ -207,6 +213,7 @@ python3 -m http.server 4173
 - `v0.5.1`：48 城市实景配图、图片来源许可清单、压缩脚本与配图专项验收。
 - `v0.5.2`：地图层级返回、周边省市切换、港澳快捷入口、装饰区划、推荐优先标记及默认关闭的圆点开关。
 - `v0.6.0`：本机备份与迁移、固定精选/主动全库推荐范围、统一相关度搜索、按需地名索引与台湾 22 县市参考点；十二组回归通过。
+- `v0.8.2`：地名 gzip 按需加载与兼容回退、查询词预处理复用，以及非 PG 存储/并发原语验证；保持默认直连天气。
 - `v0.8.1`：恢复默认直连与一小时本机缓存、旧模块缓存隔离、发布路径核对修复及精简账单查询工具；已发布原测试站。
 - `v0.8.0`：逐地点跨用户共享缓存后端、48 到 506 点分阶段接入、源时间戳与请求覆盖日持久化、并发租约与滚动额度、真实云端与独立浏览器验收；后续 v0.8.1 默认关闭此实验路径。
 - `v0.7.0`：搜索节流与分区、手机触摸/键盘滚动修复、原字号与加宽图片、手机关于和 Star 入口、命令发布工具、公开仓库及共享缓存设计；十六组测试通过。
@@ -236,6 +243,9 @@ python3 tests/search_requests.py
 python3 tests/mobile_interaction.py
 python3 tests/deploy.py
 python3 tests/presentation.py
+python3 tests/search_asset.py
+python3 tests/weather_storage_probe.py
+.tools/node/bin/node tests/weather_object_probe.cjs
 python3 tests/default_weather_transport.py
 python3 tests/tencent_usage.py
 python3 tests/shared_weather.py

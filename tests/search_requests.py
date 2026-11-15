@@ -86,7 +86,7 @@ with sync_playwright() as p:
  # A slow atlas is not mistaken for an empty local search and does not trigger an online lookup early.
  context=b.new_context();context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:false}");page=context.new_page();page.clock.install(time=datetime.now());held_atlas=[];requests=[]
  page.route('https://api.open-meteo.com/**',fixture)
- page.route('**/assets/search-places.json',lambda r:held_atlas.append(r))
+ page.route('**/assets/search-places.json*',lambda r:held_atlas.append(r))
  page.route('https://geocoding-api.open-meteo.com/**',lambda r:(requests.append(r.request.url),r.fulfill(json={})))
  page.goto('http://localhost:4173');page.locator('#search-btn').click();page.locator('#city-search').fill('宁海县');page.clock.run_for(1800)
  assert held_atlas and not requests

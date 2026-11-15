@@ -870,7 +870,7 @@
   function loadSearchAtlas(){
     if(searchAtlasPromise)return searchAtlasPromise;
     searchAtlasState='loading';
-    searchAtlasPromise=fetch('assets/search-places.json').then(response=>{if(!response.ok)throw new Error('atlas');return response.json();}).then(payload=>{
+    searchAtlasPromise=Search.loadAtlas().then(payload=>{
       searchAtlas=payload.rows.map(row=>placeFromRow(row,payload.contexts));searchAtlasState='ready';
       if($('#search-dialog').open){renderSearch();maybeSearchOnline();}
     }).catch(()=>{

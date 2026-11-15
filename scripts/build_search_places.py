@@ -8,6 +8,7 @@ import hashlib,json,re,sys
 from datetime import date
 from pathlib import Path
 from zipfile import ZipFile
+from compress_search_index import build as compress_search_index
 from opencc import OpenCC
 ROOT=Path(__file__).resolve().parent.parent
 simplify=OpenCC('t2s').convert
@@ -63,6 +64,7 @@ for r in rows:
  atlas.append([int(r[0]),name(r),ns,round(float(r[4]),5),round(float(r[5]),5),code,context_ids[context_key],r[7],int(r[14] or 0),r[8]])
 metadata={'license':'CC BY 4.0','attribution':'GeoNames','downloadedAt':date.today().isoformat(),'sources':sources,'features':sorted(features),'contexts':contexts,'rows':atlas}
 (ROOT/'assets/search-places.json').write_text(json.dumps(metadata,ensure_ascii=False,separators=(',',':'))+'\n')
+compress_search_index()
 # County/city labels use ADM2 identities, weather uses a sourced administrative seat.
 taiwan=[]
 for r in rows:
