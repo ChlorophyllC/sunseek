@@ -1,8 +1,8 @@
 'use strict';
-// Public point cache transport. Personal locations keep the existing direct path.
+// Experimental public cache transport. Default queries use browser-local caching and direct weather requests.
 window.SunseekWeatherClient=(()=>{
  const DEFAULT_ENDPOINT='https://1330730699-86nlrqp1le.ap-shanghai.tencentscf.com/api/weather';
- function configuration(){return window.SUNSEEK_WEATHER_SERVICE||{enabled:true,endpoint:DEFAULT_ENDPOINT};}
+ function configuration(){return window.SUNSEEK_WEATHER_SERVICE||{enabled:false,endpoint:DEFAULT_ENDPOINT};}
  function delay(ms,signal){return new Promise((resolve,reject)=>{
   if(signal.aborted){reject(new Error('查询已取消'));return;}
   const cancel=()=>{clearTimeout(timer);reject(new Error('查询已取消'));};

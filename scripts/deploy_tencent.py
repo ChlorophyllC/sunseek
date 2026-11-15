@@ -44,8 +44,17 @@ def verify_target(info,target):
  if info.get('ServiceName')!=target['serviceName']:raise RuntimeError('云端应用名称与目标不一致，未执行发布。')
  if info.get('DeployType') not in [None,'static-hosting']:raise RuntimeError('目标不是静态托管应用，未执行发布。')
  if actual_url.scheme!='https' or actual_url.hostname!=expected.hostname:raise RuntimeError('云端访问网址与现有站点不一致，未执行发布。')
- if (info.get('AppPath') or actual_url.path or '/').rstrip('/')!=target['deployPath'].rstrip('/'):raise RuntimeError('云端部署路径与目标不一致，未执行发布。')
- return {'serviceName':info['ServiceName'],'url':target['url'],'version':info.get('LatestVersionName')}
+ # Independent webapps domains expose / while their static files may live at /<service>.
+ # Keep the app's existing mount; never turn a mismatched mount into a root upload.
+ public_path=(actual_url.path or '/').rstrip('/') or '/'
+ expected_path=target['deployPath'].rstrip('/') or '/'
+ mount=(info.get('AppPath') or public_path).rstrip('/') or '/'
+ independent=expected.hostname.endswith('.webapps.tcloudbase.com')
+ allowed={expected_path}
+ if independent and expected_path=='/':allowed.add('/'+target['serviceName'])
+ if public_path!=expected_path or mount not in allowed:
+  raise RuntimeError(f'云端部署路径与目标不一致，未执行发布（访问路径 {public_path}，挂载路径 {mount}）。')
+ return {'serviceName':info['ServiceName'],'url':target['url'],'version':info.get('LatestVersionName'),'deployPath':mount}
 
 def describe_target(target):
  result=run_cli(['app','info',target['serviceName'],'-e',target['envId'],'--json'],capture_output=True,text=True,stdin=subprocess.DEVNULL)
@@ -54,12 +63,15 @@ def describe_target(target):
 
 def publish(target,dry_run=False):
  files=runtime_files()
- if not dry_run:print('目标已核对：'+json.dumps(describe_target(target),ensure_ascii=False),flush=True)
+ deploy_path=target['deployPath']
+ if not dry_run:
+  verified=describe_target(target);deploy_path=verified['deployPath']
+  print('目标已核对：'+json.dumps(verified,ensure_ascii=False),flush=True)
  with tempfile.TemporaryDirectory(prefix='sunseek-publish-') as temp:
   stage=Path(temp)
   for source in files:
    destination=stage/source.relative_to(ROOT);destination.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,destination)
-  args=['app','deploy',target['serviceName'],'-e',target['envId'],'--framework','static','--install-command','','--build-command','','--output-dir','./','--deploy-path',target['deployPath'],'--force']
+  args=['app','deploy',target['serviceName'],'-e',target['envId'],'--framework','static','--install-command','','--build-command','','--output-dir','./','--deploy-path',deploy_path,'--force']
   print(json.dumps({'environment':target['envId'],'application':target['serviceName'],'url':target['url'],'runtimeFiles':len(files),'uncompressedBytes':sum(p.stat().st_size for p in files),'dryRun':dry_run},ensure_ascii=False),flush=True)
   if dry_run:
    print('预览命令（临时目录仅含运行文件）：tcb '+shlex.join(args));return

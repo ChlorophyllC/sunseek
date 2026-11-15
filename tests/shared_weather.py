@@ -29,7 +29,7 @@ def page_for(browser,missing_module=False):
  context.add_init_script("window.SUNSEEK_WEATHER_SERVICE={enabled:true,endpoint:'/api/weather'}")
  page=context.new_page();page.set_default_timeout(20000)
  page.route('**/api/weather?**',shared)
- if missing_module:page.route('**/assets/weather-client.js',lambda r:r.abort())
+ if missing_module:page.route('**/assets/weather-client.js*',lambda r:r.abort())
  page.route('https://api.open-meteo.com/**',lambda r:(direct.append(r.request.url),r.abort()))
  page.route('https://geocoding-api.open-meteo.com/**',lambda r:r.fulfill(json={}))
  page.goto('http://localhost:4173');return context,page

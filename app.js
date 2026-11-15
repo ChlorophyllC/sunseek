@@ -994,8 +994,10 @@
   }
   async function requestWeatherPlaces(batch,signal){
     const shared=window.SunseekWeatherClient;
-    if(!shared&&batch.some(c=>publicWeatherIDs.has(c.id))){const error=new Error('共享天气模块加载未成功，请刷新后重试');error.sharedUnavailable=true;throw error;}
-    const publicPoints=shared?.configuration().enabled?batch.filter(c=>publicWeatherIDs.has(c.id)):[];
+    // An older cached client module must not re-enable the experimental cloud route.
+    const sharedConfig=window.SUNSEEK_WEATHER_SERVICE||{enabled:false};
+    if(sharedConfig.enabled&&!shared&&batch.some(c=>publicWeatherIDs.has(c.id))){const error=new Error('共享天气模块加载未成功，请刷新后重试');error.sharedUnavailable=true;throw error;}
+    const publicPoints=sharedConfig.enabled?batch.filter(c=>publicWeatherIDs.has(c.id)):[];
     const directPoints=batch.filter(c=>!publicPoints.includes(c));
     // A shared service failure must never fan out to one upstream request per visitor.
     let records=[];
