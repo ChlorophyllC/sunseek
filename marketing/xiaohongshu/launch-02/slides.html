@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>晴游 · 小红书手机介绍图</title>
+<style>
+:root{--ink:#244d40;--green:#23745e;--muted:#738775;--paper:#f6f4eb;--line:#dce3d5;--orange:#df9b51}
+*{box-sizing:border-box}body{margin:0;padding:36px;background:#e4e8df;color:var(--ink);font-family:"PingFang SC","Hiragino Sans GB",sans-serif;-webkit-font-smoothing:antialiased}.slide{width:1080px;height:1440px;position:relative;overflow:hidden;background:var(--paper);margin:0 auto 36px;padding:64px 72px}.slide:after{content:"";position:absolute;width:480px;height:480px;border:1px solid #bacbb166;border-radius:50%;right:-250px;top:350px;pointer-events:none}.brand{display:flex;align-items:center;gap:14px;font-size:32px;font-weight:650;letter-spacing:2px}.brand .sun{color:var(--orange);font-size:46px;line-height:1}.brand small{font-family:Georgia,serif;font-size:19px;letter-spacing:4px;margin-left:7px;font-weight:400}.top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2}.chapter{font-size:23px;letter-spacing:2px;color:var(--muted)}.pill{display:inline-flex;border:1px solid #b4c2ab;border-radius:40px;padding:11px 22px;font-size:25px;font-weight:500;background:#f9fbf4bb}.intro{position:relative;z-index:2;margin-top:65px}.kicker{font-size:25px;color:var(--green);letter-spacing:3px;margin-bottom:21px}h1{font-size:78px;line-height:1.23;letter-spacing:-3px;font-weight:650;margin:0}h1 em{font-style:normal;color:var(--green)}.sub{font-size:31px;color:var(--muted);line-height:1.65;margin:23px 0 0}.footer{position:absolute;bottom:43px;left:72px;right:72px;display:flex;justify-content:space-between;font-size:22px;color:var(--muted);letter-spacing:.5px;z-index:5}.footer .demo{font-size:21px;letter-spacing:0}.image-panel{position:absolute;left:72px;right:72px;border:1px solid var(--line);border-radius:28px;background:white;overflow:hidden;box-shadow:0 14px 45px #36523b09;z-index:2}.image-panel img{display:block;width:100%;height:auto}.note{font-size:29px;line-height:1.65;color:var(--muted)}.number{font-family:Georgia,serif;font-size:38px;color:var(--orange);font-style:italic}.bottom-note{position:absolute;left:78px;right:72px;bottom:112px;font-size:30px;line-height:1.65}.steps{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.step{padding:13px 22px;background:#e6ecdc;border-radius:12px;font-size:28px}.arrow{font-size:32px;color:#8eaa8b}.label{font-size:24px;color:var(--muted);letter-spacing:2px}
+/* 01: an original illustrated cover, with a real mobile map screenshot. */
+.cover{padding-top:60px}.cover-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8}.cover:after{display:none}.cover .intro{margin-top:81px}.cover h1{font-size:96px;line-height:1.2;letter-spacing:-4px}.cover .sub{color:#506e58;font-size:31px;margin-top:26px}.phone{position:absolute;right:78px;top:523px;width:488px;height:785px;padding:13px;border-radius:47px;background:#fbfcf5;box-shadow:0 25px 80px #1a3b3a2a;transform:rotate(4deg);z-index:3;border:1px solid #d5ddce}.phone-bar{height:40px;display:flex;align-items:center;justify-content:center;font-size:17px;color:#819180;letter-spacing:1px}.phone-screen{height:717px;overflow:hidden;border-radius:27px;background:white}.phone-screen img{width:100%;display:block}.cover-side{position:absolute;left:78px;top:700px;width:365px;z-index:3}.cover-side .lead{font-size:45px;line-height:1.55;font-weight:550;letter-spacing:1px}.cover-side .tagline{font-size:26px;line-height:1.8;color:#638168;margin-top:26px}.cover-side .little-rule{width:54px;height:3px;background:var(--orange);margin-bottom:24px}.cover .footer{color:#f7f4df}.cover .chapter{color:#f5f3e5}.cover .pill{background:#fffcf1b0}
+/* 02 */
+.preferences .image-panel{top:484px;padding:32px 22px}.preferences .bottom-note{bottom:132px}.moods{display:flex;gap:15px;position:absolute;left:72px;right:72px;top:1195px}.moods span{flex:1;text-align:center;border-radius:15px;padding:18px 12px;font-size:28px;background:#e6eedf}.moods span:nth-child(2){background:#e7f0f4;color:#7294a6}.moods span:nth-child(3){background:#e9edf4;color:#7c95ab}.moods span:nth-child(4){background:#eaf0dd;color:#7a9262}
+/* 03 */
+.map .image-panel{top:466px;padding:26px 22px 22px}.map .timeline{border-top:1px solid var(--line);margin-top:20px;padding-top:15px}.map .bottom-note{bottom:124px}.map h1{font-size:80px}
+/* 04 */
+.dates .example{position:absolute;top:442px;left:78px;font-size:26px;color:var(--muted);z-index:3}.dates .image-panel{top:503px;padding:16px 16px 12px}.dates .intro{margin-top:58px}.dates .sub{font-size:30px}.dates .footer{bottom:36px}
+/* 05 */
+.search .image-panel{top:486px;padding:13px}.search .queries{position:absolute;left:72px;right:72px;top:1128px;display:flex;gap:14px;align-items:center}.search .queries span{font-size:25px;border:1px solid #cbd7c2;padding:13px 20px;border-radius:32px}.search .bottom-note{bottom:126px;font-size:29px}
+/* 06 */
+.try{background:var(--ink);color:#f8f6e9}.try:after{border-color:#e7ecce20;width:800px;height:800px;right:-420px;top:-420px}.try .brand,.try .chapter{color:#f2f3df}.try .intro{margin-top:69px}.try h1{font-size:85px;letter-spacing:-3px}.try h1 em{color:#d8e4bf}.try .sub{color:#c1d0b9;font-size:33px}.qr-card{position:absolute;top:555px;left:310px;width:460px;background:#fff;border-radius:24px;padding:30px 30px 22px;text-align:center;box-shadow:0 20px 65px #132f2920}.qr-card img{display:block;width:400px;height:400px;image-rendering:pixelated}.qr-card p{color:var(--ink);margin:8px 0 0;font-size:27px}.try .questions{position:absolute;left:72px;right:72px;top:1120px;text-align:center;font-size:34px;line-height:1.7;color:#e5edd4}.try .questions small{display:block;color:#afc5a9;font-size:26px;margin-top:14px}.try .footer{color:#b7cbae;font-size:22px}.try .entry-note{position:absolute;left:110px;right:110px;top:1055px;text-align:center;font-size:24px;color:#aec1a8}.try .bottom-note{bottom:125px;font-size:26px;color:#afc5a9;text-align:center}
+/* Keep headline and screenshots readable at a 390px feed width. */
+.slide:not(.cover):not(.try) .intro{margin-top:45px}
+.slide:not(.cover):not(.try) h1{font-size:74px;line-height:1.22}
+.slide:not(.cover):not(.try) .sub{font-size:29px;line-height:1.6;margin-top:20px}
+.preferences .image-panel{top:540px}.preferences .moods{top:1250px}
+.map .image-panel{top:520px;padding:22px}.map .timeline{display:none}.map .bottom-note{bottom:92px}
+.dates .example{top:480px}.dates .image-panel{left:115px;right:115px;top:535px}
+.search .image-panel{left:72px;right:auto;width:720px;top:520px}
+.search .queries{left:auto;right:72px;top:655px;width:168px;flex-direction:column;align-items:stretch;text-align:center}
+.search .bottom-note{bottom:92px;font-size:27px;line-height:1.5}.search .bottom-note .note{font-size:24px}
+@media print{body{padding:0;background:white}.slide{margin:0;page-break-after:always}@page{size:1080px 1440px;margin:0}}
+.feedback-weather{position:absolute;top:655px;left:72px;right:72px;display:grid;grid-template-columns:1fr 1fr;gap:22px}.feedback-weather>div{height:185px;border:1px solid #6e8a77;border-radius:22px;padding:25px 30px;background:#315847}.feedback-weather span{float:left;font-size:65px;line-height:1.4;color:#e0b975;margin-right:24px}.feedback-weather strong{display:block;font-size:35px;margin:13px 0 12px}.feedback-weather small{display:block;font-size:23px;color:#c3d0b5}.feedback-weather>div:nth-child(2) span{color:#a5c9df}.feedback-weather>div:nth-child(3) span{color:#adbed8}.feedback-weather>div:nth-child(4) span{color:#c8d7a5}</style>
+
+<section class="slide cover" id="slide-01" data-export="01-cover">
+ <img class="cover-art" src="../launch-01/art/cover-landscape.png" alt="原创晴山与阳光插画">
+ <div class="top"><div class="brand"><span class="sun">☼</span>晴游 <small>SUNSEEK</small></div><span class="pill">手机端界面展示</span></div>
+ <div class="intro"><div class="kicker">一个从天气开始的旅行小网页</div><h1>周末去哪？<br>先找<em>好天气。</em></h1><p class="sub">先看看哪里有喜欢的天气，<br>再决定下一站。</p></div>
+ <div class="cover-side"><div class="little-rule"></div><div class="lead">想晒太阳，<br>也想去远方。</div><div class="tagline">选日期 · 选天气<br>看看哪些地方更合拍</div></div>
+ <div class="phone"><div class="phone-bar">晴游 · 手机网页</div><div class="phone-screen"><img src="../launch-01/screens/map.png" alt="晴游手机天气地图的演示界面"></div></div>
+ <div class="footer"><span class="demo">界面演示 · 示例天气，不用于安排行程</span><span>01 / 06</span></div>
+</section>
+
+<section class="slide preferences" id="slide-02" data-export="02-preferences">
+ <div class="top"><div class="brand"><span class="sun">☼</span>晴游 <small>SUNSEEK</small></div><span class="chapter">01 / 选好这次出发</span></div>
+ <div class="intro"><div class="kicker">什么时候走，想遇见什么天气？</div><h1>选个日期，<br>再选一种<em>好天气。</em></h1><p class="sub">想晒太阳、看雪、听雨，<br>或只是找个清凉的地方走走。</p></div>
+ <div class="image-panel"><img src="../launch-01/screens/preference-main.png" alt="手机端出发日期与晴雪雨凉四种偏好"></div>
+ <div class="moods"><span>追着阳光</span><span>赴一场雪</span><span>听听下雨</span><span>寻一处清凉</span></div>
+ <div class="footer"><span class="demo">真实手机界面 · 日期与天气仅作演示</span><span>02 / 06</span></div>
+</section>
+
+<section class="slide map" id="slide-03" data-export="03-map">
+ <div class="top"><div class="brand"><span class="sun">☼</span>晴游 <small>SUNSEEK</small></div><span class="chapter">02 / 找到心动的地方</span></div>
+ <div class="intro"><div class="kicker">不用挨个查一长串城市</div><h1>把好天气，<br>放在<em>地图上。</em></h1><p class="sub">先看看全国，再慢慢缩小范围。<br>点进城市，还能查看详细预报。</p></div>
+ <div class="image-panel"><img src="../launch-01/screens/map-canvas.png" alt="示例天气分布地图"></div>
+ <div class="bottom-note"><div class="steps"><span class="step">全国</span><span class="arrow">→</span><span class="step">大区</span><span class="arrow">→</span><span class="step">省份</span><span class="arrow">→</span><span class="step">城市</span></div></div>
+ <div class="footer"><span class="demo">界面演示 · 地图颜色与温度为示例</span><span>03 / 06</span></div>
+</section>
+
+<section class="slide dates" id="slide-04" data-export="04-dates">
+ <div class="top"><div class="brand"><span class="sun">☼</span>晴游 <small>SUNSEEK</small></div><span class="chapter">03 / 比一比出发日期</span></div>
+ <div class="intro"><div class="kicker">喜欢一座城，日期却还没定</div><h1>这座城，哪几天<br><em>更适合去？</em></h1><p class="sub">选想玩几天，找更合拍的一段出发。</p></div>
+ <div class="example">以大理为例 · 日期建议界面</div>
+ <div class="image-panel"><img src="../launch-01/screens/departure-preview.png" alt="大理日期建议的产品演示，所有数值均为示例"></div>
+ <div class="footer"><span class="demo">示例预报与分数，不是实时天气或发生概率</span><span>04 / 06</span></div>
+</section>
+
+<section class="slide search" id="slide-05" data-export="05-search">
+ <div class="top"><div class="brand"><span class="sun">☼</span>晴游 <small>SUNSEEK</small></div><span class="chapter">04 / 也去看看小地方</span></div>
+ <div class="intro"><div class="kicker">目的地，不只有大城市</div><h1>大城市之外，<br>也想找个<em>小地方。</em></h1><p class="sub">试着搜搜县城、小镇和岛屿，<br>选中地点后，再查看当地天气。</p></div>
+ <div class="image-panel"><img src="../launch-01/screens/search.png" alt="搜索宁海县的真实手机本地检索界面"></div>
+ <div class="queries"><span>宁海县</span><span>象山县</span><span>慈溪市</span><span>花鸟岛</span></div>
+ <div class="bottom-note">先看看天气，再决定要不要保存。<br><span class="note">地点覆盖仍在完善，暂不保证所有地名均可检索。</span></div>
+ <div class="footer"><span>真实手机界面 · 以本地搜索结果为例</span><span>05 / 06</span></div>
+</section>
+
+<section class="slide try" id="slide-06" data-export="06-feedback">
+ <div class="top"><div class="brand"><span class="sun">☼</span>晴游 <small>SUNSEEK</small></div><span class="chapter">一个还在慢慢完善的小作品</span></div>
+ <div class="intro"><div class="kicker" style="color:#b9cda9">关于下一次出发</div><h1>你最想遇见<br><em>哪一种天气？</em></h1><p class="sub">想晒太阳、看雪、听雨，<br>还是找个清凉的地方走走？</p></div>
+ <div class="feedback-weather"><div><span>☼</span><strong>晴天</strong><small>去阳光里走走</small></div><div><span>❄</span><strong>降雪</strong><small>等一场白色浪漫</small></div><div><span>☂</span><strong>细雨</strong><small>听一场慢慢的雨</small></div><div><span>❧</span><strong>清凉</strong><small>不冷不热刚刚好</small></div></div>
+ <div class="questions" style="top:1110px">也想听听你的旅行习惯。<small>你会先选目的地，还是先看天气？</small></div>
+ <div class="footer"><span>产品界面展示 · 图中天气为示例</span><span>06 / 06</span></div>
+</section>
+</html>
