@@ -1,0 +1,14 @@
+{
+  "images": 5,
+  "size": [
+    1080,
+    1440
+  ],
+  "mapOrQrImageReferences": 0,
+  "recognizedBarcodes": 0,
+  "observedTextMatches": [],
+  "coverAiNoticeRecognized": true,
+  "weatherValues": "explicit illustrative demo",
+  "platformReviewPassed": null,
+  "note": "Local OCR, source and visual checks only; no claim about platform approval or recommendation."
+}
