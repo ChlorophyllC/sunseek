@@ -18,6 +18,7 @@ playwright-report/
 
 # Rebuildable launch bundles; source, copy and individual posters are versioned.
 marketing/**/*.zip
+/marketing/xiaohongshu/launch-01/sunseek-xiaohongshu-launch/
 
 # User-requested downloaded skill; keep its third-party source local.
 .codex/skills/minitool-zip-builder/
