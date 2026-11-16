@@ -1,0 +1,12 @@
+{
+  "mode": "explicit-product-demo",
+  "weather": "illustrative, not a real forecast",
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "deviceScaleFactor": 2
+  },
+  "externalRequestsBlocked": 6,
+  "liveWeatherRequests": 0,
+  "postgresQueries": 0
+}
