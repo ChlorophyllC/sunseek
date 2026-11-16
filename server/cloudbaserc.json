@@ -15,6 +15,7 @@
         "schema.sql"
       ],
       "envVariables": {
+        "SUNSEEK_PG_CACHE_ENABLED": "false",
         "SUNSEEK_ENV_ID": "noisy-sole-d5ganycu813519dcc",
         "SUNSEEK_COVERAGE": "all"
       }

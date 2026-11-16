@@ -60,16 +60,15 @@ python3 scripts/deploy_tencent.py login
 
 ## v0.8.0 共享服务单独更新
 
-共享函数仍部署在云端，但 v0.8.1 默认前端已经关闭该实验路径。下列命令不是日常静态网页发布所需操作，部分会读写 PostgreSQL 并产生用量。服务端源文件位于 `server/`，不属于静态运行白名单，不要上传到静态站。仅维护后端时使用：
+旧共享函数已部署默认拒绝请求的入口，配置 `SUNSEEK_PG_CACHE_ENABLED=false`，详情见 [停用记录](pg-cost-investigation.md)。服务端源文件位于 `server/`，不属于静态运行白名单，不要上传到静态站。日常只需只读检查：
 
 ```sh
-python3 scripts/deploy_weather_cache.py init-db
-python3 scripts/deploy_weather_cache.py deploy --coverage all
-python3 scripts/deploy_weather_cache.py function-url
 python3 scripts/deploy_weather_cache.py status
+python3 scripts/tencent_usage.py --daily
+python3 scripts/tencent_function_usage.py
 ```
 
-只有明确同步网页时再运行原 `deploy_tencent.py deploy`。函数入口为精确 Function URL，不创建通配网关；无需永久 API Key。详见 [缓存实现](shared-weather-cache.md)。
+只有明确同步网页时再运行原 `deploy_tencent.py deploy`。旧 PG 部署、建表、数据库状态及创建 URL 均要求显式 `--allow-pg`，不是发布网页的步骤。`deploy_weather_cache.py pause` 仅用于部署已测试的后端停用入口，不查询 SQL 或天气；停用后的请求仍有少量函数用量，不是平台级关停。详见 [缓存实现](shared-weather-cache.md)。
 
 ## 独立域名与存储挂载路径
 

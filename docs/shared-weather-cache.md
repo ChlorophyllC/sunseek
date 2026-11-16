@@ -70,20 +70,22 @@ v0.8.0 历史实验的实现说明。共享后端仍部署在现有腾讯云体�
 
 ## 命令
 
+以下保留旧实验维护方法。11-16 已部署默认拒绝入口，日常只用 `status` 读取配置；`db-status` 会执行 SQL。其余操作需显式 `--allow-pg`，不得为费用排查或普通网页发布运行，详见 [停用记录](pg-cost-investigation.md)。
+
 ```sh
 # 校验服务端目录与浏览器地点配置一致
 .tools/node/bin/node scripts/build_weather_catalog.cjs --check
 # 第一次建表或更新专用 schema（幂等，不清空天气）
-python3 scripts/deploy_weather_cache.py init-db
+python3 scripts/deploy_weather_cache.py init-db --allow-pg
 # 第一阶段，已完成真实验收
-python3 scripts/deploy_weather_cache.py deploy --coverage featured
+python3 scripts/deploy_weather_cache.py deploy --coverage featured --allow-pg
 # 当前阶段，开放全部公开采样点
-python3 scripts/deploy_weather_cache.py deploy --coverage all
+python3 scripts/deploy_weather_cache.py deploy --coverage all --allow-pg
 # 仅读取/首次创建本函数自己的精确 URL，不创建通配网关
-python3 scripts/deploy_weather_cache.py function-url
+python3 scripts/deploy_weather_cache.py function-url --allow-pg
 python3 scripts/deploy_weather_cache.py status
 # 在事务中验证真实 SQL，最后回滚
-python3 scripts/deploy_weather_cache.py verify-db
+python3 scripts/deploy_weather_cache.py verify-db --allow-pg
 ```
 
 以上命令只操作缓存后端。静态网页更新仍使用 `python3 scripts/deploy_tencent.py deploy`，两者相互独立，不要把服务端源文件放进静态部署包。

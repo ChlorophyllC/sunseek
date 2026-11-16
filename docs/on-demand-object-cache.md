@@ -2,6 +2,8 @@
 
 更新于 2026-11-16。**候选代码已实现，前端默认关闭，静态测试站继续运行 v0.8.2。** 新后端 `sunseek-weather-objects` 已部署供验证，但没有定时器，网站正常访问不会调用它。旧 PG 实验也保持关闭。不得将本轮缓存命中结果写成已通过上线或成本验收。
 
+13:13 后续：[费用核查与旧入口停用](pg-cost-investigation.md)。发现旧公开函数仍有调用后，已部署 PG 入口默认拒绝；真实响应 410，不加载 PG。账单累计补报至 405.84 点、PG 379.34 点，来源仍受按日粒度和审计权限限制。新 COS 接入仍关闭。
+
 ## 当前完成的实现
 
 - 服务端仅接受 48 个精选地点，一次最多 16 点。其余 458 个公开地点和个人/临时地点继续走原直连路径；没有扩大到 506 点。
@@ -87,6 +89,6 @@ python3 tests/deploy_object_weather.py
 
 云端 `live-check`、`deploy`、`function-url` 与 `check_object_weather.py --live` 是显式操作，会产生对象/函数/天气用量；本轮已有充分失败证据，先不要重复运行。日常网页发布也不需要运行这些命令。
 
-`python3 scripts/tencent_usage.py --daily` 可在原账单摘要中附带按日明细白名单，仅查询计费 API。不要用旧 `deploy_weather_cache.py status` 获取账单，它会执行 SQL。
+`python3 scripts/tencent_usage.py --daily` 可在原账单摘要中附带按日明细白名单，仅查询计费 API。`deploy_weather_cache.py status` 现已改为纯函数配置读取；数据库计数另名 `db-status --allow-pg`，会执行 SQL，不用于日常费用排查。
 
 当前新函数 URL：`https://1330730699-m02h85g9p0.ap-shanghai.tencentscf.com/api/weather`。只有明确解决冷启动与成本归属后再考虑开关和静态发布；本轮没有更新线上网页，没有扩大范围到 506 点。

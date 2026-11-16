@@ -1,5 +1,7 @@
 # 腾讯云 CloudBase 部署与额度评估
 
+2026-11-16 13:13：旧 PG 函数已部署默认拒绝请求，实际返回 410；保留函数和数据库。13:02 账单累计 405.84 点，其中 PG 379.34，历史数据仍在补报，来源未完全查明；详见 [本轮费用核查](pg-cost-investigation.md)。
+
 2026-11-16 补充：新的 48 点按需 COS 缓存已实现，但尚未默认接入。冷启动与成本验收未过：一次完整检查约 42 秒、44/48 成功，账单 PG 计算累计又增加约 78.32 点，按日数据不足以确定归属。官方资源点统计允许最长两天延迟，相邻余额变化不能直接认定为当轮新增。不能依据代码中无 SQL 就宣称已规避 PG 计费或保证免费额度够用。继续保留 v0.8.2 线上路径，详情见 [候选记录](on-demand-object-cache.md)。
 
 核对时间：2026-11-15。用户已确定腾讯云作为部署目标，初期预计每天 50 人以内。用户已通过文件上传部署 [腾讯云测试站](https://sunseek-noisy-sole-d5ganycu813519dcc.webapps.tcloudbase.com)，首次真实线上验收见 [记录](deployment-check-2026-11-14.md)。本轮已通过 CLI 登录并读回实际环境，部署了共享天气后端；未变更套餐或绑定域名。当前 v0.8.2 已发布原测试站（sunseek-004），包含手机与搜索修复；天气默认恢复浏览器直连 + 一小时本机缓存。v0.8.0 共享后端保留但默认关闭，见 [恢复记录](weather-query-recovery.md)。
@@ -20,7 +22,7 @@
 
 迁移方案必须证明实际请求路径不触发 PostgreSQL。PG 模式的云存储本身把文件元数据和 RLS 放在同一 PostgreSQL，并在 Storage API 事务中协调对象操作（[官方介绍](https://docs.cloudbase.net/storage/pg/introduce)）；不能仅换成 PG Storage SDK 就认定省掉了数据库计算。需评估真正独立的对象/静态文件访问路径、并发更新与错误恢复，并在统计延迟后复核账单。
 
-用户可运行 `python3 scripts/tencent_usage.py` 获取精简的分项账单；此命令只调用计费查询 API，不执行 PostgreSQL 查询、不拉取天气、不部署或升级套餐。不要用 `deploy_weather_cache.py status` 代替预算查询，它会执行 SQL。
+用户可运行 `python3 scripts/tencent_usage.py --daily` 获取分项账单与按日明细；不执行 PostgreSQL 查询、不拉取天气、不部署或升级套餐。`deploy_weather_cache.py status` 现仅查看函数配置；数据库计数改为 `db-status --allow-pg`，会执行 SQL，不用于费用排查。`tencent_function_usage.py` 仅读取两条天气函数的历史调用监控，不调用函数本身。
 
 ## 已核对的实际环境与新增缓存
 

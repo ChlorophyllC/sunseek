@@ -1,5 +1,4 @@
 'use strict';
-const {makeService}=require('./core.cjs'),{createStore}=require('./tcb.cjs');
 const allowedOrigins=new Set(['https://sunseek-noisy-sole-d5ganycu813519dcc.webapps.tcloudbase.com','http://localhost:4173','http://127.0.0.1:4173']);
 let service;
 exports.main=async event=>{
@@ -12,9 +11,12 @@ exports.main=async event=>{
  const method=event.httpMethod||event.requestContext?.http?.method||'GET';
  if(method==='OPTIONS')return respond(204,{});
  if(method!=='GET')return respond(405,{error:'GET required'});
+ // Retired experiment: reject even a direct SDK/URL invocation before loading PG.
+ if(process.env.SUNSEEK_PG_CACHE_ENABLED!=='true')return respond(410,{code:'PG_CACHE_DISABLED',error:'PG weather cache is disabled'});
  const query=event.queryStringParameters||event.queryString||{};
  if(Object.keys(query).some(k=>k!=='ids')||typeof query.ids!=='string'||query.ids.length>1600)return respond(400,{error:'Only known place IDs accepted'});
  try{
+  const {makeService}=require('./core.cjs'),{createStore}=require('./tcb.cjs');
   service||=makeService({store:createStore(),coverage:process.env.SUNSEEK_COVERAGE||'featured',log:entry=>console.log(JSON.stringify(entry))});
   const result=await service.get(query.ids.split(','));
   // HTTP caches must not retain pending/errors; fresh data is bounded by the oldest point expiry.
