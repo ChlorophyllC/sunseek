@@ -24,9 +24,11 @@ def serve(route):
  ids=parse_qs(urlparse(route.request.url).query)['ids'][0].split(',');functions.append(ids)
  assert ids==sorted(set(ids)) and all(id in by_id for id in ids)
  if mode=='outage':route.fulfill(status=503,json={'error':'Unavailable'});return
+ if mode=='partial-outage' and len(ids)==1:route.fulfill(status=503,json={'error':'Unavailable'});return
  if mode=='limit':route.fulfill(json={'version':1,'contract':config['contract'],'items':[{'cityId':id,'status':'error','reason':'rate-limited','retryAfter':61} for id in ids]});return
  items=[]
  for id in ids:
+  if mode=='partial-outage' and id==ids[-1]:items.append({'cityId':id,'status':'pending','retryAfter':3});continue
   if mode=='pending' and id not in seen:seen.add(id);items.append({'cityId':id,'status':'pending','retryAfter':3});continue
   if id not in cached:
    c=by_id[id];raw=healthy(f"https://fixture/?latitude={c['lat']}&longitude={c['lon']}")[0]
@@ -85,5 +87,14 @@ with sync_playwright() as p:
  mode='ok';before=len(functions);f,missing=setup(browser,True);settle(missing)
  assert len(functions)==before and len(direct)==direct_count;f.close()
  mode='pending';g,waiting=setup(browser);settle(waiting);expect(waiting.locator('#discovery-progress')).to_contain_text('48 个候选 · 48 个完整')
- assert len(seen)==48 and len(provider)==48 and len(direct)==direct_count;g.close();browser.close()
+ assert len(seen)==48 and len(provider)==48 and len(direct)==direct_count;g.close()
  print('PASS quota/outage/missing module do not fan out; bounded pending polling preserves 48-point cache')
+
+ files.clear();mode='partial-outage';before=len(functions);h,partial=setup(browser);settle(partial)
+ expect(partial.locator('#discovery-progress')).to_contain_text('48 个候选 · 15 个完整')
+ assert len(functions)==before+2 and len(functions[-1])==1 and len(direct)==direct_count
+ assert len(times(partial))==15 and set(times(partial))=={stamp},'successful partial results must survive later service outage without renewing source times'
+ failed=partial.evaluate("JSON.parse(localStorage.getItem('sunseek-weather-v3')).forecasts.flatMap(f=>f.data.map(d=>d[0]))")
+ assert set(failed)==set(functions[before][:-1])
+ h.close();browser.close()
+ print('PASS partial 503 retains 15 valid points in UI/local cache, stops later batches and does not fan out')

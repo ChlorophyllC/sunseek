@@ -4,6 +4,8 @@
 
 13:13 后续：[费用核查与旧入口停用](pg-cost-investigation.md)。发现旧公开函数仍有调用后，已部署 PG 入口默认拒绝；真实响应 410，不加载 PG。账单累计补报至 405.84 点、PG 379.34 点，来源仍受按日粒度和审计权限限制。新 COS 接入仍关闭。
 
+11-16 后续本地优化：客户端增加 30 秒的单批网络/等待预算、最多三次函数请求，遵守 pending 的 `retryAfter`，后续失败保留已验证的部分结果。仅做本地模拟，没有查询云端账单、SQL 或真实天气，也未发布网页；这不代表此前冷启动或成本问题已经解决。
+
 ## 当前完成的实现
 
 - 服务端仅接受 48 个精选地点，一次最多 16 点。其余 458 个公开地点和个人/临时地点继续走原直连路径；没有扩大到 506 点。
@@ -17,6 +19,16 @@
 - 更新失败保留六小时内的原数据，标注缓存/失败，不补零、不用合成天气补缺失，也不会自动让每位访问者集中直连回源。
 
 前端入口为 `assets/weather-service-config.js` / `assets/weather-object-client.js`。生成配置保留测试覆盖，正式开关即使未来启用也只针对精确测试站来源；本地预览仍默认原直连。当前 `scripts/weather-object-target.json` 的 `enabled=false`，不能改成 true 来跳过下列未通过检查。
+
+## 客户端等待与部分失败恢复（本地候选）
+
+原客户端最多八次函数请求，每次最多等待 25 秒，且 pending 固定三秒后重查，整批可能等候数分钟。现在单批（最多 16 点）的静态读取、函数请求和轮询共用 **30 秒预算**，函数请求最多三次；这不是全国 48 点首屏必定在 30 秒内完成的承诺。
+
+pending 按服务端 `retryAfter` 等待，最低三秒，不提前查询。若建议等待已超出本次剩余预算，直接结束本轮并保留“正在更新”状态及剩余等待秒数，让持有租约的 worker 继续完成，不因界面等待主动夺取租约。后续轮询仅包含尚未返回结果的地点。
+
+先成功的结果不会因随后超时/503 全批丢弃：已验证记录随错误返回给页面，页面保留其地图/推荐和本机缓存，只标记未完成地点失败，并停止后续共享批次；不转为每用户直连。用户取消操作则丢弃该操作结果。结果在等待中跨过一小时或基准日时降为 stale，超过六小时不再返回预报；真实源时间和过期时间不续期。
+
+新增 `tests/object_weather_client.cjs` 使用本地虚拟时钟验证 45 秒租约不提前轮询、六秒等待、三次上限、含静态读取的总预算、超时/503 保留部分结果、等待时过期与取消清理。`tests/object_weather.py` 验证 15 点成功后剩余 1 点返回 503 时，页面与本机缓存仍保留这 15 点、停止后续批次且无直连扩散。加上默认直连、省份失败恢复、候选默认关闭和部署边界，本轮六组相关检查通过，均为本地模拟，不是重新完成真实冷启动验收。
 
 ## 状态存储与维护边界
 
@@ -83,6 +95,7 @@ python3 scripts/check_object_weather.py
 .tools/node/bin/node tests/object_weather.cjs
 .tools/node/bin/node tests/object_weather_http.cjs
 .tools/node/bin/node tests/object_weather_transport.cjs
+.tools/node/bin/node tests/object_weather_client.cjs
 python3 tests/object_weather.py
 python3 tests/deploy_object_weather.py
 ```

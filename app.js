@@ -950,6 +950,21 @@
     const idsToFetch=[...pendingIDs];idsToFetch.forEach(id=>{failedIDs.delete(id);failureReasons.delete(id);});
     render();if($('#city-dialog').open&&state.activeCity)renderCityDialog(state.activeCity);
     let success=0,rateLimited=false;
+    const acceptRecords=(records,batch)=>{
+      const accepted=new Set();
+      for(const record of records){
+        const city=cityByID.get(record.cityId);if(!city||!batch.includes(city))continue;
+        accepted.add(city.id);
+        const days=record.forecast?Weather.normalizeForecast(record.forecast):[];
+        if(days.some(d=>d.date>=today&&d.date<=lastForecastDate&&d.hours.some(Weather.validHour))){
+          state.data.set(city.id,days);updatedAt.set(city.id,record.fetchedAt);
+          if(record.forecast.daily?.time?.[0]===today&&record.forecast.daily.time.includes(lastForecastDate))forecastBaseDates.set(city.id,today);
+          if(record.status==='fresh')success++;
+          else{failedIDs.add(city.id);failureReasons.set(city.id,'共享预报更新未成功，暂用缓存');}
+        }else{failedIDs.add(city.id);failureReasons.set(city.id,record.reason==='rate-limited'?'接口请求受限，请稍后重试':record.reason==='updating'?'天气正在更新，请稍后重试':'返回的预报字段不完整');}
+      }
+      return accepted;
+    };
     // One batch at a time limits bursts when expanding an entire province.
     for(let i=0;i<idsToFetch.length;i+=16){
       if(requestId!==state.requestId)break;
@@ -958,23 +973,15 @@
       try {
         const records=await requestWeatherPlaces(batch,controller.signal);
         if(requestId!==state.requestId)return;
-        for(const record of records){
-          const city=cityByID.get(record.cityId);if(!city||!batch.includes(city))continue;
-          const days=record.forecast?Weather.normalizeForecast(record.forecast):[];
-          if(days.some(d=>d.date>=today&&d.date<=lastForecastDate&&d.hours.some(Weather.validHour))){
-            state.data.set(city.id,days);updatedAt.set(city.id,record.fetchedAt);
-            if(record.forecast.daily?.time?.[0]===today&&record.forecast.daily.time.includes(lastForecastDate))forecastBaseDates.set(city.id,today);
-            if(record.status==='fresh')success++;
-            else{failedIDs.add(city.id);failureReasons.set(city.id,'共享预报更新未成功，暂用缓存');}
-          }else{failedIDs.add(city.id);failureReasons.set(city.id,record.reason==='rate-limited'?'接口请求受限，请稍后重试':record.reason==='updating'?'天气正在更新，请稍后重试':'返回的预报字段不完整');}
-        }
+        acceptRecords(records,batch);
         if(records.some(r=>r.reason==='rate-limited')){
           rateLimited=true;for(const id of pendingIDs)if(!state.data.has(id)||Date.now()-updatedAt.get(id)>=3600000){failedIDs.add(id);failureReasons.set(id,'接口请求受限，请稍后重试');}pendingIDs.clear();
         }
       }catch(error){
         if(requestId===state.requestId){
-          batch.filter(c=>cityByID.get(c.id)===c).forEach(c=>{failedIDs.add(c.id);failureReasons.set(c.id,error.message||'连接未成功');});
-          if(error.rateLimited||error.sharedUnavailable){rateLimited=true;for(const id of pendingIDs){failedIDs.add(id);failureReasons.set(id,error.message||'接口请求受限，请稍后重试');}pendingIDs.clear();}
+          const recovered=acceptRecords(error.partialRecords||[],batch);
+          batch.filter(c=>cityByID.get(c.id)===c&&!recovered.has(c.id)).forEach(c=>{failedIDs.add(c.id);failureReasons.set(c.id,error.message||'连接未成功');});
+          if(error.rateLimited||error.sharedUnavailable){rateLimited=true;for(const id of pendingIDs)if(!recovered.has(id)){failedIDs.add(id);failureReasons.set(id,error.message||'接口请求受限，请稍后重试');}pendingIDs.clear();}
         }
       }finally{
         if(requestId===state.requestId){batch.forEach(c=>pendingIDs.delete(c.id));render();}
