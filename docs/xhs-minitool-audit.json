@@ -1,0 +1,167 @@
+{
+  "capturedAt": "2026-11-16T14:08:04.748789+08:00",
+  "scope": "feasibility_only; user chose to keep the web application",
+  "sourceCommit": "0fe3b0fce660bd410e23227cef53a004e7a2d6e5",
+  "skill": {
+    "version": "1.10.0",
+    "installedAt": ".codex/skills/minitool-zip-builder",
+    "archiveSha256": "add225e1e03d8872347788ef74cddfbe4215164c90c12d1d4738cf937791c531"
+  },
+  "onlineContract": {
+    "url": "https://miniapp-sandbox.xiaohongshu.com/minitool/doc",
+    "declaredUpdated": "2026-11-10",
+    "htmlSha256": "883baeac3e8e6e0897d5c8ddd723d6c87d4c6a0dfc3aa449e2f6fed0a91b7023",
+    "baselineDate": "2026-10-30"
+  },
+  "runtime": {
+    "fileCount": 156,
+    "uncompressedBytes": 15717868,
+    "zipBytesForAuditOnly": 11122684,
+    "textBytes": 6540404,
+    "unsupportedTypes": [
+      "assets/search-places.json.gz"
+    ],
+    "largestFiles": [
+      {
+        "path": "assets/search-places.json",
+        "bytes": 2944072
+      },
+      {
+        "path": "assets/search-places.json.gz",
+        "bytes": 889886
+      },
+      {
+        "path": "assets/china.js",
+        "bytes": 429855
+      },
+      {
+        "path": "assets/landscape.jpg",
+        "bytes": 309961
+      },
+      {
+        "path": "assets/cities/zhangjiajie-detail.webp",
+        "bytes": 149556
+      },
+      {
+        "path": "assets/cities/lanzhou-detail.webp",
+        "bytes": 149516
+      },
+      {
+        "path": "assets/cities/haikou-detail.webp",
+        "bytes": 148576
+      },
+      {
+        "path": "assets/cities/nanchang-detail.webp",
+        "bytes": 147982
+      }
+    ],
+    "searchRecords": 25569
+  },
+  "sourceEvidence": {
+    "liveWeather": {
+      "path": "app.js",
+      "line": 1042,
+      "excerpt": "        const response=await fetch(`https://api.open-meteo.com/v1/forecast?${params}`,{signal:request.signal});"
+    },
+    "onlineSearch": {
+      "path": "app.js",
+      "line": 1155,
+      "excerpt": "      const response=await fetch(`https://geocoding-api.open-meteo.com/v1/search?${params}`,{signal:controller.signal});"
+    },
+    "optionalChaining": {
+      "path": "app.js",
+      "line": 103,
+      "excerpt": "  const provinceFeatures=(window.CHINA_GEO?.features||[]).map(f=>(window.LOCAL_BOUNDARIES?.features||[]).find(detail=>detail.properties.adcode===f.properties.adcode)||f);"
+    },
+    "nullishAssignment": {
+      "path": "assets/weather-service-config.js",
+      "line": 3,
+      "excerpt": "window.SUNSEEK_OBJECT_WEATHER_SERVICE??={...{\"enabled\":false,\"endpoint\":\"https://1330730699-m02h85g9p0.ap-shanghai.tencentscf.com/api/weather\",\"cacheBase\":\"_weather-shared/v2/batches\",\"contract\":\"7d9b37dcbdde463699adc53b34251b6bb3a268d08617"
+    },
+    "optionalCatchBinding": {
+      "path": "search.js",
+      "line": 71,
+      "excerpt": "      }catch{/* Older hosts/browsers and failed compressed assets retain the original JSON path. */}"
+    },
+    "unicodePropertyRegex": {
+      "path": "search.js",
+      "line": 5,
+      "excerpt": "eplace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu,'');"
+    },
+    "backupDownload": {
+      "path": "app.js",
+      "line": 733,
+      "excerpt": "  const link=document.createElement('a');link.href=url;link.download=`sunseek-backup-${localDate(new Date())}-${Date.now()}.json`;"
+    },
+    "localStorage": {
+      "path": "app.js",
+      "line": 83,
+      "excerpt": "ry { for(const city of Places.restoreCustom(JSON.parse(localStorage.getItem('sunseek-places-v3')||'[]')))if(!cities.some(c=>c.id===city.id))cities.push({...city,index:cities.length}); } catch {}"
+    },
+    "jsonImport": {
+      "path": "index.html",
+      "line": 128,
+      "excerpt": "el class=\"backup-file-button\">选择备份文件<input type=\"file\" id=\"backup-file\" accept=\".json,application/json\" aria-label=\"选择晴游备份文件\"></label><span id=\"backup-filename\"></span>"
+    },
+    "externalNavigation": {
+      "path": "index.html",
+      "line": 120,
+      "excerpt": "b-star\" href=\"https://github.com/ChlorophyllC/sunseek\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"喜欢晴游？前往 GitHub 点个 Star\"><svg class=\"icon\" aria-hidden=\"true\"><use href=\"#i-star\"/></svg>喜欢晴游？点个 Star</a><svg class=\"icon footer-sun"
+    },
+    "flexGap": {
+      "path": "styles.css",
+      "line": 4,
+      "excerpt": "ax-width:1360px;margin:auto;height:100%;padding:0 40px;display:flex;align-items:center;gap:72px}.brand{display:flex;align-items:center;gap:10px;font-size:26px;font-weight:750;letter-spacing:1px;line-height:1.1}.brand-mark{width:40px;height:"
+    },
+    "aspectRatio": {
+      "path": "styles.css",
+      "line": 6,
+      "excerpt": "width:70px}.map-container{position:relative;width:100%;aspect-ratio:1.67;background:radial-gradient(ellipse at center,#fbfcf9,#fff 72%);overflow:hidden;touch-action:pan-y}.map-container:before{content:'';position:absolute;inset:0;background"
+    },
+    "focusVisible": {
+      "path": "styles.css",
+      "line": 3,
+      "excerpt": "utton,a,input,select,textarea{outline-offset:4px}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--green);outline-offset:4px}button{border:0;"
+    },
+    "newAbortController": {
+      "path": "app.js",
+      "line": 949,
+      "excerpt": "    const requestId=++state.requestId,controller=new AbortController();state.controller=controller;"
+    },
+    "modernArrayFlatMap": {
+      "path": "search.js",
+      "line": 12,
+      "excerpt": "    const contexts=unique((entity.parents||[]).flatMap(p=>[normalize(p),fold(p)]));"
+    },
+    "cacheSize": {
+      "path": "app.js",
+      "line": 12,
+      "excerpt": "  const CACHE_MAX_CHARS = 1600000;"
+    }
+  },
+  "officialPerformanceAudit": {
+    "directory": {
+      "exitCode": 0,
+      "output": "WARN: assets/search-places.json: text file is 2.81 MiB; review parse and memory cost\nWARN: uncompressed HTML/CSS/JS/JSON total is 6.24 MiB; review for embedded databases or generated content\nPASS: 156 file(s), 2 warning(s)"
+    },
+    "temporaryZip": {
+      "exitCode": 1,
+      "output": "ERROR: original-website-audit-only.zip: zip is 10.61 MiB; hard limit is 10 MiB\nWARN: assets/search-places.json: text file is 2.81 MiB; review parse and memory cost\nWARN: uncompressed HTML/CSS/JS/JSON total is 6.24 MiB; review for embedded databases or generated content\nFAILED: 1 error(s), 2 warning(s)"
+    }
+  },
+  "decision": {
+    "compatibleAsRealtimeWeatherTool": false,
+    "uploadZipProduced": false,
+    "temporaryAuditDirectoryAndZipRemoved": true,
+    "websiteChanged": false,
+    "cloudOperations": 0,
+    "weatherQueries": 0
+  },
+  "validation": {
+    "creatorSimulator": "not run",
+    "androidDevice": "not run",
+    "iosDevice": "not run",
+    "chrome61": "not run",
+    "note": "Size audit and source review do not establish container functionality or device compatibility."
+  }
+}

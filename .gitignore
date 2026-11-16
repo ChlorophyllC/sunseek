@@ -18,3 +18,6 @@ playwright-report/
 
 # Rebuildable launch bundles; source, copy and individual posters are versioned.
 marketing/**/*.zip
+
+# User-requested downloaded skill; keep its third-party source local.
+.codex/skills/minitool-zip-builder/
