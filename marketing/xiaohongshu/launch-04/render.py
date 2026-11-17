@@ -16,7 +16,7 @@ with sync_playwright() as p:
   slide.screenshot(path=str(ROOT/'exports'/(slide.get_attribute('data-export')+'.png')))
  # Overview is composed in HTML from untouched final exports.
  cards=''.join(f'<figure><img src="exports/{path.name}"><figcaption>{path.name}</figcaption></figure>' for path in sorted((ROOT/'exports').glob('*.png')))
- overview='<!doctype html><meta charset="utf-8"><title>晴游 · 六图总览</title><style>body{margin:0;padding:28px;background:#e8eae2;font-family:"PingFang SC",sans-serif;color:#244d40}h1{font-size:26px;margin:0 0 22px}main{display:grid;grid-template-columns:repeat(3,360px);gap:24px}figure{margin:0}img{display:block;width:360px;height:480px;border-radius:8px;box-shadow:0 3px 18px #244d4018}figcaption{padding-top:10px;font-size:15px}</style><h1>晴游 · 关于下一次出发 / 六图总览</h1><main>'+cards+'</main>'
+ overview='<!doctype html><meta charset="utf-8"><title>晴游 · 六图总览</title><style>body{margin:0;padding:28px;background:#e8eae2;font-family:"PingFang SC",sans-serif;color:#244d40}h1{font-size:26px;margin:0 0 22px}main{display:grid;grid-template-columns:repeat(3,360px);gap:24px}figure{margin:0}img{display:block;width:360px;height:480px;border-radius:8px;box-shadow:0 3px 18px #244d4018}figcaption{padding-top:10px;font-size:15px}</style><h1>晴游 · 周末去哪？先找好天气吧。 / 六图总览</h1><main>'+cards+'</main>'
  (ROOT/'overview.html').write_text(overview)
  page.set_viewport_size({'width':1184,'height':1140})
  page.goto((ROOT/'overview.html').as_uri(),wait_until='networkidle')
